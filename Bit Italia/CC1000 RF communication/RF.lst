@@ -1,0 +1,1942 @@
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;************************************************************
+                      00002 ;       TITLE:  RF Transceiver via CC1000
+                      00003 ;       Programmer: GINO ISLA
+                      00004 ;       REVISION HISTORY:       31-03-03 First try
+                      00005 ;                                               05-09-03 v1.0
+                      00006 ;       HARDWARE: BIT SRL. lOW pOWER transciever
+                      00007 ;       FREQUENCY: 4MHz
+                      00008 ;       Function: Master salve query/response using a CC1000
+                      00009 ;************************************************************
+                      00010                         list    p=16f876
+                      00011 
+                      00012 #include        <p16f876.inc>
+                      00001         LIST
+                      00002 ; P16F876.INC  Standard Header File, Version 1.00    Microchip Technology, Inc.
+                      00359         LIST
+                      00013 #include        <CC1000.h>
+                      00001 ;/* Constants defined for CC1000 */
+                      00002 
+                      00003 ;/* Register addresses */
+                      00004 
+                      00005 #define CC1000_MAIN            0x00
+                      00006 #define CC1000_FREQ_2A         0x01
+                      00007 #define CC1000_FREQ_1A         0x02
+                      00008 #define CC1000_FREQ_0A         0x03
+                      00009 #define CC1000_FREQ_2B         0x04
+                      00010 #define CC1000_FREQ_1B         0x05
+                      00011 #define CC1000_FREQ_0B         0x06
+                      00012 #define CC1000_FSEP1           0x07
+                      00013 #define CC1000_FSEP0           0x08
+                      00014 #define CC1000_CURRENT         0x09
+                      00015 #define CC1000_FRONT_END       0x0A
+                      00016 #define CC1000_PA_POW          0x0B
+                      00017 #define CC1000_PLL             0x0C
+                      00018 #define CC1000_LOCK            0x0D
+                      00019 #define CC1000_CAL             0x0E
+                      00020 #define CC1000_MODEM2          0x0F
+                      00021 #define CC1000_MODEM1          0x10
+                      00022 #define CC1000_MODEM0          0x11
+                      00023 #define CC1000_MATCH           0x12
+                      00024 #define CC1000_FSCTRL          0x13
+                      00025 #define CC1000_FSHAPE7         0x14
+                      00026 #define CC1000_FSHAPE6         0x15
+                      00027 #define CC1000_FSHAPE5         0x16
+                      00028 #define CC1000_FSHAPE4         0x17
+                      00029 #define CC1000_FSHAPE3         0x18
+                      00030 #define CC1000_FSHAPE2         0x19
+                      00031 #define CC1000_FSHAPE1         0x1A
+                      00032 #define CC1000_FSDELAY         0x1B
+                      00033 #define CC1000_PRESCALER       0x1C
+                      00034 #define CC1000_TEST6           0x40
+                      00035 #define CC1000_TEST5           0x41
+                      00036 #define CC1000_TEST4           0x42
+                      00037 #define CC1000_TEST3           0x43
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00038 #define CC1000_TEST2           0x44
+                      00039 #define CC1000_TEST1           0x45
+                      00040 #define CC1000_TEST0           0x46
+                      00041 
+                      00014 #include        <hw_interf.h>
+                      00001 ;Pin usage definitions for the RF via CC1000 project
+                      00002 ;The following are the assumed communication ports between the 
+                      00003 ;CC1000 and PIC16f76A
+                      00004 ;
+                      00005 #define PDATA                   PORTC,0 ; Register interfaces
+                      00006 #define PCLK                    PORTC,1 ;
+                      00007 #define PALE                    PORTC,2 ;
+                      00008 #define DIO                     PORTC,3 ; Data interfaces
+                      00009 #define DCLK                    PORTB,0 ;
+                      00010 #define CHP_OUT                 PORTC,4 ;not used
+                      00011 #define MSTRAP                  PORTA,3 ;master/slave strap
+                      00012 #define MANLSW                  PORTB,4 ;manual switch
+                      00013 #define RED_LED                 PORTB,2 ;LED for 0 count (LEDs connected to Vdd???)
+                      00014 #define GREEN_LED               PORTB,1 ;LED for count > 0
+                      00015 
+                      00016 ;
+                      00017 #define PDATA_DIR               TRISC,0
+                      00018 #define TRISC0                  TRISC,0
+                      00019 #define TRISC1                  TRISC,1
+                      00020 #define TRISC2                  TRISC,2
+                      00021 #define DIO_DIR                 TRISC,3
+                      00022 #define TRISC4                  TRISC,4
+                      00023 #define TRISC5                  TRISC,5
+                      00024 #define TRISC6                  TRISC,6
+                      00025 #define TRISC7                  TRISC,7
+                      00026 ;
+                      00027 ;ERRORS AND OTHER EVENTS
+                      00028 #define BUTTON_PRESSED  G_Events,0
+                      00029 #define REPLY_SENT              G_Events,1
+                      00030 #define NEW_COUNT               G_Events,2
+                      00031 #define TIME_0_OUT              G_Events,3
+                      00032 #define BYTE_FULL               G_Events,4
+                      00033 #define RESET_CNTRS             G_Events,5
+                      00034 #define CALIBRATION_OK  G_Events,6
+                      00035 ;
+                      00036 ;STATES
+                      00037 #define IDLE_MODE               G_State,0
+                      00038 #define MASTER                  G_State,1
+                      00039 #define SLAVE                   G_State,2
+                      00040 #define RXCVER                  G_State,3
+                      00041 #define TXMTER                  G_State,4
+                      00042 #define QUIET                   G_State,5
+                      00043 ;
+                      00044 ;PROTOCOL 
+                      00045 ;PROTOCOL PARTS
+                      00046 #define BOF_FOUND               G_Pr_status,0
+                      00047 #define PREAM_FINISHED  G_Pr_status,1
+                      00048 #define UI_FINISHED             G_Pr_status,2
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00049 #define ADDR_CMPLT              G_Pr_status,3
+                      00050 #define NBR_BYTES_RCVD  G_Pr_status,4
+                      00051 #define DATA_RECEIVED   G_Pr_status,5
+                      00052 #define SUMCHECK_DONE   G_Pr_status,6
+                      00053 #define CMMND_COMPLETE  G_Pr_status,7
+                      00054 ;
+                      00055 ;OFFSETS:
+                      00056 #define PREAMBLE                0x00
+                      00057 #define UI                              0x03
+                      00058 #define ADDRESS                 0x05
+                      00059 #define NO_BYTES                0x07
+                      00060 #define DATA_OFFS               0x08
+                      00061 #define SUM_CHECK               0x0F
+                      00062 ;
+                      00063 #define UI_CODE1                0xCD    ;unique ramdom number
+                      00064 #define UI_CODE2                0x4D    ;
+                      00065 ;
+                      00066 ;NUMBER OF BYTES
+                      00067 #define PREA_SIZE               3
+                      00068 #define UI_SIZE                 2
+                      00069 #define ADD_SIZE                2
+                      00070 #define NBR_SIZE                1
+                      00071 #define DATA_SIZE               7
+                      00072 #define CS_SIZE                 1
+                      00073 
+  00000010            00074 TOT_FRAME_SIZ                   equ     PREA_SIZE+UI_SIZE+ADD_SIZE+NBR_SIZE+DATA_SIZE+CS_SIZE
+  00000008            00075 FIXED_PART                              equ     PREA_SIZE+UI_SIZE+ADD_SIZE+NBR_SIZE
+                      00076 
+                      00077 #define RX_CURRENT              0x44 ;0100xxxx=950uA, XXXX=?????
+                      00078 #define RXPLL                   0x60
+                      00079 #define TX_CURRENT              0x81 ;1000xxxx=1450uA
+                      00080 #define TXPLL                   0x48
+                      00081 #define PA_VALUE                0xFF
+                      00082 
+                      00083 ;TIMER 1 TIMERS
+                      00084 ;;;#define      RXMIT_TIM1L             0x90    ;at 9600bps: h'3590 = 13,712uS=14ms
+                      00085 ;;;#define      RXMIT_TIM1H             0x35    ; (104uS/b*8bit/byt*16byt/frame+250uS+xx+ switch RX-TX)
+                      00086 
+                      00087 #define RXMIT_TIM1L             0xf0    ;20ms includes delays for the master switch RX -> TX
+                      00088 #define RXMIT_TIM1H             0x55    ;
+                      00089 
+                      00090 ;LOCK TIMEOUTS (this is a 16 bit integer e.g. 33FF)
+                      00091 ;#define        LOCK1           0xFF
+                      00092 ;#define        LOCK2           0x33
+                      00093 #define LOCK1                   0xFF
+                      00094 #define LOCK2                   0x01
+                      00095 
+                      00096 
+                      00097 ;TOGGLES AND CONTROLS FOR LEDS
+                      00098 #define TOGGLE_G                L_GREEN_CTL,7
+                      00099 #define GREEN_FLAG              L_GREEN_CTL,6
+                      00100 #define SPEED_G                 L_GREEN_CTL,5
+                      00101 ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00102 #define TOGGLE_R                L_RED_CTL,7
+                      00103 #define RED_FLAG                L_RED_CTL,6
+                      00104 #define SPEED_R                 L_RED_CTL,5
+                      00105 
+                      00106 #define SLOW_ON                 b'11000110'             ;1xx..=start on, x1x..=on, xx000110=6 beats
+                      00107 #define SLOW_OFF                b'01000110'             ;0xx..=start off, x1x..=on, xx000110=6 beats
+                      00108 
+                      00109 #define FAST_ON                 b'11000010'
+                      00110 #define FAST_OFF                b'01000010'
+                      00111 
+                      00112 #define VERYSLOW                b'11010000'
+                      00113 
+                      00114 
+                      00115 
+                      00116 
+                      00117 
+                      00118 
+                      00119 
+                      00120 
+                      00121 
+                      00122 
+                      00123 
+                      00124 
+                      00015 
+                      00016 ;LOCAL DATA
+                      00017         UDATA
+0000                  00018 L_Temp1                 res 1           ;
+0001                  00019 L_Temp_CS               res     1               ;temporary sum-check
+0002                  00020 L_BITS                  res 1           ;number of bits sent or received
+0003                  00021 L_BYTES                 res 1           ;number of bytes sent or received
+0004                  00022 L_TX_COUNT              res     1               ;TX_BUFFER counter
+0005                  00023 L_NEXT_FR_BYT   res     1               ;counts the byte in the TX buffer
+0006                  00024 L_INDEX                 res 1           ;index for addressing buffers below
+0007                  00025 L_PORTC                 res 1           ;temporary PORTC
+0008                  00026 L_DATA_RX               res 1           ;1 byte of received data
+0009                  00027 L_RX_BUFF               res d'16'       ;Received data buffer
+0019                  00028 L_TX_BUFF               res d'16'       ;Transmit data buffer
+0029                  00029 L_PERSIST               res     1               ;counter for persistancy checks
+                      00030 ;
+002A                  00031 G_Events                res 1           ;This has to be seen by other modules
+002B                  00032 G_Pr_status             res 1           ;
+002C                  00033 G_State                 res 1           ;will determine the reaction in ISR
+                      00034 ;
+002D                  00035 L_GREEN_CTL             res     1               ;control for flicking the leds
+002E                  00036 L_GREEN_COU             res     1               ;number of times to flip
+002F                  00037 L_GR_SPEED              res     1               ;temporary speed counter
+                      00038 ;
+0030                  00039 L_RED_CTL               res     1               ;same as green..
+0031                  00040 L_RED_COU               res     1               ;
+0032                  00041 L_RED_SPEED             res     1               ;
+                      00042 ;
+0033                  00043 D_ERROR_CNT             res     1               ;Counts number of times in TREAT_ERROR
+0034                  00044 D_ERROR_FLG             res     1               ;Manual flag to read all CC1000 regs in TREAT_ERROR
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0035                  00045 D_BUGGGER               res     1               ;
+                      00046 ;
+0036                  00047 STATUS_TEMP             res 1           ;for saving STATUS reg during ISR
+                      00048 ;=========================================================================================
+0037                  00049 DEBUG_BITS              res     1
+0038                  00050 D_BUG1                  res     1               ;
+0039                  00051 D_BUG2                  res     1               ;
+                      00052 ;==========================================================================================
+                      00053         UDATA_SHR                               ;Common bank
+0000                  00054 L_EE_COUNT_L    res     1               ;This has to be @ addr xxxxxx00 BUT the linker puts it in x71!!!
+0001                  00055 L_EE_COUNT_H    res     1               ;These reserve 8 bytes for data transfer with EEPROM
+0002                  00056 L_EE_COUNT_MORE res     6               ;
+0008                  00057 W_TEMP                  res     1               ;for saving W reg during ISR
+                      00058 ;
+                      00059 ;EXTERNAL AND GLOBAL SYMBOLS
+  0000                00060                         Global  G_Events,G_Pr_status
+  0000                00061                         extern  G_CC_Reg,G_CC_Data
+                      00062 
+                      00063 ;LIBRARY SUPPORT ROUTINES
+  0000                00064         extern  Setup_CC1000PD,Reset_CC1000,Setup_CC1000All,CalibrateCC1000
+  0000                00065         extern  SetupCC1000Tx,SetupCC1000Rx,WakeUpCC1000toRx,WakeUpCC1000toTx
+  0000                00066         extern  DelaymS,Delay100uS,DelayuS
+  0000                00067         extern  ReadFromCC1000register
+                      00068         
+                      00069 ;CONSTANTS
+  00000021            00070 EE_ADDR_H       equ     0x21                                    ; See EE_counter_addr
+  00000000            00071 EE_ADDR_L       equ     0X00                                    ;
+                      00072 ;
+                      00073 ;See also GET_NEXT_REGISTER and RAW_BUFFER for CC1000 constants.
+                      00074 
+                      00075 ;CONFIGURATION OF PIC
+2007   3731           00076         __CONFIG        _CP_OFF & _WDT_OFF & _BODEN_OFF & _PWRTE_ON & _XT_OSC & _PWRTE_ON & _LVP_OFF & _
+                            DEBUG_ON & _CPD_OFF
+                      00077 
+                      00078         CODE
+                      00079 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00080                         org     0x2100                                  ;EEPROM as defined in linker
+2100   0000           00081 EE_counter_addr de      0                                       ;
+                      00082 
+                      00083 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2101                  00084 START_OF_THE_PROGRAM
+                      00085                         org             0X000                           ; Reset Vector
+0000   0000           00086                         nop                                                     ;
+0001   018A           00087                         clrf    PCLATH                          ;
+0002   2???           00088                         goto    Start                           ;
+                      00089 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00090                         org             0x004                           ;Iterrupt Vector
+0004   2???           00091                         goto    Service_Interrupt       ;
+                      00092 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00093 ;Table lookups for CC1000 register
+                      00094 ;Lookout for page boundaries!!!!!
+0005                  00095 GET_NEXT_REGISTER
+  0000                00096                         Global  GET_NEXT_REGISTER       ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0005   0782           00097                         ADDWF   PCL,F                           ;
+                      00098                                                                                 ;       
+0006   3400 3458 3420 00099 CC1Kregs        DATA 0x3400,0x3458,0x3420,0x3400,0x3442,0x3414,0x349c,0x3402    ;Rf XTAL: 14.745600
+       3400 3442 3414 
+       349C 3402 
+000E   3480 3444 3412 00100                         DATA 0x3480,0x3444,0x3412,0x34FF,0x3460,0x3410,0x3426,0x348E    ;PA_POW<0BH>=FF 
+       34FF 3460 3410 
+       3426 348E 
+0016   346F 3447 3470 00101                         DATA 0x346F,0x3447,0x3470,0x3401,0x3400,0x3400,0x3400,0x3400    ;MODEM0<11H>
+       3401 3400 3400 
+       3400 3400 
+001E   3400 3400 3400 00102                         DATA 0x3400,0x3400,0x3400,0x3400,0x3400
+       3400 3400 
+  0000                00103                         Global  CC1Kregs                        ;
+0023   0008           00104                         RETURN  
+                      00105 
+                      00106 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00107 ;Table lookup, build a frame of data
+0024                  00108 RAW_BUFFER
+  0000                00109                         Global  RAW_BUFFER                      ;
+0024   0782           00110                         ADDWF   PCL,F                           ;
+                      00111                                                                                 ;       
+0025   34AA 34AA 34AA 00112 Comm_buffer     DATA 0x34AA,0x34AA,0x34AA,0x34CD,0x344D,0x3400,0x3400,0x3407    ;whole frame
+       34CD 344D 3400 
+       3400 3407 
+002D   3400 3400 3400 00113                         DATA 0x3400,0x3400,0x3400,0x3400,0x3400,0x3400,0x3400,0x3400
+       3400 3400 3400 
+       3400 3400 
+  0000                00114                         Global  Comm_buffer                     ;
+0035   0008           00115                         RETURN  
+                      00116 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00117 ;Program execution starts here
+0036                  00118 Start                                                                   ;Setup MCU
+0036   3039           00119                         MOVLW   (D_BUG2-L_Temp_CS)+1;Clears all varialble data including
+0037   00??           00120                         MOVWF   L_Temp1                         ; RX and TX buffers, L_Temp1 is used 
+0038   30??           00121                         MOVLW   L_Temp_CS                       ;
+0039   0084           00122                         MOVWF   FSR                                     ;
+003A   0180           00123 _CLR_MEM        CLRF    INDF                            ;
+003B   0A84           00124                         INCF    FSR,F                           ;
+003C   0B??           00125                         DECFSZ  L_Temp1,F                       ;
+003D   2???           00126                         GOTO    _CLR_MEM                        ;
+                      00127                                                                                 ;
+003E   01??           00128                         CLRF    L_EE_COUNT_L            ;
+003F   0183           00129                         CLRF    STATUS                          ;BANK 0 REGISTERS
+0040   0194           00130                         CLRF    SSPCON                          ;disable serial port
+0041   019F           00131                         CLRF    ADCON0                          ;
+0042   0198           00132                         CLRF    RCSTA                           ;Serial port disabled(bit banging)
+0043   018B           00133                         CLRF    INTCON                          ;
+0044   0185           00134                         CLRF    PORTA                           ;
+0045   0186           00135                         CLRF    PORTB                           ;
+0046   0187           00136                         CLRF    PORTC                           ;
+                      00137                                                                                 ;
+0047   1683           00138                         BSF             STATUS,RP0                      ;BANK 1 REGISTERS
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0048   3007           00139                         MOVLW   7                                       ;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0049   009F           00140                         MOVWF   ADCON1                          ;
+                      00141                                                                                 ;
+004A   3003           00142                         MOVLW   b'00000011'                     ;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+004B   008E           00143                         MOVWF   PCON                            ;power-on, brown-out resets
+                      00144                                                                                 ;
+004C   30FF           00145                         MOVLW   0xFF                            ;  RA3=Master/Salve Strap (MSTRAP)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+004D   0085           00146                         MOVWF   TRISA                           ;
+004E   30F9           00147                         MOVLW   0xF9                            ; RB0=DCLK,RB1=GREEN LED,RB2=RED LED,RB4
+                            =button
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+004F   0086           00148                         MOVWF   TRISB                           ;(read INTF INTCON<1> for external INT o
+                            n RB0)
+0050   30F0           00149                         MOVLW   0xF0                            ;RC<0,1,2,3>=PDATA,PCLK,PALE,DIO = out
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0051   0087           00150                         MOVWF   TRISC                           ;
+                      00151                                                                                 ;
+0052   3025           00152                         MOVLW   25                                      ;4Mhz,9.6Kb
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0053   0099           00153                         MOVWF   SPBRG                           ;not necessary when running synchronous 
+                            slave
+                      00154                                                                                 ;
+0054   3000           00155                         MOVLW   b'00000000'                     ;MCU is slave,8bit,TxEN,Async,high speed
+                            ,  
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0055   0098           00156                         MOVWF   TXSTA                           ;
+                      00157                                                                                 ;
+0056   3000           00158                         MOVLW   b'00000000'                     ;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0057   008C           00159                         MOVWF   PIE1                            ;TMR1 int disabled (xxxxxxx1)
+                      00160                                                                                 ;
+0058   30C8           00161                         MOVLW   b'11001000'                     ;PortB pullups disabled,
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0059   0081           00162                         MOVWF   OPTION_REG                      ;xxxx1000b prescaler assigned to WDT
+                      00163                                                                                 ;
+005A   1283           00164                         BCF             STATUS,RP0                      ;MORE BANK 0 REGISTERS
+005B   3000           00165                         MOVLW   b'00000000'                     ;xx00xx0x ; Timer1 1:1 prescale, timer1 
+                            OFF
+005C   0090           00166                         MOVWF   T1CON                           ;
+005D   30F0           00167                         MOVLW   RXMIT_TIM1L                     ;Reset TIMER1
+005E   008E           00168                         MOVWF   TMR1L                           ;
+005F   098E           00169                         COMF    TMR1L,F                         ;
+0060   3055           00170                         MOVLW   RXMIT_TIM1H                     ;
+0061   008F           00171                         MOVWF   TMR1H                           ;
+0062   098F           00172                         COMF    TMR1H,F                         ;
+                      00173                                                                                 ;
+0063   1487           00174                         BSF             PCLK                            ;
+0064   1407           00175                         BSF             PDATA                           ;
+0065   1507           00176                         BSF             PALE                            ;
+0066   1700           00177                         BSF             CALIBRATION_OK          ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00178                                                                                 ;
+0067   1506           00179                         BSF             RED_LED                         ;start of CC1000 initialization
+0068   2???           00180                         CALL    Setup_CC1000PD          ;Setup after Power down CC1000
+                      00181                                                                                 ;
+0069   2???           00182                         CALL    Reset_CC1000            ;Reset it  [(A) and (B) fig 16]
+                      00183                                                                                 ;
+006A   30??           00184                         MOVLW   CC1Kregs                        ;
+006B   2???           00185                         CALL    Setup_CC1000All         ;Setup all other 28 registers [(C) fig 16]
+                      00186                                                                                 ;
+006C   3044           00187                         MOVLW   RX_CURRENT                      ;
+006D   2???           00188                         CALL    WakeUpCC1000toRx        ;Start calibration (A....G) fig 17)
+                      00189                                                                                 ;
+006E   3044           00190                         MOVLW   RX_CURRENT                      ;
+006F   2???           00191                         CALL    SetupCC1000Rx           ;
+0070   1F00           00192                         BTFSS   CALIBRATION_OK          ;
+0071   2???           00193                         GOTO    _CAL_ENDED                      ;
+                      00194                                                                                 ;
+0072   2???           00195                         CALL    CalibrateCC1000         ;Single calibration as TX
+0073   1F00           00196                         BTFSS   CALIBRATION_OK          ;
+0074   2???           00197                         GOTO    _CAL_ENDED                      ;
+                      00198                                                                                 ;
+0075   3081           00199                         MOVLW   TX_CURRENT                      ;
+0076   2???           00200                         CALL    WakeUpCC1000toTx        ;
+                      00201                                                                                 ;
+0077   3081           00202                         MOVLW   TX_CURRENT                      ;
+0078   2???           00203                         CALL    SetupCC1000Tx           ;Switch to Tx
+0079   1F00           00204                         BTFSS   CALIBRATION_OK          ;
+007A   2???           00205                         GOTO    _CAL_ENDED                      ;
+                      00206                                                                                 ;
+007B   2???           00207                         CALL    CalibrateCC1000         ;Single calibration  [(D) and (E) FIG 16]
+                      00208                                                                                 ;
+007C   1F00           00209 _CAL_ENDED      BTFSS   CALIBRATION_OK          ;
+007D   2???           00210                         GOTO    _CAL_NOK                        ;
+007E   1106           00211                         BCF             RED_LED                         ; 
+007F   3003           00212                         MOVLW   3                                       ;
+0080   00??           00213                         MOVWF   L_GREEN_COU                     ;
+0081   30C6           00214                         MOVLW   SLOW_ON                         ;
+0082   00??           00215                         MOVWF   L_GREEN_CTL                     ;
+0083   2???           00216                         GOTO    _INIT_CONT                      ;
+0084   3003           00217 _CAL_NOK        MOVLW   3                                       ;Flash 3 times to indicate failed 
+0085   00??           00218                         MOVWF   L_RED_COU                       ;startup of RF part
+0086   30C6           00219                         MOVLW   SLOW_ON                         ;
+0087   00??           00220                         MOVWF   L_RED_CTL                       ;
+                      00221                                                                                 ;
+0088   3088           00222 _INIT_CONT      MOVLW   0x88                            ;set GIE<7>,INTE<4>,RBIE<3> (GIE,BUTTN)
+0089   008B           00223                         MOVWF   INTCON                          ;clear TMR0IF<2>,INTF<1>,RBIF<0>,PEIE<6>
+                            ,
+008A   100C           00224                         BCF             PIR1,TMR1IF                     ;clear TMR1 interrupt flag
+                      00225                                                                                 ;
+008B   1410           00226                         BSF             T1CON,TMR1ON            ;Start timer1
+                      00227                                                                                 ;
+008C   1985           00228                         BTFSC   MSTRAP                          ;Strap to high for MASTER
+008D   2???           00229                         GOTO    _MASTER_RESET           ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+008E   3044           00230                         MOVLW   RX_CURRENT                      ;
+008F   2???           00231                         CALL    SetupCC1000Rx           ;
+0090   1500           00232                         BSF             SLAVE                           ;
+0091   1580           00233                         BSF             RXCVER                          ; Slave stays in Rx mode
+0092   2???           00234                         GOTO    _RESET                          ;
+                      00235                                                                                 ;
+0093                  00236 _MASTER_RESET                                                   ;
+0093   2???           00237                         CALL    Setup_CC1000PD          ;Turn off CC1000 until master button is pressed 
+                            (normally high)
+0094   1480           00238                         BSF             MASTER                          ;
+0095   1680           00239                         BSF             QUIET                           ;
+0096   2???           00240                         GOTO    _RESET                          ;
+                      00241                                                                                 ;
+                      00242 ;If this is the master wait for the button press to start the query to the slave.  
+                      00243 ;If slave, wait for the button to be pressed or for the master's query.
+                      00244 ;ISR will trap the button for slave and master actions.
+                      00245                                                                                 ;
+0097   1E80           00246 _IDLE_LOOP      BTFSS   RESET_CNTRS                     ;
+0098   2???           00247                         GOTO    _TIMR1_ACTIONS          ;
+                      00248                                                                                 ;
+0099   01??           00249 _RESET          CLRF    L_BYTES                         ;Start all over
+009A   3008           00250                         MOVLW   8                                       ;
+009B   00??           00251                         MOVWF   L_BITS                          ;Initialize bit counter
+009C   30FF           00252                         MOVLW   -1                                      ;  so index goes to 0 on BOF
+009D   1A00           00253                         BTFSC   TXMTER                          ;L_INDEX starts at -1 or 0 depending
+009E   0103           00254                         CLRW                                            ; on wether we're receiver or xm
+                            itter
+009F   00??           00255                         MOVWF   L_INDEX                         ;
+00A0   1200           00256                         BCF             BYTE_FULL                       ;G_Events<4,5>
+00A1   1280           00257                         BCF             RESET_CNTRS                     ;
+00A2   01??           00258                         CLRF    G_Pr_status                     ;
+                      00259                                                                                 ;
+00A3                  00260 _TIMR1_ACTIONS                                                  ;
+00A3   1C0C           00261                         BTFSS   PIR1,TMR1IF                     ;TIMR1 expired?
+00A4   2???           00262                         GOTO    _POLL_DCLCK                     ;
+00A5   100C           00263                         BCF             PIR1,TMR1IF                     ; 
+00A6   2???           00264                         CALL    HANDLE_LED_BLINK        ;
+                      00265                                                                                 ;
+00A7   1C80           00266                         BTFSS   MASTER                          ;IF TMR1 EXPIRED &  
+00A8   2???           00267                         GOTO    _POLL_DCLCK                     ;   MASTER & 
+00A9   1D80           00268                         BTFSS   RXCVER                          ;   ~XMITTER &
+00AA   2???           00269                         GOTO    _POLL_DCLCK                     ;   ~BOF_FOUND
+00AB   1800           00270                         BTFSC   BOF_FOUND                       ;THEN
+00AC   2???           00271                         GOTO    _POLL_DCLCK                     ;
+00AD   2???           00272                         CALL    START_MST_XMIT          ; Time to send again
+00AE   2???           00273                         GOTO    _COMMS_END                      ;ENDIF
+                      00274                                                                                 ;
+00AF                  00275 _POLL_DCLCK                                                             ;
+00AF   1C8B           00276                         BTFSS   INTCON,INTF                     ;IF DCLCK PULSE &
+00B0   2???           00277                         GOTO    _COMMS_END                      ;   ~QUIET
+00B1   1A80           00278                         BTFSC   QUIET                           ;
+00B2   2???           00279                         GOTO    _COMMS_END                      ;THEN
+                      00280                                                                                 ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00B3   1D80           00281                         BTFSS   RXCVER                          ;
+00B4   2???           00282                         GOTO    _XMIT                           ;
+                      00283                                                                                 ;
+00B5   2???           00284 _RCVE           CALL    RECEIVE_BIT                     ;  IF RECEIVER
+00B6   1E00           00285                         BTFSS   BYTE_FULL                       ;     (Master or Slave) receive next bit
+00B7   2???           00286                         GOTO    _COMMS_END                      ;
+00B8   2???           00287                         CALL    RECEIVE_BYTE            ;     IF received a full byte
+00B9   1200           00288                         BCF             BYTE_FULL                       ;       check protocol parts
+00BA   2???           00289                         GOTO    _COMMS_END                      ;     ENDIF
+                      00290                                                                                 ;  ELSE (XMT)
+00BB   2???           00291 _XMIT           CALL    SEND_BIT                        ;     Send next bit
+00BC   1E00           00292                         BTFSS   BYTE_FULL                       ;     IF full byte sent
+00BD   2???           00293                         GOTO    _COMMS_END                      ;        IF MASTER        
+00BE   1C80           00294                         BTFSS   MASTER                          ;          do master EOTX actions
+00BF   2???           00295                         GOTO    _XMIT_SLV                       ;           (see if finished, adjust ind
+                            ex)
+                      00296                                                                                 ;         ELSE (slave)
+00C0   2???           00297                         CALL    CHECK_MST_EOTX          ;           do slave EOTX actions 
+00C1   2???           00298                         GOTO    _XMIT_END                       ;         ENDIF
+00C2   2???           00299 _XMIT_SLV       CALL    CHECK_SLV_EOTX          ;      
+00C3   1200           00300 _XMIT_END       BCF             BYTE_FULL                       ;      ENDIF
+                      00301                                                                                 ;   ENDIF
+00C4   2???           00302 _COMMS_END      GOTO    _IDLE_LOOP                      ;ENDIF (end of idle loop)
+                      00303 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00304 ;This procedure handles the blinking of the LEDs which are candenced by TMR1
+                      00305 ;
+00C5                  00306 HANDLE_LED_BLINK
+00C5   1F00           00307 _GREEN_LED      BTFSS   GREEN_FLAG                      ;
+00C6   2???           00308                         GOTO    _RED_LED                        ;
+00C7   08??           00309                         MOVF    L_GR_SPEED,F            ;test if zero
+00C8   1903           00310                         BTFSC   STATUS,Z                        ;
+00C9   2???           00311                         GOTO    _TOGGLE_GR                      ;
+00CA   03??           00312                         DECF    L_GR_SPEED,F            ;
+00CB   2???           00313                         GOTO    _RED_LED                        ;
+                      00314                                                                                 ;
+00CC   0D??           00315 _TOGGLE_GR      RLF             L_GREEN_CTL,W           ;Rotate through carry
+00CD   1C03           00316                         BTFSS   STATUS,C                        ; and flip the toggle bit
+00CE   2???           00317                         GOTO    _GREEN_OFF                      ;
+00CF   1486           00318                         BSF             GREEN_LED                       ;
+00D0   1380           00319                         BCF             TOGGLE_G                        ;
+00D1   2???           00320                         GOTO    _RES_G_SPD                      ;
+00D2   1086           00321 _GREEN_OFF      BCF             GREEN_LED                       ;Decrement the count only on OFF
+00D3   1780           00322                         BSF             TOGGLE_G                        ;
+00D4   0B??           00323                         DECFSZ  L_GREEN_COU,F           ;Reached number of toggles?
+00D5   2???           00324                         GOTO    _RES_G_SPD                      ;
+00D6   01??           00325                         CLRF    L_GREEN_CTL                     ;finished                       
+00D7   2???           00326                         GOTO    _RED_LED                        ;
+00D8   08??           00327 _RES_G_SPD      MOVF    L_GREEN_CTL,W           ;Reset the speed counter
+00D9   393F           00328                         ANDLW   0x3F                            ;
+00DA   00??           00329                         MOVWF   L_GR_SPEED                      ;
+                      00330                                                                                 ;
+00DB   1F00           00331 _RED_LED        BTFSS   RED_FLAG                        ;
+00DC   2???           00332                         GOTO    _BLINK_END                      ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00DD   08??           00333                         MOVF    L_RED_SPEED,F           ;test if zero
+00DE   1903           00334                         BTFSC   STATUS,Z                        ;
+00DF   2???           00335                         GOTO    _TOGGLE_RD                      ;
+00E0   03??           00336                         DECF    L_RED_SPEED,F           ;
+00E1   2???           00337                         GOTO    _BLINK_END                      ;
+                      00338                                                                                 ;
+00E2   0D??           00339 _TOGGLE_RD      RLF             L_RED_CTL,W                     ;Rotate through carry
+00E3   1C03           00340                         BTFSS   STATUS,C                        ; and flip the toggle bit
+00E4   2???           00341                         GOTO    _RED_OFF                        ;
+00E5   1506           00342                         BSF             RED_LED                         ;
+00E6   1380           00343                         BCF             TOGGLE_R                        ;
+00E7   2???           00344                         GOTO    _RES_R_SPD                      ;
+00E8   1106           00345 _RED_OFF        BCF             RED_LED                         ;Decrement the count only on OFF
+00E9   1780           00346                         BSF             TOGGLE_R                        ;
+00EA   0B??           00347                         DECFSZ  L_RED_COU,F                     ;Reached number of toggles?
+00EB   2???           00348                         GOTO    _RES_R_SPD                      ;
+00EC   01??           00349                         CLRF    L_RED_CTL                       ;finished                       
+00ED   2???           00350                         GOTO    _BLINK_END                      ;               
+00EE   08??           00351 _RES_R_SPD      MOVF    L_RED_CTL,W                     ;Reset the speed counter
+00EF   393F           00352                         ANDLW   0x3F                            ;
+00F0   00??           00353                         MOVWF   L_RED_SPEED                     ;
+                      00354                                                                                 ;
+00F1   0008           00355 _BLINK_END      RETURN                                          ;
+                      00356 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00357 ;Receive the next bit,count full bytes, find the beginning of a frame.
+                      00358 ;CALLED FROM: Idle loop
+                      00359 ;
+00F2                  00360 RECEIVE_BIT
+00F2   3006           00361 _DATA_IN        MOVLW   d'6'                            ;do a persistancy check first (50us)
+00F3   00??           00362                         MOVWF   L_PERSIST                       ;
+00F4   1C06           00363 _DCLK_IN        BTFSS   DCLK                            ;
+00F5   2???           00364                         GOTO    _NO_BIT_IN                      ;ignore spikes
+00F6   0B??           00365                         DECFSZ  L_PERSIST,F                     ;
+00F7   2???           00366                         GOTO    _DCLK_IN                        ;
+                      00367                                                                                 ;
+00F8   0807           00368 _RX_CONT        MOVF    PORTC,W                         ;Persistancy check on the port
+00F9   3908           00369                         ANDLW   8                                       ;PORTC<3>
+00FA   00??           00370                         MOVWF   L_PORTC                         ;
+00FB   3004           00371                         MOVLW   d'4'                            ;
+00FC   00??           00372                         MOVWF   L_PERSIST                       ;
+00FD   0807           00373 _DIO_IN_P       MOVF    PORTC,W                         ;read again
+00FE   3908           00374                         ANDLW   8                                       ;
+00FF   06??           00375                         XORWF   L_PORTC,W                       ;
+0100   1D03           00376                         BTFSS   STATUS,Z                        ;still the same?
+0101   2???           00377                         GOTO    _NO_BIT_IN                      ;ignore spikes
+0102   0B??           00378                         DECFSZ  L_PERSIST,F                     ;
+0103   2???           00379                         GOTO    _DIO_IN_P                       ;
+                      00380                                                                                 ;
+0104   1003           00381                         CLRC                                            ;Accept bit
+0105   0D??           00382                         RLF             L_DATA_RX,F                     ;
+0106   0103           00383                         CLRW                                            ;
+0107   1980           00384                         BTFSC   L_PORTC,3                       ;
+0108   3001           00385                         MOVLW   1                                       ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0109   04??           00386                         IORWF   L_DATA_RX,F                     ;
+                      00387                                                                                 ;
+010A   1800           00388                         BTFSC   BOF_FOUND                       ; If BOF has been found we are now colle
+                            cting data
+010B   2???           00389                         GOTO    _BOF_CONT2                      ;
+                      00390                                                                                 ;Look for BOF
+010C   08??           00391                         MOVF    L_DATA_RX,W                     ;This check is done bit by bit through t
+                            he 1st
+010D   3CAA           00392                         SUBLW   0xAA                            ; byte of the preamble
+010E   1903           00393                         BTFSC   STATUS,Z                        ;zero flag set when 0 (EQ)
+010F   2???           00394                         GOTO    _BOF_FOUND                      ;
+                      00395                                                                                 ;
+0110   1000           00396 _NO_BOF         BCF             BOF_FOUND                       ;
+0111   2???           00397                         GOTO    _RX_END                         ;
+                      00398                                                                                 ;
+0112   1400           00399 _BOF_FOUND      BSF             BOF_FOUND                       ;Begining of Frame found
+0113   3001           00400                         MOVLW   1                                       ;Force recognition of 1st byte o
+                            f data
+0114   00??           00401                         MOVWF   L_BITS                          ;
+                      00402                                                                                 ;
+0115   0B??           00403 _BOF_CONT2      DECFSZ  L_BITS,F                        ;8 bits received?
+0116   2???           00404                         GOTO    _RX_END                         ;
+                      00405                                                                                 ;
+0117   1600           00406                         BSF             BYTE_FULL                       ;
+0118   0A??           00407                         INCF    L_BYTES,F                       ;L_BYTES are modified by each procedure
+0119   0A??           00408                         INCF    L_INDEX,F                       ;  (on detection of BOF, L_BYTES is 1)
+011A   3008           00409                         MOVLW   8                                       ;
+011B   00??           00410                         MOVWF   L_BITS                          ;reset bit count 
+011C   08??           00411                         MOVF    L_INDEX,W                       ;
+011D   3E??           00412                         ADDLW   L_RX_BUFF                       ;
+011E   0084           00413                         MOVWF   FSR                                     ;Complete byte put in the RX_BUF
+                            FER
+011F   08??           00414                         MOVF    L_DATA_RX,W                     ;
+0120   0080           00415                         MOVWF   INDF                            ;
+0121   108B           00416 _RX_END         BCF             INTCON,INTF                     ;
+0122   0008           00417 _NO_BIT_IN      RETURN
+                      00418 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00419 ;Send the next bit in L_TX_BUFF(L_INDEX,L_BITS)
+0123                  00420 SEND_BIT                                                                ;
+0123   300C           00421                         MOVLW   d'12'                           ;persistancy check 50us
+0124   00??           00422                         MOVWF   L_PERSIST                       ;
+0125   1806           00423 _DCLK_OUT       BTFSC   DCLK                            ;
+0126   2???           00424                         GOTO    _NO_BIT_OUT                     ;ignore spikes
+0127   0B??           00425                         DECFSZ  L_PERSIST,F                     ;
+0128   2???           00426                         GOTO    _DCLK_OUT                       ;
+                      00427                                                                                 ;
+0129   08??           00428 _TX_CONT        MOVF    L_INDEX,W                       ;
+012A   3E??           00429                         ADDLW   L_TX_BUFF                       ;
+012B   0084           00430                         MOVWF   FSR                                     ;Data to send: L_TX_BUFFER(L_IND
+                            EX<L_BITS>)
+012C   0D80           00431                         RLF             INDF,F                          ;
+012D   1C03           00432                         BTFSS   STATUS,C                        ;CARRY?
+012E   2???           00433                         GOTO    _CLR_DIO                        ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+012F   1587           00434                         BSF             DIO                                     ;
+0130   2???           00435                         GOTO    _XM_CONT                        ;
+0131   1187           00436 _CLR_DIO        BCF             DIO                                     ;
+                      00437                                                                                 ;
+0132   0B??           00438 _XM_CONT        DECFSZ  L_BITS,F                        ;8 bits sent?
+0133   2???           00439                         GOTO    _OUT_END                        ;
+                      00440                                                                                 ;
+0134   1600           00441                         BSF             BYTE_FULL                       ;
+0135   0A??           00442                         INCF    L_BYTES,F                       ;L_BYTES is modified by each procedure
+0136   0A??           00443                         INCF    L_INDEX,F                       ;
+0137   3008           00444                         MOVLW   8                                       ;
+0138   00??           00445                         MOVWF   L_BITS                          ;reset bit count 
+                      00446                                                                                 ;
+0139   108B           00447 _OUT_END        BCF             INTCON,INTF                     ;
+013A   0008           00448 _NO_BIT_OUT     RETURN                                          ;
+                      00449 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00450 ;Procedure:     Service_Interrupt
+                      00451 ;Function:      Handles Interrupts for the Push Button and the TMR1 expiration.
+                      00452 ;           Handling of the button is different depending on wether this is 
+                      00453 ;                       the Master or the Slave.
+                      00454 ;Inputs:        None
+                      00455 ;Returns:       Nothing.
+                      00456 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+013B                  00457 Service_Interrupt                                               ;
+013B   00??           00458                         MOVWF   W_TEMP                          ;W_TEMP MUST be in shared memory
+013C   0E03           00459                         SWAPF   STATUS,W                        ;
+013D   00??           00460                         MOVWF   STATUS_TEMP                     ;
+013E   0183           00461                         CLRF    STATUS                          ;
+013F   00??           00462                         MOVWF   STATUS_TEMP                     ;
+                      00463                                                                                 ;
+0140   1C0B           00464                         BTFSS   INTCON,RBIF                     ;BUTTON PRESS (PORTB<4> state change)?
+0141   2???           00465                         CALL    TREAT_ERROR                     ; Unknown Interrupt
+                      00466                                                                                 ;Read the port so it can
+                             be cleared
+0142   0806           00467                         MOVF    PORTB,W                         ;
+0143   1A06           00468                         BTFSC   PORTB,4                         ;Button pushed
+0144   2???           00469                         GOTO    _RES_RBIF                       ;
+                      00470                                                                                 ;
+0145   3064           00471 _WAI_RELS       MOVLW   d'100'                          ;Introduce delays to avoid bouncing
+0146   2???           00472                         CALL    DelaymS                         ; (note that interrupts are disabled)
+0147   1E06           00473                         BTFSS   PORTB,4                         ;Stay in loop while button is released
+0148   2???           00474                         GOTO    _WAI_RELS                       ;(normally high goes low when pushed)
+                      00475                                                                                 ;
+0149   1C80           00476                         BTFSS   MASTER                          ;
+014A   2???           00477                         GOTO    _BUTTN_SLV                      ;
+                      00478                                                                                 ;
+014B   1E80           00479                         BTFSS   QUIET                           ;
+014C   2???           00480                         GOTO    _RES_RBIF                       ;Send from master only if we're not alre
+                            ady
+                      00481                                                                                 ; sending or receiveing
+014D   3081           00482                         MOVLW   TX_CURRENT                      ;First power up CC1000 - consider at lea
+                            st 14ms
+014E   2???           00483                         CALL    WakeUpCC1000toTx        ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00484                                                                                 ;
+014F   2???           00485                         CALL    START_MST_XMIT          ;
+0150   2???           00486                         GOTO    _RES_RBIF                       ;
+                      00487                                                                                 ;
+0151   2???           00488 _BUTTN_SLV      CALL    SLAVE_BUTTON            ;
+0152   100B           00489 _RES_RBIF       BCF             INTCON,RBIF                     ;
+                      00490                                                                                 ;
+0153   0E??           00491 _ISR_END        SWAPF   STATUS_TEMP,W           ;
+0154   0083           00492                         MOVWF   STATUS                          ;
+0155   0E??           00493                         SWAPF   W_TEMP,F                        ;
+0156   0E??           00494                         SWAPF   W_TEMP,W                        ;
+0157   0009           00495                         RETFIE                                          ;
+                      00496 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00497 ;Treat reception of a packet - the first byte of the pre-amble has already been
+                      00498 ;detected
+                      00499 ;CALLED FROM: Idle Loop
+                      00500 ;
+0158                  00501 RECEIVE_BYTE                                                    ;
+0158   1880           00502                         BTFSC   PREAM_FINISHED          ;
+0159   2???           00503                         GOTO    _UNIQUE_ID                      ;
+015A   2???           00504                         CALL    CHECK_PREAMBLE          ;Continue checking the preamble
+015B   2???           00505                         GOTO    _RCV_FINISH                     ;
+                      00506                                                                                 ;
+015C   1900           00507 _UNIQUE_ID      BTFSC   UI_FINISHED                     ;
+015D   2???           00508                         GOTO    _ADDRESS                        ;
+015E   2???           00509                         CALL    CHECK_UI                        ;Frame valid, checks the Unique Identifi
+                            er
+015F   2???           00510                         GOTO    _RCV_FINISH                     ;
+                      00511                                                                                 ;
+0160   1980           00512 _ADDRESS        BTFSC   ADDR_CMPLT                      ;
+0161   2???           00513                         GOTO    _NBR_BYTES                      ;
+0162   2???           00514                         CALL    CHECK_ADDR                      ;
+0163   2???           00515                         GOTO    _RCV_FINISH                     ;
+                      00516                                                                                 ;
+0164   1A00           00517 _NBR_BYTES      BTFSC   NBR_BYTES_RCVD          ;Number of bytes field has been received
+0165   2???           00518                         GOTO    _RECV_DATA                      ;
+0166   2???           00519                         CALL    NBR_BYTES_DATA          ;
+0167   2???           00520                         GOTO    _RCV_FINISH                     ;
+                      00521                                                                                 ;
+0168   1A80           00522 _RECV_DATA      BTFSC   DATA_RECEIVED           ;
+0169   2???           00523                         GOTO    _SUMCHECK                       ;
+016A   2???           00524                         CALL    ACCEPT_DATA                     ;data is made available
+016B   2???           00525                         GOTO    _RCV_FINISH                     ;
+                      00526                                                                                 ;
+016C   1B00           00527 _SUMCHECK       BTFSC   SUMCHECK_DONE           ;
+016D   2???           00528                         GOTO    _ACCEPT_COMMAND         ;
+016E   2???           00529                         CALL    CHECK_SUM                       ;
+                      00530                                                                                 ;
+016F                  00531 _ACCEPT_COMMAND                                                 ;
+016F   2???           00532                         CALL    PROCESS_DATA            ;Finished - sets RESET_CNTRS to force start over
+0170                  00533 _RCV_FINISH                                                             ;
+0170   01??           00534                         CLRF    L_DATA_RX                       ;
+0171   0008           00535                         RETURN                                          ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00536 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00537 ;This is a good place to set a breakpoint in case of error
+                      00538 ;
+0172                  00539 TREAT_ERROR
+  0000                00540                         Global  TREAT_ERROR
+0172   0000           00541                         nop                                                     ;BREAKPOINT TO RAISE THE
+                             FLAG
+0173   1C00           00542                         btfss   D_ERROR_FLG,0           ;Set this flag to 1 while in debugging mode
+0174   2???           00543                         GOTO    _SKIP_REGS                      ;
+0175   01??           00544                         clrf    D_BUGGGER                       ;
+0176   08??           00545 _read_all       movf    D_BUGGGER,w                     ;
+0177   00??           00546                         movwf   G_CC_Reg                        ;read all regs 1 by 1
+0178   3C1C           00547                         sublw   d'28'                           ;
+0179   1C03           00548                         btfss   STATUS,C                        ;
+017A   2???           00549                         goto    _SKIP_REGS                      ;
+017B   2???           00550                         call    ReadFromCC1000register
+017C   08??           00551                         movf    G_CC_Data,w                     ;
+017D   0000           00552                         nop                                                     ;BREAKPOINT TO READ THE 
+                            REGISTER
+017E   0A??           00553                         incf    D_BUGGGER,f                     ;
+017F   2???           00554                         goto    _read_all                       ;
+                      00555                                                                                 ;
+0180   0A??           00556 _SKIP_REGS      incf    D_ERROR_CNT,F           ;count transmission errors                              
+                                                                            ;
+0181   1680           00557                         bsf             RESET_CNTRS                     ;
+0182   0008           00558                         RETURN
+                      00559 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00560 ;Read, increment and re-write the counter
+                      00561 ;Runs on interrupts disabled
+                      00562 ;CALLED FROM: ISR
+                      00563 ;
+0183                  00564 SLAVE_BUTTON                                                    ;
+                      00565 ;                       CALL    READ_EEPROM                     ;
+0183   1D00           00566                         BTFSS   NEW_COUNT                       ;
+0184   2???           00567                         GOTO    _COUNT_UP                       ;
+0185   1100           00568                         BCF             NEW_COUNT                       ;
+0186   01??           00569                         CLRF    L_EE_COUNT_L            ;
+0187   0A??           00570 _COUNT_UP       INCF    L_EE_COUNT_L,F          ;Increment the counter
+0188   0000           00571                         NOP                                                     ;This is where we would 
+                            treat an overflow
+                      00572 ;                       CALL    WRITE_EEPROM            ;
+0189   0008           00573                         RETURN                                          ;
+                      00574 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00575 ;Setup the buffer which will be transmitted in NEXT_BIT, then become transmitter.
+                      00576 ;CALLED FROM: ISR, Idle loop
+                      00577 ;
+018A                  00578 START_MST_XMIT                                                  ;
+018A   1486           00579                         BSF             GREEN_LED                       ;
+018B   2???           00580                         CALL    FILL_TX_BUFFER          ;
+                      00581                                                                                 ;Here we could add addit
+                            ional instructions for
+018C   3081           00582                         MOVLW   TX_CURRENT                      ; the slave in the TX buffer
+018D   2???           00583                         CALL    SetupCC1000Tx           ;Switch to Tx
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 16
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+018E   1280           00584                         BCF             QUIET                           ;
+018F   1180           00585                         BCF             RXCVER                          ;
+0190   1600           00586                         BSF             TXMTER                          ;
+0191   1680           00587                         BSF             RESET_CNTRS                     ;
+0192   0008           00588                         RETURN                                          ;
+                      00589 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00590 ;When transmission is finished, become receiver and set the retry timer.
+                      00591 ;CALLED FROM: Idle loop
+0193                  00592 CHECK_MST_EOTX                                                  ;
+0193   08??           00593                         MOVF    L_INDEX,W                       ;
+0194   3C10           00594                         SUBLW   TOT_FRAME_SIZ           ;       
+0195   1D03           00595                         BTFSS   STATUS,Z                        ;
+0196   2???           00596                         GOTO    _MASTR_NOT_DONE         ;still sending bits...
+                      00597                                                                                 ;
+0197   3044           00598                         MOVLW   RX_CURRENT                      ;Tranmission is finished, become receive
+                            r again 
+0198   2???           00599                         CALL    SetupCC1000Rx           ;(NOTE: this takes as much as 4-5 mS!!)
+                      00600                                                                                 ;
+0199   0A??           00601                         INCF    D_BUG2,F                        ;for debug, indicate MASTER-TX buffer se
+                            nt
+019A   08??           00602                         MOVF    D_BUG2,W                        ;
+019B   00??           00603                         MOVWF   L_TX_BUFF                       ;
+                      00604                                                                                 ;
+019C   1010           00605                         BCF             T1CON,TMR1ON            ;Reset TIMER1
+019D   100C           00606                         BCF             PIR1,TMR1IF                     ; 
+019E   30F0           00607                         MOVLW   RXMIT_TIM1L                     ;
+019F   008E           00608                         MOVWF   TMR1L                           ;
+01A0   098E           00609                         COMF    TMR1L,F                         ;
+01A1   3055           00610                         MOVLW   RXMIT_TIM1H                     ;
+01A2   008F           00611                         MOVWF   TMR1H                           ;
+01A3   098F           00612                         COMF    TMR1H,F                         ;
+01A4   1410           00613                         BSF             T1CON,TMR1ON            ;Start timer1
+                      00614                                                                                 ;
+01A5   1200           00615                         BCF             TXMTER                          ;
+01A6   1580           00616                         BSF             RXCVER                          ;
+01A7   1086           00617                         BCF             GREEN_LED                       ;
+01A8   1680           00618                         BSF             RESET_CNTRS                     ;
+01A9                  00619 _MASTR_NOT_DONE                                                 ;
+01A9   0008           00620                         RETURN                                          ;
+                      00621 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00622 ;Prepare the slave response, fill the buffer add the EEPROM data, recalculate the SC 
+                      00623 ;and become transmitter
+                      00624 ;CALLED FROM: PROCESS_DATA
+                      00625 ;
+01AA                  00626 START_SLV_XMIT
+01AA   1486           00627                         BSF             GREEN_LED                       ;Signal
+01AB   2???           00628                         CALL    FILL_TX_BUFFER          ;Build the TX_BUFFER
+                      00629 ;                       CALL    READ_EEPROM                     ;Get the EEPROM counters
+01AC   08??           00630                         MOVF    L_EE_COUNT_L,W          ;
+01AD   00??           00631                         MOVWF   L_Temp1                         ;
+                      00632                                                                                 ;
+01AE   30??           00633                         MOVLW   L_TX_BUFF                       ;put it as last byte of data
+01AF   3E0E           00634                         ADDLW   (DATA_OFFS+6)           ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 17
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01B0   0084           00635                         MOVWF   FSR                                     ;
+01B1   08??           00636                         MOVF    L_Temp1,W                       ;
+01B2   0080           00637                         MOVWF   INDF                            ;
+                      00638                                                                                 ;
+01B3   30??           00639                         MOVLW   L_TX_BUFF                       ;Update CS 
+01B4   3E0F           00640                         ADDLW   SUM_CHECK                       ;
+01B5   0084           00641                         MOVWF   FSR                                     ;
+01B6   0800           00642                         MOVF    INDF,W                          ;
+01B7   07??           00643                         ADDWF   L_Temp1,W                       ;
+01B8   0080           00644                         MOVWF   INDF                            ;
+                      00645                                                                                 ;clear EEPROM counter
+                      00646 ;                       CALL    WRITE_EEPROM            ;
+                      00647                                                                                 ;
+01B9   3081           00648                         MOVLW   TX_CURRENT                      ;
+01BA   2???           00649                         CALL    SetupCC1000Tx           ;Become transmitter
+01BB   3007           00650                         MOVLW   d'7'                            ;necessary courtesy wait for master tx -
+                            > rx transition
+01BC   2???           00651                         CALL    DelaymS                         ;
+                      00652                                                                                 ;
+01BD   1500           00653                         BSF             NEW_COUNT                       ;
+01BE   1180           00654                         BCF             RXCVER                          ;
+01BF   1600           00655                         BSF             TXMTER                          ;
+01C0   1680           00656                         BSF             RESET_CNTRS                     ;
+01C1   0008           00657                         RETURN                                          ;
+                      00658 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00659 ;This procedure gets called each time a full byte (8 bits) has been transmitted by
+                      00660 ;SEND_BIT.  When the end of the buffer is reached, it causes this PIC to become a
+                      00661 ;receiver again.
+                      00662 ;CALLED FROM: Idle loop
+01C2                  00663 CHECK_SLV_EOTX                                                  ;
+01C2   08??           00664                         MOVF    L_INDEX,W                       ;
+01C3   3C10           00665                         SUBLW   TOT_FRAME_SIZ           ;Check for end of tranmission   
+01C4   1D03           00666                         BTFSS   STATUS,Z                        ;
+01C5   2???           00667                         GOTO    _SLAVE_DONE                     ;
+                      00668                                                                                 ;we're done sending
+01C6   3044           00669                         MOVLW   RX_CURRENT                      ;
+01C7   2???           00670                         CALL    SetupCC1000Rx           ;Become receiver again
+                      00671                                                                                 ;
+01C8   0A??           00672                         INCF    D_BUG2,F                        ;for debug, indicate SLAVE-TX buffer sen
+                            t
+01C9   08??           00673                         MOVF    D_BUG2,W                        ;
+01CA   00??           00674                         MOVWF   L_TX_BUFF                       ;
+                      00675                                                                                 ;
+01CB   1200           00676                         BCF             TXMTER                          ; initiate transmission
+01CC   1580           00677                         BSF             RXCVER                          ;
+01CD   1086           00678                         BCF             GREEN_LED                       ;
+01CE   1680           00679                         BSF             RESET_CNTRS                     ;
+01CF   0008           00680 _SLAVE_DONE     RETURN
+                      00681 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00682 ;This is the first procedure to be called after a RX. Detects and validates the preamble.
+                      00683 ;The first byte of the preamble, in L_RX_BUFF(0), has already been detected and counted by
+                      00684 ;RECEIVE.
+                      00685 ;CALLED FROM: RECEIVE
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 18
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00686 ;
+01D0                  00687 CHECK_PREAMBLE                                                  ;
+01D0   08??           00688                         MOVF    L_INDEX,W                       ;Point to the RX_buffer
+01D1   3E??           00689                         ADDLW   L_RX_BUFF                       ;
+01D2   0084           00690                         MOVWF   FSR                                     ;
+01D3   30AA           00691                         MOVLW   0xAA                            ;
+01D4   0200           00692                         SUBWF   INDF,W                          ;                       
+01D5   1D03           00693                         BTFSS   STATUS,Z                        ;zero flag set when 0 (EQ)
+01D6   2???           00694                         GOTO    _PREA_FAIL                      ;
+                      00695                                                                                 ;
+01D7   08??           00696 _PREA_CONT      MOVF    L_BYTES,W                       ;The minimun matches must be 3
+01D8   3C02           00697                         SUBLW   2                                       ;
+01D9   1803           00698                         BTFSC   STATUS,C                        ;
+01DA   2???           00699                         GOTO    _PREA_FIN                       ;
+01DB   1480           00700                         BSF             PREAM_FINISHED          ;Preamble found - this is where AverageL
+                            ock would be managed
+01DC   01??           00701                         CLRF    L_BYTES                         ;  if we were not using Manchester codin
+                            g
+01DD   2???           00702                         GOTO    _PREA_FIN                       ;                       
+01DE   1680           00703 _PREA_FAIL      BSF             RESET_CNTRS                     ;
+01DF   1000           00704                         BCF             BOF_FOUND                       ;
+01E0   01??           00705                         CLRF    L_BYTES                         ;
+                      00706                                                                                 ;
+01E1   0008           00707 _PREA_FIN       RETURN                                          ;
+                      00708 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00709 ;Checks for an exact match of the Unique Identifiers (2 bytes)
+                      00710 ;CALLED FROM: RECEIVE
+                      00711 ;
+01E2                  00712 CHECK_UI        
+01E2   30??           00713                         MOVLW   L_RX_BUFF                       ;Point to the unique code of the receive
+                             buffer
+01E3   3E02           00714                         ADDLW   (UI-1)                          ;adjust for L_BYTES (1,2,3,...)
+01E4   07??           00715                         ADDWF   L_BYTES,W                       ;
+01E5   0084           00716                         MOVWF   FSR                                     ;
+01E6   3001           00717                         MOVLW   1                                       ;
+01E7   02??           00718                         SUBWF   L_BYTES,W                       ;Decide if we're looking for UI1 or UI2
+01E8   1D03           00719                         BTFSS   STATUS,Z                        ;
+01E9   2???           00720                         GOTO    _CODE2                          ;
+01EA   30CD           00721                         MOVLW   UI_CODE1                        ;
+01EB   2???           00722                         GOTO    _UI_CONT                        ;
+01EC   304D           00723 _CODE2          MOVLW   UI_CODE2                        ;
+                      00724                                                                                 ;
+01ED   0200           00725 _UI_CONT        SUBWF   INDF,W                          ;                       
+01EE   1D03           00726                         BTFSS   STATUS,Z                        ;zero flag set when 0 (EQ)
+01EF   2???           00727                         GOTO    _UI_FAIL                        ;
+                      00728                                                                                 ;
+01F0   08??           00729                         MOVF    L_BYTES,W                       ;
+01F1   3C02           00730                         SUBLW   UI_SIZE                         ;done checking IU?
+01F2   1D03           00731                         BTFSS   STATUS,Z                        ;
+01F3   2???           00732                         GOTO    _UI_BACK                        ;
+                      00733                                                                                 ;
+01F4   1500           00734                         BSF             UI_FINISHED                     ;UI complete and successful
+01F5   01??           00735                         CLRF    L_BYTES                         ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 19
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01F6   2???           00736                         GOTO    _UI_BACK                        ;
+                      00737                                                                                 ;
+01F7   2???           00738 _UI_FAIL        CALL    TREAT_ERROR                     ;IF ERROR
+01F8   0008           00739 _UI_BACK        RETURN                                          ;
+                      00740 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00741 ;Address is not really implemented, check for 0,0 now
+                      00742 ;CALLED FROM: RECEIVE
+                      00743 ;
+01F9                  00744 CHECK_ADDR
+01F9   30??           00745                         MOVLW   L_RX_BUFF                       ;
+01FA   3E04           00746                         ADDLW   (ADDRESS-1)                     ;
+01FB   07??           00747                         ADDWF   L_BYTES,W                       ;Point to address part in the receive bu
+                            ffer
+01FC   0084           00748                         MOVWF   FSR                                     ;
+01FD   3000           00749                         MOVLW   0                                       ;fake address
+01FE   0200           00750                         SUBWF   INDF,W                          ;                       
+01FF   1D03           00751                         BTFSS   STATUS,Z                        ;zero flag set when 0 (EQ)
+0200   2???           00752                         GOTO    _ADDR_FAIL                      ;
+0201   08??           00753                         MOVF    L_BYTES,W                       ;Check the Addr and set the ADDR_CMPLT f
+                            lag
+0202   3C02           00754                         SUBLW   ADD_SIZE                        ; if this is the last byte (of 2)
+0203   1D03           00755                         BTFSS   STATUS,Z                        ;
+0204   2???           00756                         GOTO    _ADDR_BACK                      ;
+                      00757                                                                                 ;
+0205   1580           00758                         BSF             ADDR_CMPLT                      ;Address complete and correct
+0206   01??           00759                         CLRF    L_BYTES                         ;
+0207   2???           00760                         GOTO    _ADDR_BACK                      ;
+                      00761                                                                                 ;
+0208   2???           00762 _ADDR_FAIL      CALL    TREAT_ERROR                     ;IF ERROR
+                      00763                                                                                 ;
+0209   0008           00764 _ADDR_BACK      RETURN                                          ;
+                      00765 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00766 ;We receive exactly 7 bytes of data.  If we are going to implement a
+                      00767 ;variable size frame, Timer1 must be loaded according to the following:
+                      00768 ;((numer of bytes in the frame* (10**6/baudrate)) / timer1 prescaler)
+                      00769 ;where: 10**6/baudrate at 9600 = 104 uS per bit
+                      00770 ;CALLED FROM: RECEIVE
+                      00771 ;
+020A                  00772 NBR_BYTES_DATA
+020A   30??           00773                         MOVLW   L_RX_BUFF                       ;Point to number of bytes in the receive
+                             buffer
+020B   3E06           00774                         ADDLW   (NO_BYTES-1)            ;
+020C   07??           00775                         ADDWF   L_BYTES,W                       ;
+020D   0084           00776                         MOVWF   FSR                                     ;
+020E   3007           00777                         MOVLW   7                                       ;make sure number of bytes is se
+                            ven
+020F   0200           00778                         SUBWF   INDF,W                          ;
+0210   1D03           00779                         BTFSS   STATUS,Z                        ;zero flag set when 0 (EQ)
+0211   2???           00780                         GOTO    _BYTES_FAIL                     ;
+                      00781                                                                                 ;
+0212   1600           00782                         BSF             NBR_BYTES_RCVD          ;
+0213   01??           00783                         CLRF    L_BYTES                         ;
+0214   2???           00784                         GOTO    _BYTES_DONE                     ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 20
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00785                                                                                 ;
+0215   2???           00786 _BYTES_FAIL     CALL    TREAT_ERROR                     ;If too big or too small
+0216   0008           00787 _BYTES_DONE     RETURN                                          ;
+                      00788 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00789 ;Here the only thing to be done is wait for the number of bytes we are supposed to receive
+                      00790 ;and set the DATA_RECEIVED flag. The real check for data validity is in the checksum and in 
+                      00791 ;the processing of that data.
+                      00792 ;CALLED FROM: RECEIVE
+                      00793 ;
+0217                  00794 ACCEPT_DATA     
+0217   30??           00795                         MOVLW   L_RX_BUFF                       ;
+0218   3E07           00796                         ADDLW   (DATA_OFFS-1)           ;
+0219   07??           00797                         ADDWF   L_BYTES,W                       ;Point to data part of the receive buffe
+                            r
+                      00798                                                                                 ;........ do something..
+                            ..
+021A   30??           00799                         MOVLW   L_RX_BUFF                       ;Point to number of bytes
+021B   3E07           00800                         ADDLW   NO_BYTES                        ;
+021C   0084           00801                         MOVWF   FSR                                     ;
+021D   0800           00802                         MOVF    INDF,W                          ;
+021E   02??           00803                         SUBWF   L_BYTES,W                       ;
+021F   1D03           00804                         BTFSS   STATUS,Z                        ;
+0220   2???           00805                         GOTO    _ACCEPT_END                     ;
+0221   1680           00806                         BSF             DATA_RECEIVED           ;all data received
+0222   01??           00807                         CLRF    L_BYTES                         ;
+0223   0008           00808 _ACCEPT_END     RETURN                                          ;
+                      00809 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00810 ;Sum check is only one byte so no use checking length.  This procedure called during
+                      00811 ;reception of a frame
+                      00812 ;CALLED FROM: RECEIVE
+                      00813 ;
+0224                  00814 CHECK_SUM
+0224   30??           00815                         MOVLW   L_RX_BUFF                       ;
+0225   0084           00816                         MOVWF   FSR                                     ;
+0226   300F           00817                         MOVLW   (TOT_FRAME_SIZ-1)       ;
+0227   00??           00818                         MOVWF   L_Temp1                         ;
+0228   0103           00819                         CLRW                                            ;
+0229   0700           00820 _CS_LOOP        ADDWF   INDF,W                          ;calculate the CS for the frame
+022A   0A84           00821                         INCF    FSR,F                           ;
+022B   0B??           00822                         DECFSZ  L_Temp1,F                       ;
+022C   2???           00823                         GOTO    _CS_LOOP                        ;
+022D   00??           00824                         MOVWF   L_Temp_CS                       ;
+                      00825                                                                                 ;
+022E   30??           00826                         MOVLW   L_RX_BUFF                       ;
+022F   07??           00827                         ADDWF   L_INDEX,W                       ;L_INDEX points to CS
+0230   0084           00828                         MOVWF   FSR                                     ;
+0231   0800           00829                         MOVF    INDF,W                          ;
+0232   02??           00830                         SUBWF   L_Temp_CS,W                     ;
+0233   1D03           00831                         BTFSS   STATUS,Z                        ;SCs must be identical
+0234   2???           00832                         CALL    TREAT_ERROR                     ;
+0235   1700           00833 _SC_OK          BSF             SUMCHECK_DONE           ;
+0236   0008           00834 _SC_FIN         RETURN                                          ;
+                      00835 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 21
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00836 ;Process the the packet received depending on wether this is slave or master. 
+                      00837 ;The Slave replies to the master query, the Master receives the data sent from
+                      00838 ;the Slave and lights the corresponding LED.
+                      00839 ;Sets RESET_CNTRS when necessary to force start over.
+                      00840 ;Note:
+                      00841 ;If the response from the slave to the master query is lost, there is no recovery. The
+                      00842 ;protocol should consider and acknowledgement before the counter is wiped out.
+                      00843 ;CALLED FROM: RECEIVE
+                      00844 ;
+0237                  00845 PROCESS_DATA            
+0237   3001           00846                         MOVLW   1                                       ;
+0238   00??           00847                         MOVWF   L_RED_COU                       ;
+0239   30C6           00848                         MOVLW   SLOW_ON                         ;
+023A   00??           00849                         MOVWF   L_RED_CTL                       ;
+                      00850                                                                                 ;
+023B   138B           00851                         BCF             INTCON,GIE                      ;Disable interrupts to switch to
+                             TX/Rx
+023C   1880           00852                         BTFSC   MASTER                          ;Master
+023D   2???           00853                         GOTO    _MAST_PROC                      ;
+023E   2???           00854                         CALL    START_SLV_XMIT          ;This is were we could chose slave
+023F   2???           00855                         GOTO    _PROC_END                       ;actions.  For now, just send the counte
+                            r.
+                      00856                                                                                 ;
+0240   30??           00857 _MAST_PROC      MOVLW   L_RX_BUFF                       ;Read the RX_BUFFER
+0241   3E0E           00858                         ADDLW   (DATA_OFFS+6)           ; and light the 
+0242   0084           00859                         MOVWF   FSR                                     ; corresponding LED
+0243   0800           00860                         MOVF    INDF,W                          ;
+0244   1903           00861                         BTFSC   STATUS,Z                        ;
+0245   2???           00862                         GOTO    _MAST_END                       ;
+0246   00??           00863                         MOVWF   L_GREEN_COU                     ;
+0247   30C6           00864                         MOVLW   SLOW_ON                         ;
+0248   00??           00865                         MOVWF   L_GREEN_CTL                     ;
+0249   1680           00866 _MAST_END       BSF             QUIET                           ;job finished
+024A   2???           00867                         CALL    Setup_CC1000PD          ;Turn off CC1000 until button is pressed again
+024B   178B           00868 _PROC_END       BSF             INTCON,GIE                      ;
+024C   0008           00869                         RETURN                                          ;
+                      00870 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00871 ;copy the Comm_buffer to the TX_BUFFER, calculate and fill the check sum
+                      00872 ;CALLED FROM: START_MST_XMIT, START_SLV_XMIT
+                      00873 ;
+024D                  00874 FILL_TX_BUFFER                                                  ;
+024D   01??           00875                         CLRF    L_INDEX                         ;
+024E   01??           00876                         CLRF    L_Temp_CS                       ;
+024F   01??           00877                         CLRF    L_NEXT_FR_BYT           ;number of frame bytes
+0250   30??           00878                         MOVLW   L_TX_BUFF                       ;
+0251   07??           00879                         ADDWF   L_NEXT_FR_BYT,W         ;
+0252   0084           00880                         MOVWF   FSR                                     ;INDF -> L_TX_BUFF (Dest)
+0253   300F           00881                         MOVLW   (TOT_FRAME_SIZ-1)       ;
+0254   00??           00882                         MOVWF   L_TX_COUNT                      ;
+                      00883                                                                                 ;
+0255   30??           00884 _TX_COPY        MOVLW   HIGH RAW_BUFFER         ;
+0256   008A           00885                         MOVWF   PCLATH                          ;
+0257   08??           00886                         MOVF    L_NEXT_FR_BYT,W         ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 22
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0258   2???           00887                         CALL    RAW_BUFFER                      ;
+0259   0080           00888                         MOVWF   INDF                            ;
+025A   07??           00889                         ADDWF   L_Temp_CS,F                     ;compute check sum
+                      00890                                                                                 ;
+025B   0A84           00891                         INCF    FSR,F                           ;
+025C   0A??           00892                         INCF    L_NEXT_FR_BYT,F         ;
+025D   0B??           00893                         DECFSZ  L_TX_COUNT,F            ;
+025E   2???           00894                         GOTO    _TX_COPY                        ;
+                      00895                                                                                 ;
+025F   08??           00896                         MOVF    L_Temp_CS,W                     ;
+0260   0080           00897                         MOVWF   INDF                            ;
+0261   0008           00898                         RETURN                                          ;
+                      00899 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00900 ;Reads the counter in EEPROM which is locatated in PROGRAM MEMORY and returns it in L_EE_COUNT.
+                      00901 ;EEPROM is defined as FLASH MEMORY (in Program Memory)
+                      00902 ;Runs on interrupts disabled
+                      00903 ;CALLED FROM: 
+                      00904 ;
+                      00905 ;READ_EEPROM
+                      00906 ;                       BSF             STATUS,RP1                      ;bank 2
+                      00907 ;                       BCF             STATUS,RP0                      ;
+                      00908 ;                       MOVLW   EE_ADDR_H                       ;
+                      00909 ;                       MOVWF   EEADRH                          ;
+                      00910 ;                       MOVLW   EE_ADDR_L                       ;
+                      00911 ;                       MOVWF   EEADR                           ;
+                      00912 ;                       BSF             STATUS,RP0                      ;bank 3
+                      00913 ;                       BSF             EECON1,EEPGD            ;Point to program memory
+                      00914 ;                       BSF             EECON1,RD                       ;
+                      00915 ;                       NOP                                                     ;
+                      00916 ;                       NOP                                                     ;
+                      00917 ;                       BCF             STATUS,RP0                      ;bank 2
+                      00918 ;                       MOVF    EEDATA,W                        ;
+                      00919 ;                       MOVWF   L_EE_COUNT_L            ;
+                      00920 ;                       MOVF    EEDATH,W                        ;
+                      00921 ;                       MOVWF   L_EE_COUNT_H            ;
+                      00922 ;                       BCF             STATUS,RP1                      ;bank 0
+                      00923 ;                       RETURN                                          ;
+                      00924 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00925 ;Writes the counter in EEPROM which is locatated in PROGRAM MEMORY
+                      00926 ;Parameters: L_EE_COUNT
+                      00927 ;Runs on interrupts disabled
+                      00928 ;CALLED FROM: 
+                      00929 ;
+                      00930 ;WRITE_EEPROM
+                      00931 ;                       BSF             STATUS,RP1                      ;
+                      00932 ;                       BCF             STATUS,RP0                      ;bank 2
+                      00933 ;                       MOVLW   EE_ADDR_H                       ;
+                      00934 ;                       MOVWF   EEADRH                          ;
+                      00935 ;                       MOVLW   EE_ADDR_L                       ;
+                      00936 ;                       MOVWF   EEADR                           ;
+                      00937 ;                       MOVLW   L_EE_COUNT_L            ;contains (points) the 1st byte of data
+                      00938 ;                       MOVWF   FSR                                     ;
+0262                  00939 _;EE_LOOP       MOVF    INDF,W                          ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 23
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00940 ;                       MOVWF   EEDATA                          ;
+                      00941 ;                       INCF    FSR,F                           ;
+                      00942 ;                       MOVF    INDF,W                          ;second byte
+                      00943 ;                       MOVWF   EEDATH                          ;
+                      00944 ;                       INCF    FSR,F                           ;
+                      00945 ;                       BSF             STATUS,RP0                      ;bank 3
+                      00946 ;                       BSF             EECON1,EEPGD            ;
+                      00947 ;                       BSF             EECON1,WREN                     ;
+                      00948 ;                       BCF             INTCON,GIE                      ;
+                      00949 ;                       MOVLW   0x55                            ;
+                      00950 ;                       MOVWF   EECON2                          ;
+                      00951 ;                       MOVLW   0xAA                            ;
+                      00952 ;                       MOVWF   EECON2                          ;
+                      00953 ;                       BSF             EECON1,WR                       ;
+                      00954 ;                       NOP                                                     ;                       
+                      00955 ;                       NOP                                                     ;                       
+                      00956 ;                       BCF             EECON1,WREN                     ;
+                      00957 ;                       BSF             INTCON,GIE                      ;
+                      00958 ;                       BCF             STATUS,RP0                      ;bank 2
+                      00959 ;                       INCF    EEADR,F                         ;
+                      00960 ;                       MOVF    EEADR,W                         ;
+                      00961 ;                       ANDLW   0x03                            ;
+                      00962 ;                       XORLW   0x03                            ;
+                      00963 ;                       BTFSC   STATUS,Z                        ;
+                      00964 ;                       GOTO    _EE_LOOP                        ;
+                      00965 ;                       BCF             STATUS,RP1                      ;bank 0
+                      00966 ;                       BCF             STATUS,RP0                      ;
+                      00967 ;                       RETURN                                          ;
+                      00968 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00969 ;Reads the counter in EEPROM which is locatated in DATA MEMORY and returns it in W.  
+                      00970 ;Runs on interrupts disabled
+                      00971 ;CALLED FROM: 
+                      00972 ;
+                      00973 ;READ_EEPROM
+                      00974 ;                       MOVLW   EE_counter_addr         ;
+                      00975 ;                       BSF             STATUS,RP1                      ;bank 2
+                      00976 ;                       BCF             STATUS,RP0                      ;
+                      00977 ;                       MOVWF   EEADR                           ;
+                      00978 ;                       BSF             STATUS,RP0                      ;bank 3
+                      00979 ;                       BCF             EECON1,EEPGD            ;
+                      00980 ;                       BSF             EECON1,RD                       ;
+                      00981 ;                       BCF             STATUS,RP0                      ;
+                      00982 ;                       MOVF    EEDATA,W                        ;
+                      00983 ;                       BCF             STATUS,RP1                      ;bank 0
+                      00984 ;                       BCF             STATUS,RP0                      ;
+                      00985 ;                       MOVWF   L_EE_COUNT                      ;
+                      00986 ;                       RETURN                                          ;
+                      00987 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00988 ;Writes the counter in EEPROM which is locatated in DATA MEMORY
+                      00989 ;Parameters: L_EE_COUNT
+                      00990 ;Runs on interrupts disabled
+                      00991 ;CALLED FROM: 
+                      00992 ;
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 24
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00993 ;WRITE_EEPROM
+                      00994 ;                       BSF             STATUS,RP1                      ;bank 3
+                      00995 ;                       BSF             STATUS,RP0                      ;
+                      00996 ;                       BTFSC   EECON1,WR                       ;in case of pending writes?
+                      00997 ;                       GOTO    $-1                                     ;
+                      00998 ;                       BCF             STATUS,RP0                      ;bank 2
+                      00999 ;                       MOVLW   EE_counter_addr         ;
+                      01000 ;                       MOVWF   EEADR                           ;
+                      01001 ;                       BCF             STATUS,RP1                      ;bank 0
+                      01002 ;                       MOVF    L_EE_COUNT,W            ;
+                      01003 ;                       BSF             STATUS,RP1                      ;bank 2
+                      01004 ;                       MOVWF   EEDATA                          ;
+                      01005 ;                       BSF             STATUS,RP0                      ;
+                      01006 ;                       BCF             EECON1,EEPGD            ;Prepare to write
+                      01007 ;                       BSF             EECON1,WREN                     ;
+                      01008 ;                       MOVLW   0x55                            ;
+                      01009 ;                       MOVWF   EECON2                          ;
+                      01010 ;                       MOVLW   0xAA                            ;
+                      01011 ;                       MOVWF   EECON2                          ;
+                      01012 ;                       BSF             EECON1,WR                       ;
+                      01013 ;                       BCF             EECON1,WREN                     ;Enable writes
+                      01014 ;                       BCF             STATUS,RP1                      ;bank 0
+                      01015 ;                       BCF             STATUS,RP0                      ;
+                      01016 ;                       RETURN                                          ;
+                      01017 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      01018                         END             ; of code
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 25
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ACCEPT_DATA                       00000217
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADDEN                             00000003
+ADDRESS                           0x05
+ADDR_CMPLT                        G_Pr_status,3
+ADD_SIZE                          2
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BOF_FOUND                         G_Pr_status,0
+BRGH                              00000002
+BUTTON_PRESSED                    G_Events,0
+BYTE_FULL                         G_Events,4
+C                                 00000000
+CALIBRATION_OK                    G_Events,6
+CC1000_CAL                        0x0E
+CC1000_CURRENT                    0x09
+CC1000_FREQ_0A                    0x03
+CC1000_FREQ_0B                    0x06
+CC1000_FREQ_1A                    0x02
+CC1000_FREQ_1B                    0x05
+CC1000_FREQ_2A                    0x01
+CC1000_FREQ_2B                    0x04
+CC1000_FRONT_END                  0x0A
+CC1000_FSCTRL                     0x13
+CC1000_FSDELAY                    0x1B
+CC1000_FSEP0                      0x08
+CC1000_FSEP1                      0x07
+CC1000_FSHAPE1                    0x1A
+CC1000_FSHAPE2                    0x19
+CC1000_FSHAPE3                    0x18
+CC1000_FSHAPE4                    0x17
+CC1000_FSHAPE5                    0x16
+CC1000_FSHAPE6                    0x15
+CC1000_FSHAPE7                    0x14
+CC1000_LOCK                       0x0D
+CC1000_MAIN                       0x00
+CC1000_MATCH                      0x12
+CC1000_MODEM0                     0x11
+CC1000_MODEM1                     0x10
+CC1000_MODEM2                     0x0F
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 26
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CC1000_PA_POW                     0x0B
+CC1000_PLL                        0x0C
+CC1000_PRESCALER                  0x1C
+CC1000_TEST0                      0x46
+CC1000_TEST1                      0x45
+CC1000_TEST2                      0x44
+CC1000_TEST3                      0x43
+CC1000_TEST4                      0x42
+CC1000_TEST5                      0x41
+CC1000_TEST6                      0x40
+CC1Kregs                          00000006
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHECK_ADDR                        000001F9
+CHECK_MST_EOTX                    00000193
+CHECK_PREAMBLE                    000001D0
+CHECK_SLV_EOTX                    000001C2
+CHECK_SUM                         00000224
+CHECK_UI                          000001E2
+CHP_OUT                           PORTC,4
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CKE                               00000006
+CKP                               00000004
+CMMND_COMPLETE                    G_Pr_status,7
+CREN                              00000004
+CSRC                              00000007
+CS_SIZE                           1
+CalibrateCC1000                   00000000
+Comm_buffer                       00000025
+D                                 00000005
+DATA_ADDRESS                      00000005
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 27
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+DATA_OFFS                         0x08
+DATA_RECEIVED                     G_Pr_status,5
+DATA_SIZE                         7
+DC                                00000001
+DCLK                              PORTB,0
+DEBUG_BITS                        00000037
+DIO                               PORTC,3
+DIO_DIR                           TRISC,3
+D_A                               00000005
+D_BUG1                            00000038
+D_BUG2                            00000039
+D_BUGGGER                         00000035
+D_ERROR_CNT                       00000033
+D_ERROR_FLG                       00000034
+Delay100uS                        00000000
+DelaymS                           00000000
+DelayuS                           00000000
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+EE_ADDR_H                         00000021
+EE_ADDR_L                         00000000
+EE_counter_addr                   00002100
+F                                 00000001
+FAST_OFF                          b'01000010'
+FAST_ON                           b'11000010'
+FERR                              00000002
+FILL_TX_BUFFER                    0000024D
+FIXED_PART                        00000008
+FSR                               00000004
+GCEN                              00000007
+GET_NEXT_REGISTER                 00000005
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GREEN_FLAG                        L_GREEN_CTL,6
+GREEN_LED                         PORTB,1
+G_CC_Data                         00000000
+G_CC_Reg                          00000000
+G_Events                          0000002A
+G_Pr_status                       0000002B
+G_State                           0000002C
+HANDLE_LED_BLINK                  000000C5
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 28
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+IDLE_MODE                         G_State,0
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+LOCK1                             0xFF
+LOCK2                             0x01
+L_BITS                            00000002
+L_BYTES                           00000003
+L_DATA_RX                         00000008
+L_EE_COUNT_H                      00000001
+L_EE_COUNT_L                      00000000
+L_EE_COUNT_MORE                   00000002
+L_GREEN_COU                       0000002E
+L_GREEN_CTL                       0000002D
+L_GR_SPEED                        0000002F
+L_INDEX                           00000006
+L_NEXT_FR_BYT                     00000005
+L_PERSIST                         00000029
+L_PORTC                           00000007
+L_RED_COU                         00000031
+L_RED_CTL                         00000030
+L_RED_SPEED                       00000032
+L_RX_BUFF                         00000009
+L_TX_BUFF                         00000019
+L_TX_COUNT                        00000004
+L_Temp1                           00000000
+L_Temp_CS                         00000001
+MANLSW                            PORTB,4
+MASTER                            G_State,1
+MSTRAP                            PORTA,3
+NBR_BYTES_DATA                    0000020A
+NBR_BYTES_RCVD                    G_Pr_status,4
+NBR_SIZE                          1
+NEW_COUNT                         G_Events,2
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+NO_BYTES                          0x07
+OERR                              00000001
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 29
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+OPTION_REG                        00000081
+P                                 00000004
+PALE                              PORTC,2
+PA_VALUE                          0xFF
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCLK                              PORTC,1
+PCON                              0000008E
+PDATA                             PORTC,0
+PDATA_DIR                         TRISC,0
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PR2                               00000092
+PREAMBLE                          0x00
+PREAM_FINISHED                    G_Pr_status,1
+PREA_SIZE                         3
+PROCESS_DATA                      00000237
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+QUIET                             G_State,5
+R                                 00000002
+RAW_BUFFER                        00000024
+RBIE                              00000003
+RBIF                              00000000
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+READ_WRITE                        00000002
+RECEIVE_BIT                       000000F2
+RECEIVE_BYTE                      00000158
+RED_FLAG                          L_RED_CTL,6
+RED_LED                           PORTB,2
+REPLY_SENT                        G_Events,1
+RESET_CNTRS                       G_Events,5
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 30
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+RXCVER                            G_State,3
+RXMIT_TIM1H                       0x55
+RXMIT_TIM1L                       0xf0
+RXPLL                             0x60
+RX_CURRENT                        0x44
+R_W                               00000002
+ReadFromCC1000register            00000000
+Reset_CC1000                      00000000
+S                                 00000003
+SEN                               00000000
+SEND_BIT                          00000123
+SLAVE                             G_State,2
+SLAVE_BUTTON                      00000183
+SLOW_OFF                          b'01000110'
+SLOW_ON                           b'11000110'
+SMP                               00000007
+SPBRG                             00000099
+SPEED_G                           L_GREEN_CTL,5
+SPEED_R                           L_RED_CTL,5
+SPEN                              00000007
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+START_MST_XMIT                    0000018A
+START_OF_THE_PROGRAM              00002101
+START_SLV_XMIT                    000001AA
+STATUS                            00000003
+STATUS_TEMP                       00000036
+SUMCHECK_DONE                     G_Pr_status,6
+SUM_CHECK                         0x0F
+SYNC                              00000004
+Service_Interrupt                 0000013B
+SetupCC1000Rx                     00000000
+SetupCC1000Tx                     00000000
+Setup_CC1000All                   00000000
+Setup_CC1000PD                    00000000
+Start                             00000036
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 31
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TIME_0_OUT                        G_Events,3
+TMR0                              00000001
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOGGLE_G                          L_GREEN_CTL,7
+TOGGLE_R                          L_RED_CTL,7
+TOT_FRAME_SIZ                     00000010
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TREAT_ERROR                       00000172
+TRISA                             00000085
+TRISB                             00000086
+TRISC                             00000087
+TRISC0                            TRISC,0
+TRISC1                            TRISC,1
+TRISC2                            TRISC,2
+TRISC4                            TRISC,4
+TRISC5                            TRISC,5
+TRISC6                            TRISC,6
+TRISC7                            TRISC,7
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXMTER                            G_State,4
+TXPLL                             0x48
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 32
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TXREG                             00000019
+TXSTA                             00000098
+TX_CURRENT                        0x81
+UA                                00000001
+UI                                0x03
+UI_CODE1                          0xCD
+UI_CODE2                          0x4D
+UI_FINISHED                       G_Pr_status,2
+UI_SIZE                           2
+VERYSLOW                          b'11010000'
+W                                 00000000
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+W_TEMP                            00000008
+WakeUpCC1000toRx                  00000000
+WakeUpCC1000toTx                  00000000
+Z                                 00000002
+_                                 00000262
+_ACCEPT_COMMAND                   0000016F
+_ACCEPT_END                       00000223
+_ADDRESS                          00000160
+_ADDR_BACK                        00000209
+_ADDR_FAIL                        00000208
+_BLINK_END                        000000F1
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOF_CONT2                        00000115
+_BOF_FOUND                        00000112
+_BUTTN_SLV                        00000151
+_BYTES_DONE                       00000216
+_BYTES_FAIL                       00000215
+_CAL_ENDED                        0000007C
+_CAL_NOK                          00000084
+_CLR_DIO                          00000131
+_CLR_MEM                          0000003A
+_CODE2                            000001EC
+_COMMS_END                        000000C4
+_COUNT_UP                         00000187
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00000FCF
+_CP_HALF                          00001FDF
+_CP_OFF                           00003FFF
+_CP_UPPER_256                     00002FEF
+_CS_LOOP                          00000229
+_DATA_IN                          000000F2
+_DCLK_IN                          000000F4
+_DCLK_OUT                         00000125
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DIO_IN_P                         000000FD
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 33
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_GREEN_LED                        000000C5
+_GREEN_OFF                        000000D2
+_HS_OSC                           00003FFE
+_IDLE_LOOP                        00000097
+_INIT_CONT                        00000088
+_ISR_END                          00000153
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_MASTER_RESET                     00000093
+_MASTR_NOT_DONE                   000001A9
+_MAST_END                         00000249
+_MAST_PROC                        00000240
+_NBR_BYTES                        00000164
+_NO_BIT_IN                        00000122
+_NO_BIT_OUT                       0000013A
+_NO_BOF                           00000110
+_OUT_END                          00000139
+_POLL_DCLCK                       000000AF
+_PREA_CONT                        000001D7
+_PREA_FAIL                        000001DE
+_PREA_FIN                         000001E1
+_PROC_END                         0000024B
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RCVE                             000000B5
+_RCV_FINISH                       00000170
+_RC_OSC                           00003FFF
+_RECV_DATA                        00000168
+_RED_LED                          000000DB
+_RED_OFF                          000000E8
+_RESET                            00000099
+_RES_G_SPD                        000000D8
+_RES_RBIF                         00000152
+_RES_R_SPD                        000000EE
+_RX_CONT                          000000F8
+_RX_END                           00000121
+_SC_FIN                           00000236
+_SC_OK                            00000235
+_SKIP_REGS                        00000180
+_SLAVE_DONE                       000001CF
+_SUMCHECK                         0000016C
+_TIMR1_ACTIONS                    000000A3
+_TOGGLE_GR                        000000CC
+_TOGGLE_RD                        000000E2
+_TX_CONT                          00000129
+_TX_COPY                          00000255
+_UI_BACK                          000001F8
+_UI_CONT                          000001ED
+_UI_FAIL                          000001F7
+_UNIQUE_ID                        0000015C
+_WAI_RELS                         00000145
+_WDT_OFF                          00003FFB
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 34
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WDT_ON                           00003FFF
+_WRT_ENABLE_OFF                   00003DFF
+_WRT_ENABLE_ON                    00003FFF
+_XMIT                             000000BB
+_XMIT_END                         000000C3
+_XMIT_SLV                         000000C2
+_XM_CONT                          00000132
+_XT_OSC                           00003FFD
+__16F876                          00000001
+_read_all                         00000176
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     9 reported,     0 suppressed
+
+

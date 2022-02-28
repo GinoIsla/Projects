@@ -1,0 +1,404 @@
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  1
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+ACKDT                             C   P16F876.INC                        259*
+ACKEN                             C   P16F876.INC                        260*
+ACKSTAT                           C   P16F876.INC                        258*
+ADCON0                            C   P16F876.INC                         81*
+ADCON1                            C   P16F876.INC                         97*
+ADCS0                             C   P16F876.INC                        213*
+ADCS1                             C   P16F876.INC                        212*
+ADDEN                             C   P16F876.INC                        195*
+ADDRESS                           M   ROVER.H                             69*
+ADDR_CMPLT                        M   ROVER.H                             60*
+ADD_SIZE                          M   ROVER.H                             80*   85.   86.
+ADFM                              C   P16F876.INC                        304*
+ADIE                              C   P16F876.INC                        235*
+ADIF                              C   P16F876.INC                        131*
+ADON                              C   P16F876.INC                        220*
+ADRESH                            C   P16F876.INC                         80*
+ADRESL                            C   P16F876.INC                         96*
+BCLIE                             C   P16F876.INC                        246*
+BCLIF                             C   P16F876.INC                        142*
+BF                                C   P16F876.INC                        287*
+BOF_FOUND                         M   ROVER.H                             57*
+BRGH                              C   P16F876.INC                        297*
+BUTTON_PRESSED                    M   ROVER.H                             39*
+BYTE_FULL                         M   ROVER.H                             43*
+C                                 C   P16F876.INC                        116*
+CALIBRATION_OK                    M   ROVER.H                             45*
+CC1000_CAL                        M   CC1000.H                            19*
+CC1000_CURRENT                    M   CC1000.H                            14*
+CC1000_FREQ_0A                    M   CC1000.H                             8*
+CC1000_FREQ_0B                    M   CC1000.H                            11*
+CC1000_FREQ_1A                    M   CC1000.H                             7*
+CC1000_FREQ_1B                    M   CC1000.H                            10*
+CC1000_FREQ_2A                    M   CC1000.H                             6*
+CC1000_FREQ_2B                    M   CC1000.H                             9*
+CC1000_FRONT_END                  M   CC1000.H                            15*
+CC1000_FSCTRL                     M   CC1000.H                            24*
+CC1000_FSDELAY                    M   CC1000.H                            32*
+CC1000_FSEP0                      M   CC1000.H                            13*
+CC1000_FSEP1                      M   CC1000.H                            12*
+CC1000_FSHAPE1                    M   CC1000.H                            31*
+CC1000_FSHAPE2                    M   CC1000.H                            30*
+CC1000_FSHAPE3                    M   CC1000.H                            29*
+CC1000_FSHAPE4                    M   CC1000.H                            28*
+CC1000_FSHAPE5                    M   CC1000.H                            27*
+CC1000_FSHAPE6                    M   CC1000.H                            26*
+CC1000_FSHAPE7                    M   CC1000.H                            25*
+CC1000_LOCK                       M   CC1000.H                            18*
+CC1000_MAIN                       M   CC1000.H                             5*
+CC1000_MATCH                      M   CC1000.H                            23*
+CC1000_MODEM0                     M   CC1000.H                            22*
+CC1000_MODEM1                     M   CC1000.H                            21*
+CC1000_MODEM2                     M   CC1000.H                            20*
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  2
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+CC1000_PA_POW                     M   CC1000.H                            16*
+CC1000_PLL                        M   CC1000.H                            17*
+CC1000_PRESCALER                  M   CC1000.H                            33*
+CC1000_TEST0                      M   CC1000.H                            40*
+CC1000_TEST1                      M   CC1000.H                            39*
+CC1000_TEST2                      M   CC1000.H                            38*
+CC1000_TEST3                      M   CC1000.H                            37*
+CC1000_TEST4                      M   CC1000.H                            36*
+CC1000_TEST5                      M   CC1000.H                            35*
+CC1000_TEST6                      M   CC1000.H                            34*
+CCP1CON                           C   P16F876.INC                         73*
+CCP1IE                            C   P16F876.INC                        239*
+CCP1IF                            C   P16F876.INC                        135*
+CCP1M0                            C   P16F876.INC                        184*
+CCP1M1                            C   P16F876.INC                        183*
+CCP1M2                            C   P16F876.INC                        182*
+CCP1M3                            C   P16F876.INC                        181*
+CCP1X                             C   P16F876.INC                        179*
+CCP1Y                             C   P16F876.INC                        180*
+CCP2CON                           C   P16F876.INC                         79*
+CCP2IE                            C   P16F876.INC                        247*
+CCP2IF                            C   P16F876.INC                        143*
+CCP2M0                            C   P16F876.INC                        208*
+CCP2M1                            C   P16F876.INC                        207*
+CCP2M2                            C   P16F876.INC                        206*
+CCP2M3                            C   P16F876.INC                        205*
+CCP2X                             C   P16F876.INC                        203*
+CCP2Y                             C   P16F876.INC                        204*
+CCPR1H                            C   P16F876.INC                         72*
+CCPR1L                            C   P16F876.INC                         71*
+CCPR2H                            C   P16F876.INC                         78*
+CCPR2L                            C   P16F876.INC                         77*
+CHP_OUT                           M   ROVER.H                             22*
+CHS0                              C   P16F876.INC                        216*
+CHS1                              C   P16F876.INC                        215*
+CHS2                              C   P16F876.INC                        214*
+CKE                               C   P16F876.INC                        269*
+CKP                               C   P16F876.INC                        171*
+CMMND_COMPLETE                    M   ROVER.H                             64*
+CREN                              C   P16F876.INC                        194*
+CSRC                              C   P16F876.INC                        291*
+CS_SIZE                           M   ROVER.H                             83*   85.
+D                                 C   P16F876.INC                        270*
+DATA_ADDRESS                      C   P16F876.INC                        275*
+DATA_OFFS                         M   ROVER.H                             71*
+DATA_RECEIVED                     M   ROVER.H                             62*
+DATA_SIZE                         M   ROVER.H                             82*   85.
+DC                                C   P16F876.INC                        115*
+DCLK                              M   ROVER.H                             21*
+DIO                               M   ROVER.H                             20*
+DIO_DIR                           M   ROVER.H                             25*
+D_A                               C   P16F876.INC                        274*
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  3
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+Delay100uS                        A   TIMESERV.ASM                        38.   43*   44*
+DelaymS                           A   TIMESERV.ASM                        34*   35*
+DelayuS                           A   TIMESERV.ASM                        47.   52*   53*
+EEADR                             C   P16F876.INC                        100*
+EEADRH                            C   P16F876.INC                        102*
+EECON1                            C   P16F876.INC                        104*
+EECON2                            C   P16F876.INC                        105*
+EEDATA                            C   P16F876.INC                         99*
+EEDATH                            C   P16F876.INC                        101*
+EEIE                              C   P16F876.INC                        245*
+EEIF                              C   P16F876.INC                        141*
+EEPGD                             C   P16F876.INC                        312*
+F                                 C   P16F876.INC                         47*
+FERR                              C   P16F876.INC                        196*
+FIXED_PART                        C   ROVER.H                             86*
+FSR                               C   P16F876.INC                         55*
+GCEN                              C   P16F876.INC                        257*
+GIE                               C   P16F876.INC                        120*
+GO                                C   P16F876.INC                        217*
+GO_DONE                           C   P16F876.INC                        219*
+G_Events                          E   TIMESERV.ASM                        21*
+I2C_DATA                          C   P16F876.INC                        271*
+I2C_READ                          C   P16F876.INC                        281*
+I2C_START                         C   P16F876.INC                        279*
+I2C_STOP                          C   P16F876.INC                        277*
+IDLE_MODE                         M   ROVER.H                             48*
+INDF                              C   P16F876.INC                         51*
+INTCON                            C   TIMESERV.ASM                        54.   60.
+                                      P16F876.INC                         61*
+INTE                              C   P16F876.INC                        123*
+INTEDG                            C   P16F876.INC                        225*
+INTF                              C   P16F876.INC                        126*
+IRP                               C   P16F876.INC                        109*
+LED1                              M   ROVER.H                             33*
+LED2                              M   ROVER.H                             34*
+LED3                              M   ROVER.H                             35*
+LOCK1                             M   ROVER.H                            102*
+LOCK2                             M   ROVER.H                            103*
+L_Tim1                            A   TIMESERV.ASM                        17*   55.   56.   57.   58.
+L_Tim2                            A   TIMESERV.ASM                        18*   45.   48.
+L_Tim3                            A   TIMESERV.ASM                        19*   36.   39.
+MASTER                            M   ROVER.H                             49*
+NBR_BYTES_RCVD                    M   ROVER.H                             61*
+NBR_SIZE                          M   ROVER.H                             81*   85.   86.
+NEW_COUNT                         M   ROVER.H                             41*
+NOT_A                             C   P16F876.INC                        272*
+NOT_ADDRESS                       C   P16F876.INC                        273*
+NOT_BO                            C   P16F876.INC                        252*
+NOT_BOR                           C   P16F876.INC                        253*
+NOT_DONE                          C   P16F876.INC                        218*
+NOT_PD                            C   P16F876.INC                        113*
+NOT_POR                           C   P16F876.INC                        251*
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  4
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+NOT_RBPU                          C   P16F876.INC                        224*
+NOT_RC8                           C   P16F876.INC                        191*
+NOT_T1SYNC                        C   P16F876.INC                        150*
+NOT_TO                            C   P16F876.INC                        112*
+NOT_TX8                           C   P16F876.INC                        293*
+NOT_W                             C   P16F876.INC                        282*
+NOT_WRITE                         C   P16F876.INC                        283*
+NO_BYTES                          M   ROVER.H                             70*
+OERR                              C   P16F876.INC                        197*
+OPTION_REG                        C   P16F876.INC                         83*
+P                                 C   P16F876.INC                        276*
+PALE                              M   ROVER.H                             13*
+PA_VALUE                          M   ROVER.H                             92*
+PCFG0                             C   P16F876.INC                        308*
+PCFG1                             C   P16F876.INC                        307*
+PCFG2                             C   P16F876.INC                        306*
+PCFG3                             C   P16F876.INC                        305*
+PCL                               C   P16F876.INC                         53*
+PCLATH                            C   P16F876.INC                         60*
+PCLK                              M   ROVER.H                             12*
+PCON                              C   P16F876.INC                         89*
+PDATA                             M   ROVER.H                             19*
+PDATA_DIR                         M   ROVER.H                             24*
+PEIE                              C   P16F876.INC                        121*
+PEN                               C   P16F876.INC                        262*
+PIE1                              C   P16F876.INC                         87*
+PIE2                              C   P16F876.INC                         88*
+PIR1                              C   P16F876.INC                         62*
+PIR2                              C   P16F876.INC                         63*
+PORTA                             C   P16F876.INC                         56*
+PORTB                             C   P16F876.INC                         57*
+PORTC                             C   P16F876.INC                         58*
+PR2                               C   P16F876.INC                         91*
+PREAMBLE                          M   ROVER.H                             67*
+PREAM_FINISHED                    M   ROVER.H                             58*
+PREA_SIZE                         M   ROVER.H                             78*   85.   86.
+PS0                               C   P16F876.INC                        231*
+PS1                               C   P16F876.INC                        230*
+PS2                               C   P16F876.INC                        229*
+PSA                               C   P16F876.INC                        228*
+QUIET                             M   ROVER.H                             53*
+R                                 C   P16F876.INC                        280*
+RBIE                              C   P16F876.INC                        124*
+RBIF                              C   P16F876.INC                        127*
+RC8_9                             C   P16F876.INC                        192*
+RC9                               C   P16F876.INC                        190*
+RCD8                              C   P16F876.INC                        199*
+RCEN                              C   P16F876.INC                        261*
+RCIE                              C   P16F876.INC                        236*
+RCIF                              C   P16F876.INC                        132*
+RCREG                             C   P16F876.INC                         76*
+RCSTA                             C   P16F876.INC                         74*
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  5
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+RD                                C   P16F876.INC                        316*
+READ_WRITE                        C   P16F876.INC                        285*
+REPLY_SENT                        M   ROVER.H                             40*
+RESET_CNTRS                       M   ROVER.H                             44*
+RP0                               C   P16F876.INC                        111*
+RP1                               C   P16F876.INC                        110*
+RSEN                              C   P16F876.INC                        263*
+RX9                               C   P16F876.INC                        189*
+RX9D                              C   P16F876.INC                        198*
+RXCVER                            M   ROVER.H                             51*
+RXMIT_TIM1H                       M   ROVER.H                             99*
+RXMIT_TIM1L                       M   ROVER.H                             98*
+RXPLL                             M   ROVER.H                             89*
+RX_CURRENT                        M   ROVER.H                             88*
+R_W                               C   P16F876.INC                        284*
+S                                 C   P16F876.INC                        278*
+SEN                               C   P16F876.INC                        264*
+SLAVE                             M   ROVER.H                             50*
+SMP                               C   P16F876.INC                        268*
+SPBRG                             C   P16F876.INC                         95*
+SPEN                              C   P16F876.INC                        188*
+SPIN_DIR                          M   ROVER.H                             31*
+SREN                              C   P16F876.INC                        193*
+SSPADD                            C   P16F876.INC                         92*
+SSPBUF                            C   P16F876.INC                         69*
+SSPCON                            C   P16F876.INC                         70*
+SSPCON2                           C   P16F876.INC                         90*
+SSPEN                             C   P16F876.INC                        170*
+SSPIE                             C   P16F876.INC                        238*
+SSPIF                             C   P16F876.INC                        134*
+SSPM0                             C   P16F876.INC                        175*
+SSPM1                             C   P16F876.INC                        174*
+SSPM2                             C   P16F876.INC                        173*
+SSPM3                             C   P16F876.INC                        172*
+SSPOV                             C   P16F876.INC                        169*
+SSPSTAT                           C   P16F876.INC                         93*
+STATUS                            C   P16F876.INC                         54*
+STEERING                          M   ROVER.H                             30*
+SUMCHECK_DONE                     M   ROVER.H                             63*
+SUM_CHECK                         M   ROVER.H                             72*
+SW1                               M   ROVER.H                             27*
+SW2                               M   ROVER.H                             28*
+SW3                               M   ROVER.H                             29*
+SYNC                              C   P16F876.INC                        296*
+T0CS                              C   P16F876.INC                        226*
+T0IE                              C   P16F876.INC                        122*
+T0IF                              C   TIMESERV.ASM                        54.   60.
+                                      P16F876.INC                        125*
+T0SE                              C   P16F876.INC                        227*
+T1CKPS0                           C   P16F876.INC                        148*
+T1CKPS1                           C   P16F876.INC                        147*
+T1CON                             C   P16F876.INC                         66*
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  6
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+T1INSYNC                          C   P16F876.INC                        151*
+T1OSCEN                           C   P16F876.INC                        149*
+T1SYNC                            C   P16F876.INC                        152*
+T2CKPS0                           C   P16F876.INC                        164*
+T2CKPS1                           C   P16F876.INC                        163*
+T2CON                             C   P16F876.INC                         68*
+TIMEREX100                        A   TIMESERV.ASM                        50*
+TIMEREXMs                         A   TIMESERV.ASM                        41*
+TIMERXuS                          A   TIMESERV.ASM                        62*
+TIME_0_OUT                        M   ROVER.H                             42*
+TMR0                              C   TIMESERV.ASM                        59.
+                                      P16F876.INC                         52*
+TMR1CS                            C   P16F876.INC                        153*
+TMR1H                             C   P16F876.INC                         65*
+TMR1IE                            C   P16F876.INC                        241*
+TMR1IF                            C   P16F876.INC                        137*
+TMR1L                             C   P16F876.INC                         64*
+TMR1ON                            C   P16F876.INC                        154*
+TMR2                              C   P16F876.INC                         67*
+TMR2IE                            C   P16F876.INC                        240*
+TMR2IF                            C   P16F876.INC                        136*
+TMR2ON                            C   P16F876.INC                        162*
+TOT_FRAME_SIZ                     C   ROVER.H                             85*
+TOUTPS0                           C   P16F876.INC                        161*
+TOUTPS1                           C   P16F876.INC                        160*
+TOUTPS2                           C   P16F876.INC                        159*
+TOUTPS3                           C   P16F876.INC                        158*
+TRISA                             C   P16F876.INC                         84*
+TRISB                             C   P16F876.INC                         85*
+TRISC                             C   P16F876.INC                         86*
+TRMT                              C   P16F876.INC                        298*
+TX8_9                             C   P16F876.INC                        294*
+TX9                               C   P16F876.INC                        292*
+TX9D                              C   P16F876.INC                        299*
+TXD8                              C   P16F876.INC                        300*
+TXEN                              C   P16F876.INC                        295*
+TXIE                              C   P16F876.INC                        237*
+TXIF                              C   P16F876.INC                        133*
+TXMTER                            M   ROVER.H                             52*
+TXPLL                             M   ROVER.H                             91*
+TXREG                             C   P16F876.INC                         75*
+TXSTA                             C   P16F876.INC                         94*
+TX_CURRENT                        M   ROVER.H                             90*
+TX_MASTER                         M   ROVER.H                              7*   11.
+UA                                C   P16F876.INC                        286*
+UI                                M   ROVER.H                             68*
+UI_CODE1                          M   ROVER.H                             74*
+UI_CODE2                          M   ROVER.H                             75*
+UI_FINISHED                       M   ROVER.H                             59*
+UI_SIZE                           M   ROVER.H                             79*   85.   86.
+W                                 C   P16F876.INC                         46*
+WCOL                              C   P16F876.INC                        168*
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  7
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+WR                                C   P16F876.INC                        315*
+WREN                              C   P16F876.INC                        314*
+WRERR                             C   P16F876.INC                        313*
+Z                                 C   P16F876.INC                        114*
+_BODEN_OFF                        C   P16F876.INC                        349*
+_BODEN_ON                         C   P16F876.INC                        348*
+_CPD_OFF                          C   P16F876.INC                        345*
+_CPD_ON                           C   P16F876.INC                        344*
+_CP_ALL                           C   P16F876.INC                        336*
+_CP_HALF                          C   P16F876.INC                        337*
+_CP_OFF                           C   P16F876.INC                        339*
+_CP_UPPER_256                     C   P16F876.INC                        338*
+_DEBUG_OFF                        C   P16F876.INC                        341*
+_DEBUG_ON                         C   P16F876.INC                        340*
+_HS_OSC                           C   P16F876.INC                        356*
+_LOOP_TIM0                        A   TIMESERV.ASM                        60*   61.
+_LP_OSC                           C   P16F876.INC                        354*
+_LVP_OFF                          C   P16F876.INC                        347*
+_LVP_ON                           C   P16F876.INC                        346*
+_MIC100S                          A   TIMESERV.ASM                        46*   49.
+_MILISEC                          A   TIMESERV.ASM                        37*   40.
+_PWRTE_OFF                        C   P16F876.INC                        350*
+_PWRTE_ON                         C   P16F876.INC                        351*
+_RC_OSC                           C   P16F876.INC                        357*
+_WDT_OFF                          C   P16F876.INC                        353*
+_WDT_ON                           C   P16F876.INC                        352*
+_WRT_ENABLE_OFF                   C   P16F876.INC                        343*
+_WRT_ENABLE_ON                    C   P16F876.INC                        342*
+_XT_OSC                           C   P16F876.INC                        355*
+__16F876                          V   TIMESERV.ASM                         0*
+                                      P16F876.INC                         36.
+
+
+LABEL TYPES
+-----------
+A  Address 
+C  Constant
+E  External
+M  Macro   
+S  Segment 
+U  Unknown 
+V  Variable
+X  Other   

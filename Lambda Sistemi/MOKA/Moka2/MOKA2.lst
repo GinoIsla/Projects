@@ -1,0 +1,2330 @@
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;REL 1.51 limitazione delta I '7F' E 'E0'
+                      00002                         list    p=12f675
+                      00003                         ;list   p=16f676
+                      00004 
+                      00005 ;-----------------------------------------------
+                      00006 ; DEFINIZIONI DEGLI I/O
+                      00007 ;                ______  ______
+                      00008 ;               -| 1 VDD\/VSS 8 |-
+                      00009 ; LED           -| 2 GP5  GP0 7 |- TASTO
+                      00010 ; GATE_HEAT     -| 3 GP4  GP1 6 |- ZCV_RETE
+                      00011 ; NC            -| 4 GP3  GP2 5 |- NTC
+                      00012 ;                +--------------+
+                      00013 ;-----------------------------------------------
+                      00014 ;UPDATES:
+                      00015 ;gi:            11-01-06        New LED behavior: blink LED during the new TEMPO_Z, when TEMPO_Y is reac
+                            hed turn off the LED.
+                      00016 ;
+                      00017 
+                      00018 
+                      00019 #DEFINE PIC12F675
+                      00020 ;#DEFINE PIC16F676
+                      00021 #DEFINE FREERUN
+                      00022 ;#DEFINE FIXED
+                      00023 
+                      00024 
+                      00025         IFDEF           PIC12F675
+                      00026         INCLUDE         <p12f675.inc>
+                      00001         LIST
+                      00002 ; P12F675.INC  Standard Header File, Version 1.04    Microchip Technology, Inc.
+                      00284         LIST
+2007   3E4C           00027         __CONFIG        _CPD_ON & _CP_ON & _BODEN_ON & _MCLRE_OFF & _PWRTE_ON & _WDT_ON & _INTRC_OSC_NOC
+                            LKOUT
+2000   0000 0001 0003 00028         __IDLOCS        0133    ;1.3.3
+       0003 
+                      00029         ENDIF
+                      00030 
+                      00031 
+                      00032         IFDEF           PIC16F676
+                      00033         INCLUDE         <p16f676.inc>
+                      00034         __CONFIG        _CPD & _CP & _BODEN & _MCLRE_OFF & _PWRTE_ON & _WDT_ON & _INTRC_OSC_NOCLKOUT
+                      00035         __IDLOCS        0133    ;1.3.3
+                      00036         ENDIF
+                      00037 
+                      00038 
+                      00039         INCLUDE         <EQUIVALENZE.INC>
+                      00001 #define T_130           .206
+                      00002 #define T_140           .251
+                      00003 #define T_150           .301
+                      00004 #define T_160           .353
+                      00005 #define T_180           .461
+                      00006 #define T_190           .515
+                      00007 #define T_220           .658
+                      00008 #define T_200           .566
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00009 #define T_210           .614
+                      00010 
+                      00011 
+                      00012 
+                      00013 
+                      00014 
+                      00015 
+                      00016 
+                      00017 
+                      00018 
+                      00019 
+                      00040 ;;;;    INCLUDE         <UTENZA.INC>            ;****11-01-06 THIS INCLUDE FILE OBSOLETE
+                      00041         INCLUDE         <UTENZA_PP.INC>         ;****11-01-06 THIS INCLUDE FILE DEFINED BY THE CUSTOMER
+                      00001 
+                      00002 
+                      00003 ;***********************  VALORI DA IMPOSTAZIONE  *************************
+                      00004 ;La tabella di conversione di temperatura si trova in EQUIVALENZE.INC
+                      00005 ;***********************  VALORI DA IMPOSTAZIONE  *************************
+                      00006 
+                      00007  ;PRE RISCALDAMENTO
+  00000001            00008 TEMPO_PR        EQU     .1              ;IN SECONDI, 1÷255
+  000000CE            00009 T_PR            EQU     T_130   ;SOGLIA NTC, 0÷1023
+                      00010 
+                      00011  ;FASE1
+  0000014A            00012 TIME1                   EQU     .330    ;IN SECONDI, 1÷15300
+  00000149            00013 REDUCED_TIME1   EQU     (TIME1 - TEMPO_PR)      ;when starting at a temperature > T_PR
+  00000292            00014 T1                              EQU     T_220   ;SOGLIA NTC, 0÷1023, 
+                      00015 
+                      00016 
+                      00017 ;FASE2
+  00000096            00018 TIME2           EQU     .150            ;IN SECONDI, 1÷255
+  000001CD            00019 T2                      EQU     T_180   ;SOGLIA NTC, 0÷1023
+                      00020 
+                      00021 ;FASE3
+  00000078            00022 TIME3           EQU     .120    ;IN SECONDI, 1÷255
+  000000CE            00023 T3                      EQU     T_130   ;SOGLIA NTC, 0÷1023 
+                      00024 
+                      00025 ;FASE4
+  000000CE            00026 T4                      EQU     T_130   ;SOGLIA NTC, 0÷1023
+                      00027 
+  00000028            00028 TP                      EQU     .40     ;PASSI DA 0”065536 (1÷255) (0”065536÷16"71168) - TEMPO
+                      00029                                         ; ANTI RIMBALZO TASTO PREMUTO
+                      00030 
+                      00031 
+  0000001E            00032 TEMPO_Y         EQU     .30     ;IN MINUTI, 1÷255
+                      00033 
+  00000258            00034 TEMPO_Z         EQU     .600    ;IN SECONDI 1÷(TEMPO_Y*60)
+                      00035 
+                      00036 
+                      00037         IF      T1<1 || T1>.1023
+                      00038         ERROR   '**ERRORE FILE DI UTENZA:  T1 OUT OF RANGE **'
+                      00039         ENDIF
+                      00040 
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00041         IF      T2<1 || T2>.1023
+                      00042         ERROR   '**ERRORE FILE DI UTENZA:  T2 OUT OF RANGE **'
+                      00043         ENDIF
+                      00044 
+                      00045         IF      T3<1 || T3>.1023
+                      00046         ERROR   '**ERRORE FILE DI UTENZA:  T3 OUT OF RANGE **'
+                      00047         ENDIF
+                      00048 
+                      00049         IF      T4<1 || T4>.1023
+                      00050         ERROR   '**ERRORE FILE DI UTENZA:  T4 OUT OF RANGE **'
+                      00051         ENDIF
+                      00052 
+                      00053         IF      TP<1 || TP>.255
+                      00054         ERROR   '**ERRORE FILE DI UTENZA:  TP OUT OF RANGE **'
+                      00055         ENDIF
+                      00056 
+                      00057         IF      TIME1<1 || TIME1>.15300
+                      00058         ERROR   '**ERRORE FILE DI UTENZA:  TIME1 OUT OF RANGE **'
+                      00059         ENDIF
+                      00060 
+                      00061         IF      TIME1<2 || TIME2>.255
+                      00062         ERROR   '**ERRORE FILE DI UTENZA:  TIME2 OUT OF RANGE **'
+                      00063         ENDIF
+                      00064 
+                      00065         IF      TIME1<3 || TIME3>.255
+                      00066         ERROR   '**ERRORE FILE DI UTENZA:  TIME3 OUT OF RANGE **'
+                      00067         ENDIF
+                      00068 
+                      00069         IF      TEMPO_Y < ((TIME1+TIME2+TIME3)/.60) || TEMPO_Y >.255
+                      00070         ERROR   '**ERRORE FILE DI UTENZA:  TEMPO_Y OUT OF RANGE **'
+                      00071         ENDIF
+                      00072 
+                      00073         IF      TEMPO_Z > (TEMPO_Y*.60)
+                      00074         ERROR   '**ERRORE FILE DI UTENZA:  TEMPO_Z OUT OF RANGE **'
+                      00075         ENDIF
+                      00076 ;*******************************
+                      00042         INCLUDE         <Macros.inc>
+                      00001 ;General macro definitions
+                      00002 
+                      00003 M_CMP_JE        macro   value1,value2,jumpto    ;value1 = value2?
+                      00004                 movf    value1,w
+                      00005                 xorwf   value2,w
+                      00006                 btfsc   STATUS,Z
+                      00007                 goto    jumpto
+                      00008                 endm
+                      00009 M_CMPL_JE       macro   value1,literal,jumpto   ;value1 = k?
+                      00010                 movf    value1,w
+                      00011                 xorlw   literal
+                      00012                 btfsc   STATUS,Z
+                      00013                 goto    jumpto
+                      00014                 endm
+                      00015 M_CMP_JNE       macro   value1,value2,jumpto    ;value1 <> value2?
+                      00016                 movf    value1,w
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00017                 xorwf   value2,w
+                      00018                 btfss   STATUS,Z
+                      00019                 goto    jumpto
+                      00020                 endm
+                      00021 M_CMPL_JNE      macro   value1,literal,jumpto   ;value1 <> k? WARNING: destroys WREG!
+                      00022                 movf    value1,w
+                      00023                 xorlw   literal
+                      00024                 btfss   STATUS,Z
+                      00025                 goto    jumpto
+                      00026                 endm
+                      00027 
+                      00028 
+                      00029 M_CMPL_JGE      macro   value1,literal,jumpto   ;value1 >= k?
+                      00030                 movlw   literal
+                      00031                 subwf   value1,w                ;k-v1 >= 0
+                      00032                 btfsc   STATUS,C
+                      00033                 goto    jumpto
+                      00034                 endm
+                      00035 
+                      00036 
+                      00037 
+                      00038 M_CMP_JG        macro   value1,value2,jumpto    ;value1 > value2?
+                      00039                 movf    value2,w
+                      00040                 subwf   value1,w        ;v1-v2 > 0
+                      00041                 btfss   STATUS,C
+                      00042                 goto    $+4
+                      00043                 btfsc   STATUS,Z
+                      00044                 goto    $+2
+                      00045                 goto    jumpto
+                      00046                 endm
+                      00047 
+                      00048 M_CMP_JGE       macro   value1,value2,jumpto    ;value1 >= value2?
+                      00049                 movf    value2,w
+                      00050                 subwf   value1,w        ;v1-v2 >= 0
+                      00051                 btfsc   STATUS,C
+                      00052                 goto    jumpto
+                      00053                 endm
+                      00054 
+                      00055 M_CMP_JL        macro   value1,value2,jumpto    ;value1 < value2?
+                      00056                 movf    value2,w
+                      00057                 subwf   value1,w        ;v1-v2 < 0
+                      00058                 btfss   STATUS,C
+                      00059                 goto    jumpto
+                      00060                 endm
+                      00061 
+                      00062 M_CMP_JLE       macro   value1,value2,jumpto    ;value1 <= value2?
+                      00063                 movf    value1,w
+                      00064                 subwf   value2,w        ;v2-v1 > 0
+                      00065                 btfsc   STATUS,C
+                      00066                 goto    $+2
+                      00067                 btfsc   STATUS,Z
+                      00068                 goto    jumpto
+                      00069                 endm
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00070 
+                      00071 
+                      00072 M_CMPL_JL       macro   value1,literal,jumpto   ;value1 < literal?
+                      00073                 movf    value1,w
+                      00074                 sublw   literal ;k-v1 < 0
+                      00075                 btfss   STATUS,C
+                      00076                 goto    $+4
+                      00077                 btfsc   STATUS,Z
+                      00078                 goto    $+2
+                      00079                 goto    jumpto
+                      00080                 endm
+                      00081 
+                      00082 M_CMPL_JG       macro   value1,literal,jumpto   ;k-val1 < 0
+                      00083                 movf    value1,w
+                      00084                 sublw   literal 
+                      00085                 btfss   STATUS,C
+                      00086                 goto    jumpto  
+                      00087                 endm
+                      00088                 
+                      00089 
+                      00090 M_BANKSEL_0     macro
+                      00091                 BCF     STATUS,6
+                      00092                 BCF     STATUS,5
+                      00093                 endm
+                      00094 M_BANKSEL_1     macro
+                      00095                 BCF     STATUS,6
+                      00096                 BSF     STATUS,5
+                      00097                 endm
+                      00098 M_BANKSEL_2     macro
+                      00099                 BSF     STATUS,6
+                      00100                 BCF     STATUS,5
+                      00101                 endm
+                      00102 M_BANKSEL_3     macro
+                      00103                 BSF     STATUS,6
+                      00104                 BSF     STATUS,5
+                      00105                 endm
+                      00106                 
+                      00043         
+                      00044 
+                      00045         ERRORLEVEL -302
+                      00046 
+                      00047 #DEFINE SKPB    SKPNC
+                      00048 #DEFINE SKPNB   SKPC
+                      00049 
+                      00050 
+                      00051 
+                      00052 #define Fosc                    .4000000        ;(4MHz)
+                      00053 #define Millisec                .1000
+                      00054 
+                      00055 
+  00000030            00056 MASK_T1CON                              EQU     30H             ;TMR1: prescale 1:8, OFF
+                      00057 #define T1_PreScale     .8
+                      00058 #define Timer1tick_ms   0 - ((Fosc)/(4*T1_PreScale*Millisec))
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00059 
+                      00060 #define T0_PreScale     .16
+                      00061 #define Timer0tick_ms   0 - ((Fosc)/(4*T0_PreScale*Millisec))
+                      00062 
+                      00063 #define NUMBER_OF_CYCLES        .255                    ;256 periods of 6ms per heat cycle
+                      00064 #define PERIOD_SIZE                     .8                              ;.6
+                      00065 
+                      00066 ;Constatnts for PID calculation
+                      00067 ;================================
+  00000190            00068 Kp      EQU     H'190'
+  0000000D            00069 Ki      EQU     H'0D'
+  00000C00            00070 Kd      EQU     H'C00'
+                      00071 
+  00000064            00072 MAX_DIF_PREC    EQU                     .100    ;.144
+  00000064            00073 MAX_DIF_NEG     EQU                     .100    ;.144
+  00000032            00074 MAX_DIF_POS     EQU                     .50
+  00000600            00075 PRECARICA_PID   EQU                     H'600'  ;H'300'
+                      00076 
+                      00077 ;****** MICRO MACRO *******************************************
+                      00078 #DEFINE RAM0    BCF     STATUS,RP0
+                      00079 #DEFINE RAM1    BSF     STATUS,RP0
+                      00080 
+                      00081 
+                      00082         IFDEF           PIC16F676
+                      00083 GPIO    EQU     PORTA
+                      00084 TRISIO  EQU     TRISA
+                      00085         ENDIF
+                      00086 
+                      00087 ;****** GPIO *****************************************
+                      00088 #DEFINE TASTO           GPIO,0  ;IN  - TASTO
+                      00089 #DEFINE ZCV_RETE        GPIO,1  ;IN  - COMPARATOR - IN DELLO ZC DI V
+                      00090 #DEFINE NTC             GPIO,2  ;IN  - AD CONVERTER - RILEVAZIONE TEMPERATURA
+                      00091 #DEFINE GATE_HEAT       GPIO,4  ;OUT - TRIAC RESISTENZA TEMPERATURA
+                      00092 #DEFINE LED             GPIO,5  ;OUT - LED
+                      00093 
+                      00094 ;******* STATUS *************************************************
+                      00095 #DEFINE _C              STATUS,C        ;0) CARRY
+                      00096 
+                      00097 ;******* INTCON *************************************************
+                      00098 #DEFINE _T0IF           INTCON,T0IF     ;2) TMR0 INTERRUPT FLAG
+                      00099 #DEFINE _T0IE           INTCON,T0IE     ;5) TMR0 INTERRUPT ENABLE
+                      00100 #DEFINE _INTF           INTCON,INTF     ;1) RB0 INTERRUPT FLAG
+                      00101 #DEFINE _GPIF           INTCON,GPIF     ;0) CHANGE PORTB0 INTERRUPT FLAG
+                      00102 #DEFINE _PEIE           INTCON,PEIE     ;6) PERIPHERAL INTERRUPT ENABLE
+                      00103 #DEFINE _GIE            INTCON,GIE      ;7) GLOBAL INTERRUPT ENABLE
+                      00104 
+                      00105 ;******* PIR1 *************************************************
+                      00106 #DEFINE BASE_TEMPI      PIR1,TMR1IF     ;1) TMR1 INTERRUPT FLAG
+                      00107 #DEFINE _CMIF           PIR1,CMIF       ;3) COMPARATOR INTERRUPT FLAG
+                      00108 
+                      00109 ;******* PIE1 *************************************************
+                      00110 #DEFINE _TMR1IE         PIE1,TMR1IE     ;1) TMR1 INTERRUPT ENABLE       ;NOT USED
+                      00111 #DEFINE _CMIE           PIE1,CMIE       ;3) COMPARATOR INTERRUPT ENABLE
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00112 
+                      00113 ;******* ADCON0 *************************************************
+                      00114 #DEFINE GO_DONE         ADCON0,1        ;1)     1 = CONVERSION IN PROGRESS
+                      00115                                         ;       0 = CONVERSION DONE
+                      00116 ;******* T1CON *************************************************
+                      00117 #DEFINE _TMR1ON         T1CON,TMR1ON    ;1) TMR1 ON
+                      00118 
+                      00119 ;******* CMCON *************************************************
+                      00120 #DEFINE _COUT           CMCON,COUT      ;6) COMPARATOR OUTPUT BIT
+                      00121 
+                      00122 ;***** FLAGS ***************************************************
+                      00123 #define PERIOD_TICK             FLAGS,0
+                      00124 #define HALF_SECONDS_TICK       FLAGS,1
+                      00125 #define SECONDS_TICK            FLAGS,2
+                      00126 #define MINUTES_TICK            FLAGS,3
+                      00127 #DEFINE NO_COMP_INT             FLAGS,4
+                      00128 #DEFINE CYCLE_OVER              FLAGS,5
+                      00129 ;***** FLAGS2 ********************************
+                      00130 #DEFINE PHASE_PR                FLAGS2,0
+                      00131 #DEFINE PHASE_1                 FLAGS2,1
+                      00132 #DEFINE PHASE_2                 FLAGS2,2
+                      00133 #DEFINE PHASE_3                 FLAGS2,3
+                      00134 #DEFINE PHASE_4                 FLAGS2,4
+                      00135 #DEFINE TEMPO_Z_ON              FLAGS2,5        ;new requirement
+                      00136 #DEFINE CYCLE_ENDED             FLAGS2,6
+                      00137 #DEFINE EQUAL                   DIFF_HI,6
+                      00138 #DEFINE NEGATIVE                DIFF_HI,7
+                      00139 ;*********************************************
+                      00140 ;***** FLAGS_SEBA ********************************
+                      00141 #DEFINE FORZA_MAX                               FLAGS_SEBA,0
+                      00142 ;#DEFINE        PHASE_1                         FLAGS_SEBA,1
+                      00143 ;#DEFINE        PHASE_2                         FLAGS_SEBA,2
+                      00144 ;#DEFINE        PHASE_3                         FLAGS_SEBA,3
+                      00145 ;#DEFINE        PHASE_4                         FLAGS_SEBA,4
+                      00146 ;#DEFINE        CYCLE_ENDED                     FLAGS_SEBA,5
+                      00147 
+                      00148 
+  0000005F            00149 B_WREG  EQU     05FH
+                      00150 
+                      00151                 CBLOCK  020H
+                      00152 ;GLOBALI
+  00000020            00153 FLAGS                                           ;
+  00000021            00154 FLAGS2                                          ;
+  00000022            00155 STAY_ON_PERIOD                                  ;number of cycles to stay on
+  00000023            00156 CYCLE_CNTR                                      ;
+  00000024            00157 PERIOD_COUNT                                    ;6MS
+  00000025            00158 HLF_SECONDS_L0                                  ;
+  00000026            00159 HLF_SECONDS_HI                                  ;
+  00000027            00160 SECONDS                                         ;
+  00000028            00161 MINUTE                                          ;
+  00000029            00162 PHASE_PR_TIMER                                  ;
+  0000002A            00163 PHASE_1_TIMER_HI                                ;
+  0000002B            00164 PHASE_1_TIMER_LO                                ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  0000002C            00165 PHASE_2_TIMER                                   ;
+  0000002D            00166 PHASE_3_TIMER                                   ;
+  0000002E            00167 COUNT_TASTO_PREMUTO                             ;
+  0000002F            00168 MASTER_SHUTDOWN                                 ;counter for timer_y
+  00000030            00169 TIMER_Z_H                                       ;****11-01-06
+  00000031            00170 TIMER_Z_L                                       ;
+  00000032            00171 TM_HI                                           ;MeasuredTemperature HIgh
+  00000033            00172 TM_LO                                           ;
+  00000034            00173 TT_HI                                           ;TargetTemperature HIgh
+  00000035            00174 TT_LO                                           ;
+  00000036            00175 PT_HI                                           ;Previous Temperature HIgh
+  00000037            00176 PT_LO                                           ;
+  00000038            00177 SIGMA_HI                                        ;Accumulated for I calculation HIgh
+  00000039            00178 SIGMA_LO                                        ;
+  0000003A            00179 DIFF_HI                                         ;TT_HI - TM_HI
+  0000003B            00180 DIFF_LO                                         ;TT_LO - TM_LO
+  0000003C            00181 T_SUM0                                          ;Resulting sum of the PID
+  0000003D            00182 T_SUM1                                          ;
+  0000003E            00183 T_SUM2                                          ;
+  0000003F            00184 T_SUM3                                          ;
+  00000040            00185 DIFF_DEB_HI                                     ;
+  00000041            00186 DIFF_DEB_LO                                     ;
+  00000042            00187 LINE_DEBOUNCE                                   ;
+  00000043            00188 DEBUG                                           ;
+  00000044            00189 B_STATUS                                        ;
+  00000045            00190 B_FSR                                           ;
+  00000046            00191 AARGB0                                          ;Variables for signed 16X16
+  00000047            00192 AARGB1                                          ;"
+  00000048            00193 AARGB2                                          ;"
+  00000049            00194 AARGB3                                          ;"
+  0000004A            00195 TEMPB0                                          ;"
+  0000004B            00196 TEMPB1                                          ;"
+  0000004C            00197 BARGB0                                          ;"
+  0000004D            00198 BARGB1                                          ;"
+  0000004E            00199 LOOPCOUNT                                       ;"
+  0000004F            00200 SIGN                                            ;"
+  00000050            00201 B_PCLATH                                        ;
+  00000051            00202 FLAGS_SEBA                                      ;
+                      00203         ENDC                                    ;
+                      00204 ;************************************************
+  00000050            00205 FINE_RAM                EQU     B_PCLATH
+                      00206 
+                      00207         IF      FINE_RAM > 05EH
+                      00208         ERROR   '**FINE RAM: NON DISPONIBILE**'
+                      00209         ENDIF
+                      00210 
+                      00211 ;******* COSTANTI DI PROGRAMMA **********************
+  0000000F            00212 MASK_TRISIO             EQU     0FH                     ;GP0/1/2/3 IN INGRESSO, GP4/5 IN USCITA
+  00000088            00213 MASK_VRCON              EQU     088H                    ;VREF ENABLED, HIGH RANGE, VALUE 8
+  00000080            00214 MASK_VRCON_INIT         EQU     080H                    ;VREF ENABLED, HIGH RANGE, VALUE DON'T CARE
+  0000008F            00215 MASK_VRCON_UP_TO_DOWN   EQU     08FH                    ;VREF ENABLED, HIGH RANGE, VALUE 15
+  00000080            00216 MASK_VRCON_DOWN_TO_UP   EQU     080H                    ;VREF ENABLED, HIGH RANGE, VALUE 0
+  00000014            00217 MASK_ANSEL              EQU     014H                    ;FOSC/32, AN2 --> FOSC/8
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  00000089            00218 MASK_ADCON              EQU     89H                     ;RIGHT JUSTIFIED,CHAN2,ON
+  00000004            00219 MASK_CMCON              EQU     04H                     ;CM0÷CM2 = 100 (GP0:D, GP1:A) = NO OUTPUT, INTER
+                            NAL REF
+  00000007            00220 MASK_CMCON_OFF          EQU     07H                     ;CM0÷CM2 = 111 comparator off
+  0000008F            00221 MASK_OPTION_WDT         EQU     b'10001111'             ;PULL-UPS DISABILITATI,PS=WDT,1:128
+  00000083            00222 MASK_OPTION_TMR0        EQU     b'10000011'             ;PULL-UPS DISABILITATI,PS=TIMER0,1:16
+                      00223 ;****************************************************************
+                      00224 
+                      00225 ;******* ORIGINE **********************************************
+0000                  00226         ORG     0x00
+0000   283B           00227                 GOTO    START
+                      00228 ;****************************************************************
+                      00229 
+0004                  00230         ORG     0x04
+                      00231 ;       GOTO    SERVICE_INTERRUPT
+0004                  00232 SERVICE_INTERRUPT                                       ;
+0004   00DF           00233                 MOVWF   B_WREG                          ;
+0005   0E03           00234                 SWAPF   STATUS,W                        ;
+0006   1283           00235                 RAM0                                    ;
+0007   00C4           00236                 MOVWF   B_STATUS                        ;
+0008   080A           00237                 MOVFW   PCLATH                          ;
+0009   00D0           00238                 MOVWF   B_PCLATH                        ;
+000A   0804           00239                 MOVFW   FSR                             ;
+000B   00C5           00240                 MOVWF   B_FSR                           ;
+                      00241                                                         ;
+000C   0064           00242                 CLRWDT                                  ;
+000D   1683           00243                 RAM1                                    ;
+000E   1D8C           00244                 BTFSS   _CMIE                           ; ZC?
+000F   2821           00245                 GOTO    _TMR0_INT                       ;
+                      00246                                                         ;
+0010   1283           00247                 RAM0                                    ;
+0011   1D8C           00248                 BTFSS   _CMIF                           ;check interrupt type
+0012   2821           00249                 GOTO    _TMR0_INT                       ;
+                      00250                 ;GOTO   _ZERO_CROSS_V                   ;ZC interrrupt
+                      00251                                                         ;
+                      00252 ;=======================================================;
+                      00253                                                         ;
+                      00254   ;ZCV - COMPARATOR INTERRUPT                           ;
+0013                  00255 _ZERO_CROSS_V                                           ;
+0013   08A2           00256                 MOVF    STAY_ON_PERIOD,F                ;if STAY_ON_PERIOD <> 0
+0014   1D03           00257                 BTFSS   STATUS,Z                        ;
+0015   1605           00258                 BSF     GATE_HEAT                       ; turn-on the heat, start T0 for 1ms
+                      00259 
+0016   21E6           00260                 CALL    COMPARATOR_OFF                  ;avoid false interrupts from the comparator (2 Z
+                            C/cycle)
+0017   1620           00261                 BSF     NO_COMP_INT                     ;disable these ints for 6ms (line voltage deboun
+                            ce)
+0018   3006           00262                 MOVLW   .6                              ;
+0019   00C2           00263                 MOVWF   LINE_DEBOUNCE                   ;
+                      00264                                                         ;
+001A   08A2           00265                 MOVF    STAY_ON_PERIOD,F                ;if STAY_ON_PERIOD <> 0
+001B   1903           00266                 BTFSC   STATUS,Z                        ;
+001C   2831           00267                 GOTO    _EXIT_INTERRUPT                 ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00268                                                         ;
+                      00269                 ;BSF    GATE_HEAT                       ; turn-on the heat, start T0 for 1ms
+001D   1683           00270                 RAM1                                    ;
+001E   118C           00271                 BCF     _CMIE                           ;don't move this
+001F   1283           00272                 RAM0                                    ;
+0020   282E           00273                 GOTO    _RESET_TMR0                     ;
+                      00274 ;=======================================================;
+0021                  00275 _TMR0_INT                                               ;
+0021   1283           00276                 RAM0                                    ;
+0022   190B           00277                 BTFSC   _T0IF                           ;
+0023   2825           00278                 GOTO    _SERV_TMR0                      ;1ms TMR0 interrupt
+0024   2831           00279                 GOTO    _EXIT_INTERRUPT                 ;FALSE INTERRUPT
+                      00280                                                         ;
+0025                  00281 _SERV_TMR0                                              ;service timer 0 interrupt
+0025   1205           00282                 BCF     GATE_HEAT                       ;turn-off the heat
+0026   1E20           00283                 BTFSS   NO_COMP_INT                     ;did we clear comp ints?
+0027   282E           00284                 GOTO    _RESET_TMR0                     ;
+0028   0BC2           00285                 DECFSZ  LINE_DEBOUNCE,F                 ;
+0029   282E           00286                 GOTO    _RESET_TMR0                     ;
+002A   21DB           00287                 CALL    COMPARATOR_ON                   ;re-enable interrupts from the comparator
+002B   0819           00288                 MOVFW   CMCON                           ;...have to read CMCON to clear CMIF (see manual
+                            )
+002C   118C           00289                 BCF     _CMIF                           ;
+002D   1220           00290                 BCF     NO_COMP_INT                     ;
+                      00291 ;=======================================================;
+002E                  00292 _RESET_TMR0                                             ;
+002E   30C2           00293                 MOVLW   Timer0tick_ms                   ;
+002F   0081           00294                 MOVWF   TMR0                            ;
+0030   110B           00295                 BCF     _T0IF                           ;
+                      00296                                                         ;
+0031                  00297 _EXIT_INTERRUPT                                         ;
+0031   1283           00298 POP             RAM0                                    ;
+0032   0845           00299                 MOVFW   B_FSR                           ;
+0033   0084           00300                 MOVWF   FSR                             ;
+0034   0850           00301                 MOVFW   B_PCLATH                        ;
+0035   008A           00302                 MOVWF   PCLATH                          ;
+0036   0E44           00303                 SWAPF   B_STATUS,W                      ;
+0037   0083           00304                 MOVWF   STATUS                          ;
+0038   0EDF           00305                 SWAPF   B_WREG,F                        ;
+0039   0E5F           00306                 SWAPF   B_WREG,W                        ;
+003A   0009           00307                 RETFIE                                  ;
+                      00308 ;********************************************************
+                      00309 
+                      00310 ;****************************************************************
+                      00311 ;****************************************************************
+                      00312 ;****************************************************************
+                      00313 ;START EXECUTION
+                      00314 ;****************************************************************
+                      00315 ;****************************************************************
+                      00316 ;****************************************************************
+003B                  00317 START
+                      00318         IFDEF           PIC16F676
+                      00319                 CLRF    PORTC                           ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00320         ENDIF                                           ;
+                      00321                                                         ;
+003B   23FF           00322                 CALL    03FFH                           ;ATTENZIONE!!!  RICORDARSI DI INSERIRE LA CHIAMA
+                            TA X IL VALORE DI
+                      00323                                                         ;       CALIBRAZIONE
+003C   1683           00324                 RAM1                                    ;
+003D   0090           00325                 MOVWF   OSCCAL                          ;
+                      00326                                                         ;
+003E   3083           00327                 MOVLW   MASK_OPTION_TMR0                ;USE PS FOR TMR0
+003F   0081           00328                 MOVWF   OPTION_REG                      ;
+0040   0195           00329                 CLRF    WPU                             ;weak pullup
+0041   300F           00330                 MOVLW   MASK_TRISIO                     ;
+0042   0085           00331                 MOVWF   TRISIO                          ;GP0/1/2 IN INGRESSO, GP4/5 IN USCITA
+0043   1205           00332                 BCF     GATE_HEAT                       ;be sure heat is off
+                      00333         
+                      00334         IFDEF           PIC16F676                       ;
+                      00335                 CLRF    TRISC                           ;RC0/1/2/3/4/5 IN USCITA
+                      00336         ENDIF                                           ;
+                      00337                                                         ;
+0044   1283           00338                 RAM0                                    ;
+                      00339         IFDEF           PIC16F676                       ;
+                      00340                 CLRF    PORTC                           ;
+                      00341         ENDIF                                           ;
+                      00342 
+0045   3030           00343                 MOVLW   MASK_T1CON                      ;
+0046   0090           00344                 MOVWF   T1CON                           ;
+                      00345                                                         ;
+0047   0185           00346                 CLRF    GPIO                            ;
+                      00347                                                         ;
+0048   100C           00348                 BCF     BASE_TEMPI                      ;
+0049   21D2           00349                 CALL    CLEAR_RAM                       ;
+                      00350                                                         ;
+004A   30E0           00351                 MOVLW   0E0H                            ;
+004B   008B           00352                 MOVWF   INTCON                          ;SET T0IE, GIE & PEIE 
+                      00353                                                         ;
+004C   21DB           00354                 CALL    COMPARATOR_ON                   ;
+004D   21F0           00355                 CALL    CONVERTER_ON                    ;
+                      00356                                                         ;
+004E   1410           00357                 BSF     _TMR1ON                         ;START TMR1
+                      00358                                                         ;
+004F                  00359 _WAIT_START                                             ;
+004F   2096           00360                 CALL    CHECK_TASTO                     ;
+0050   1685           00361                 BSF     LED                             ;
+                      00362                                                         ;
+0051   3008           00363                 MOVLW   PERIOD_SIZE                     ;6ms
+0052   00A4           00364                 MOVWF   PERIOD_COUNT                    ;
+                      00365                                                         ;
+0053   30F5           00366                 MOVLW   H'F5'                           ;
+0054   00A5           00367                 MOVWF   HLF_SECONDS_L0                  ;
+0055   3002           00368                 MOVLW   2                               ; H'2F5 -> empiricaly measured
+0056   00A6           00369                 MOVWF   HLF_SECONDS_HI                  ;
+0057   3002           00370                 MOVLW   2                               ;2 perds of 30"
+0058   00A7           00371                 MOVWF   SECONDS                         ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0059   303C           00372                 MOVLW   .60                             ;
+005A   00A8           00373                 MOVWF   MINUTE                          ;
+                      00374                                                         ;
+005B   1421           00375                 BSF     PHASE_PR                        ;
+005C   3000           00376                 MOVLW   HIGH T_PR                       ;
+005D   00B4           00377                 MOVWF   TT_HI                           ;
+005E   30CE           00378                 MOVLW   LOW T_PR                        ;
+005F   00B5           00379                 MOVWF   TT_LO                           ;
+0060   20EB           00380                 CALL    CALCULATE_PID                   ;Loads value of TIME1
+                      00381                                                         ;
+0061   3096           00382                 MOVLW   TIME2                           ;
+0062   00AC           00383                 MOVWF   PHASE_2_TIMER                   ;
+                      00384                                                         ;
+0063   3078           00385                 MOVLW   TIME3                           ;
+0064   00AD           00386                 MOVWF   PHASE_3_TIMER                   ;
+                      00387                                                         ;
+0065   3002           00388                 MOVLW   HIGH TEMPO_Z                    ;****11-01-06
+0066   00B0           00389                 MOVWF   TIMER_Z_H                       ;
+0067   3058           00390                 MOVLW   LOW TEMPO_Z                     ;
+0068   00B1           00391                 MOVWF   TIMER_Z_L                       ;
+0069   0AB0           00392                 INCF    TIMER_Z_H,F                     ;makes the double precision algorithm easier
+                      00393                                                         ;
+006A   301E           00394                 MOVLW   TEMPO_Y                         ;
+006B   00AF           00395                 MOVWF   MASTER_SHUTDOWN                 ;
+                      00396                                                         ;
+006C   1620           00397                 BSF     NO_COMP_INT                     ;prime comparator
+006D   3006           00398                 MOVLW   .6                              ;
+006E   00C2           00399                 MOVWF   LINE_DEBOUNCE                   ;
+                      00400                                                         ;
+006F   1683           00401                 RAM1                                    ;
+0070   158C           00402                 BSF     _CMIE                           ;Now, allow ZC compartor interrupts
+0071   1283           00403                 RAM0                                    ;
+                      00404                                                         ;
+                      00405 ;********************************************************
+0072                  00406 MAIN_LOOP                                               ;
+0072   0064           00407                 CLRWDT                                  ;
+                      00408                                                         ;
+0073   1C0C           00409                 BTFSS   PIR1,TMR1IF                     ;T1 EXPIRE?
+0074   2895           00410                 GOTO    _IDLE                           ;
+0075   100C           00411                 BCF     PIR1,TMR1IF                     ;
+0076   30FF           00412                 MOVLW   -1                              ;
+0077   008F           00413                 MOVWF   TMR1H                           ;
+0078   3083           00414                 MOVLW   Timer1tick_ms                   ;reload timer1
+0079   008E           00415                 MOVWF   TMR1L                           ;
+007A   21B9           00416                 CALL    ADJUST_REDUCED_TIMERS           ;
+                      00417                                                         ;
+007B                  00418 _PERIOD_TIME                                            ;
+007B   1C20           00419                 BTFSS   PERIOD_TICK                     ;
+007C   2887           00420                 GOTO    _HALF_SECOND_TASKS              ;
+007D   1020           00421                 BCF             PERIOD_TICK             ;
+007E   08A2           00422                 MOVF    STAY_ON_PERIOD,F                ;
+007F   1903           00423                 BTFSC   STATUS,Z                        ;decrement STAY_ON_PERIOD only when non zero
+0080   2882           00424                 GOTO    $+2                             ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0081   03A2           00425                 DECF    STAY_ON_PERIOD,F                ;this get calculated in CALCULATE_PID
+0082   0BA3           00426                 DECFSZ  CYCLE_CNTR,F                    ;256
+0083   2887           00427                 GOTO    _HALF_SECOND_TASKS              ;
+0084   20EB           00428                 CALL    CALCULATE_PID                   ;
+0085   30FF           00429                 MOVLW   NUMBER_OF_CYCLES                ;reset the cycle
+0086   00A3           00430                 MOVWF   CYCLE_CNTR                      ;
+                      00431                                                         ;
+0087                  00432 _HALF_SECOND_TASKS                                      ;
+0087   1CA0           00433                 BTFSS   HALF_SECONDS_TICK               ;
+0088   288B           00434                 GOTO    _SECONDS_TASKS                  ;
+0089   10A0           00435                 BCF     HALF_SECONDS_TICK               ;
+008A   20BA           00436                 CALL    LED_BLINKER                     ;
+                      00437                                                         ;
+008B                  00438 _SECONDS_TASKS                                          ;
+008B   1D20           00439                 BTFSS   SECONDS_TICK                    ;
+008C   2890           00440                 GOTO    _MINUTE_TASKS                   ;
+008D   1120           00441                 BCF     SECONDS_TICK                    ;
+008E   20A5           00442                 CALL    CHECK_TIMER_Z                   ;****11-01-06
+008F   20C2           00443                 CALL    CHECK_PHASE_TIMERS              ;
+                      00444                                                         ;
+0090                  00445 _MINUTE_TASKS                                           ;
+0090   1DA0           00446                 BTFSS   MINUTES_TICK                    ;
+0091   2895           00447                 GOTO    _IDLE                           ;
+0092   11A0           00448                 BCF             MINUTES_TICK            ;
+0093   20AF           00449                 CALL    CHECK_TIMER_Y                   ;
+0094   21F7           00450                 CALL    CHECK_X_INIT                    ;
+                      00451                                                         ;
+0095   2872           00452 _IDLE   GOTO    MAIN_LOOP                               ;
+                      00453 ;***************************************************************
+                      00454 ;Blocks all processes until a valid START is received
+                      00455 ;***************************************************************
+0096                  00456 CHECK_TASTO                                             ;
+0096   30D8           00457                 MOVLW   -TP                             ;
+0097   00AE           00458                 MOVWF   COUNT_TASTO_PREMUTO             ;
+                      00459                                                         ;
+0098   30FF           00460                 MOVLW   -1                              ;
+0099   008F           00461                 MOVWF   TMR1H                           ;
+009A   3083           00462                 MOVLW   Timer1tick_ms                   ;
+009B   008E           00463                 MOVWF   TMR1L                           ;
+009C   100C           00464                 BCF     PIR1,TMR1IF                     ;
+                      00465                                                         ;
+009D                  00466 _WAIT_TASTO                                             ;
+009D   0064           00467                 CLRWDT                                  ;
+009E   1C0C           00468                 BTFSS   PIR1,TMR1IF                     ;check every milisecond
+009F   289D           00469                 GOTO    _WAIT_TASTO                     ;
+                      00470                                                         ;
+00A0   1805           00471                 BTFSC   TASTO                           ;NORMALLY 1 GOES TO 0 WHEN PRESSED
+00A1   2896           00472                 GOTO    CHECK_TASTO                     ;reset
+                      00473                                                         ;
+00A2   0FAE           00474                 INCFSZ  COUNT_TASTO_PREMUTO,F           ;
+00A3   289D           00475                 GOTO    _WAIT_TASTO                     ;
+                      00476                                                         ;
+00A4   0008           00477                 RETURN                                  ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00478 ;***************************************************************
+                      00479 ;Mod 11-01-06: New timer for blinking the LED
+                      00480 ;***************************************************************
+00A5                  00481 CHECK_TIMER_Z                                           ;
+00A5   1B21           00482                 BTFSC   CYCLE_ENDED                     ;count only if we're not in general shutoff
+00A6   28AE           00483                 GOTO    _TIMR_Z_END                     ; or
+00A7   1AA1           00484                 BTFSC   TEMPO_Z_ON                      ; already in TEMPO_Z
+00A8   28AE           00485                 GOTO    _TIMR_Z_END                     ;
+                      00486                                                         ;
+00A9   0BB1           00487                 DECFSZ  TIMER_Z_L,F                     ;
+00AA   28AE           00488                 GOTO    _TIMR_Z_END                     ;
+00AB   0BB0           00489                 DECFSZ  TIMER_Z_H,F                     ;
+00AC   28AE           00490                 GOTO    _TIMR_Z_END                     ;
+                      00491                                                         ;
+00AD   16A1           00492                 BSF     TEMPO_Z_ON                      ;TEMPO_Z reached
+                      00493                                                         ;
+00AE   0008           00494 _TIMR_Z_END     RETURN                                  ;
+                      00495 ;***************************************************************
+                      00496 ;EXECUTES EVERY MINUTE
+                      00497 ;***************************************************************
+00AF                  00498 CHECK_TIMER_Y                                           ;
+00AF   1B21           00499                 BTFSC   CYCLE_ENDED                     ;are we in general shutoff?
+00B0   28B3           00500                 GOTO    _ENDED                          ;
+                      00501                                                         ;
+00B1   0BAF           00502                 DECFSZ  MASTER_SHUTDOWN,F               ;
+00B2   28B9           00503                 GOTO    _END_Y                          ;
+00B3   01A2           00504 _ENDED          CLRF    STAY_ON_PERIOD                  ;GENERAL SHUT OFF
+00B4   01B4           00505                 CLRF    TT_HI                           ;
+00B5   01B5           00506                 CLRF    TT_LO                           ;
+00B6   3040           00507                 MOVLW   b'01000000'                     ;shuts down all phases, LED, raises CYCLE_ENDED
+00B7   00A1           00508                 MOVWF   FLAGS2                          ;
+00B8   1285           00509                 BCF     LED                             ;***11-01-06
+00B9   0008           00510 _END_Y  RETURN                                          ;
+                      00511 ;***************************************************************
+                      00512 ;IF WE ARE AT THE END OF PERIOD_Y, BLINK THE LED
+                      00513 ;***************************************************************
+00BA                  00514 LED_BLINKER                                             ;modify ****11-01-06:
+                      00515 ;               BTFSS   CYCLE_ENDED                     ;OUT: are we in general shutoff?
+00BA   1EA1           00516                 BTFSS   TEMPO_Z_ON                      ;IN: are we in TEMPO_Z?
+00BB   28C1           00517                 GOTO    _LED_END                        ;
+                      00518                                                         ;
+00BC   1E85           00519                 BTFSS   LED                             ;
+00BD   28C0           00520                 GOTO    _BLINK_ON                       ;
+00BE   1285           00521                 BCF     LED                             ;
+00BF   28C1           00522                 GOTO    _LED_END                        ;
+00C0   1685           00523 _BLINK_ON       BSF     LED                             ;
+                      00524                                                         ;
+00C1   0008           00525 _LED_END        RETURN                                  ;
+                      00526 ;***************************************************************
+                      00527 ;Step through all phases
+                      00528 ;***************************************************************
+00C2                  00529 CHECK_PHASE_TIMERS                                      ;
+00C2   1F21           00530                 BTFSS   CYCLE_ENDED                     ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00C3   28C6           00531                 GOTO    _PHASE_1                        ;
+00C4   01A2           00532                 CLRF    STAY_ON_PERIOD                  ;if we are in general shutoff make sure everythi
+                            ng is OFF
+00C5   28EA           00533                 GOTO    _END_PHASE                      ;and do nothing
+                      00534                                                         ;
+00C6                  00535 _PHASE_1                                                ;
+00C6   1CA1           00536                 BTFSS   PHASE_1                         ;
+00C7   28D3           00537                 GOTO    _PHASE_2                        ;
+00C8   0BAB           00538                 DECFSZ  PHASE_1_TIMER_LO,F              ;
+00C9   28EA           00539                 GOTO    _END_PHASE                      ;
+00CA   0BAA           00540                 DECFSZ  PHASE_1_TIMER_HI,F              ;
+00CB   28EA           00541                 GOTO    _END_PHASE                      ;timer 1 running
+                      00542                                                         ;
+00CC   10A1           00543                 BCF     PHASE_1                         ;timer 1 ended
+00CD   3001           00544                 MOVLW   HIGH T2                         ;
+00CE   00B4           00545                 MOVWF   TT_HI                           ;
+00CF   30CD           00546                 MOVLW   LOW T2                          ;
+00D0   00B5           00547                 MOVWF   TT_LO                           ;
+00D1   1521           00548                 BSF     PHASE_2                         ;
+00D2   28EA           00549                 GOTO    _END_PHASE                      ;
+                      00550                                                         ;
+00D3                  00551 _PHASE_2                                                ;
+00D3   1D21           00552                 BTFSS   PHASE_2                         ;
+00D4   28DE           00553                 GOTO    _PHASE_3                        ;
+00D5   0BAC           00554                 DECFSZ  PHASE_2_TIMER,F                 ;timer 2 running
+00D6   28EA           00555                 GOTO    _END_PHASE                      ;
+                      00556                                                         ;
+00D7   1121           00557                 BCF     PHASE_2                         ;timer 2 ended
+00D8   3000           00558                 MOVLW   HIGH T3                         ;
+00D9   00B4           00559                 MOVWF   TT_HI                           ;
+00DA   30CE           00560                 MOVLW   LOW T3                          ;
+00DB   00B5           00561                 MOVWF   TT_LO                           ;
+00DC   15A1           00562                 BSF     PHASE_3                         ;
+00DD   28EA           00563                 GOTO    _END_PHASE                      ;
+                      00564                                                         ;
+00DE                  00565 _PHASE_3                                                ;
+00DE   1DA1           00566                 BTFSS   PHASE_3                         ;
+00DF   28E9           00567                 GOTO    _PHASE_4                        ;
+00E0   0BAD           00568                 DECFSZ  PHASE_3_TIMER,F                 ;timer 3 running
+00E1   28EA           00569                 GOTO    _END_PHASE                      ;
+                      00570                                                         ;
+00E2   11A1           00571                 BCF     PHASE_3                         ;timer 3 ended
+00E3   3000           00572                 MOVLW   HIGH T4                         ;
+00E4   00B4           00573                 MOVWF   TT_HI                           ;
+00E5   30CE           00574                 MOVLW   LOW T4                          ;
+00E6   00B5           00575                 MOVWF   TT_LO                           ;
+00E7   1621           00576                 BSF     PHASE_4                         ;
+00E8   28EA           00577                 GOTO    _END_PHASE                      ;
+                      00578                                                         ;
+00E9                  00579 _PHASE_4                                                ;
+00E9   0000           00580                 NOP                                     ;DO NOTHING
+00EA                  00581 _END_PHASE                                              ;
+00EA   0008           00582                 RETURN                                  ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 16
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00583 ;***************************************************************
+                      00584 ;TT_HI and TT_HI are the preset temperatures
+                      00585 ;***************************************************************
+00EB                  00586 CALCULATE_PID                                           ;
+00EB   0064           00587                 CLRWDT                                  ;
+00EC   1B21           00588                 BTFSC   CYCLE_ENDED                     ;are we in general shutoff?
+00ED   299D           00589                 GOTO    _SHUT_OFF                       ;
+                      00590                                                         ;
+00EE   149F           00591                 BSF     GO_DONE                         ;start a/d acquisition
+00EF   189F           00592                 BTFSC   GO_DONE                         ;
+00F0   28EF           00593                 GOTO    $-1                             ;
+                      00594                                                         ;
+00F1   081E           00595                 MOVFW   ADRESH                          ;
+00F2   00B2           00596                 MOVWF   TM_HI                           ;
+00F3   1683           00597                 RAM1                                    ;
+00F4   081E           00598                 MOVFW   ADRESL                          ;
+00F5   1283           00599                 RAM0                                    ;
+00F6   00B3           00600                 MOVWF   TM_LO                           ;
+                      00601 ;Calculate the difference between measured and target temperatures
+00F7   0832           00602                 MOVFW   TM_HI                           ;
+00F8   0234           00603                 SUBWF   TT_HI,W                         ;
+00F9   00BA           00604                 MOVWF   DIFF_HI                         ;save difference HI             
+00FA   0833           00605                 MOVFW   TM_LO                           ;
+00FB   0235           00606                 SUBWF   TT_LO,W                         ;
+00FC   00BB           00607                 MOVWF   DIFF_LO                         ;save difference HI             
+00FD   1C03           00608                 SKPNB                                   ;
+00FE   03BA           00609                 DECF    DIFF_HI,F                       ;
+                      00610                                                         ;
+00FF   083A           00611                 MOVFW   DIFF_HI                         ;see below...
+0100   00C0           00612                 MOVWF   DIFF_DEB_HI                     ;
+0101   083B           00613                 MOVFW   DIFF_LO                         ;
+0102   00C1           00614                 MOVWF   DIFF_DEB_LO                     ;
+                      00615                                                         ;
+0103   1C21           00616                 BTFSS   PHASE_PR                        ;special case of PR
+0104   291D           00617                 GOTO    _CALC_P                         ;If we are abovr T_PR 
+0105   1FBA           00618                 BTFSS   NEGATIVE                        ;
+0106   290D           00619                 GOTO    _T1_NORMAL                      ;
+                      00620                                                                         ;then
+0107   3049           00621                 MOVLW   LOW REDUCED_TIME1               ;load reduced TIME1 value
+0108   00AB           00622                 MOVWF   PHASE_1_TIMER_LO                ;
+0109   3001           00623                 MOVLW   HIGH REDUCED_TIME1              ;
+010A   00AA           00624                 MOVWF   PHASE_1_TIMER_HI                ;
+010B   0AAA           00625                 INCF    PHASE_1_TIMER_HI,F              ;MAKE SURE NOT 0!
+010C   2912           00626                 GOTO    _SET_T1_TEMP                    ;
+010D                  00627 _T1_NORMAL                                              ;
+010D   304A           00628                 MOVLW   LOW     TIME1                   ;else
+010E   00AB           00629                 MOVWF   PHASE_1_TIMER_LO                ; load full TIME1 value
+010F   3001           00630                 MOVLW   HIGH TIME1                      ;
+0110   00AA           00631                 MOVWF   PHASE_1_TIMER_HI                ;endif
+0111   0AAA           00632                 INCF    PHASE_1_TIMER_HI,F              ;MAKE SURE NOT 0!
+0112                  00633 _SET_T1_TEMP                                            ;
+0112   1021           00634                 BCF     PHASE_PR                        ;
+0113   14A1           00635                 BSF     PHASE_1                         ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 17
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0114   3002           00636                 MOVLW   HIGH T1                         ;
+0115   00B4           00637                 MOVWF   TT_HI                           ;
+0116   3092           00638                 MOVLW   LOW T1                          ;
+0117   00B5           00639                 MOVWF   TT_LO                           ;
+                      00640                                                         ;
+0118   0832           00641                 MOVFW   TM_HI                           ;
+0119   00B6           00642                 MOVWF   PT_HI                           ;initialize previous temperature
+011A   0833           00643                 MOVFW   TM_LO                           ;
+011B   00B7           00644                 MOVWF   PT_LO                           ;
+011C   299E           00645                 GOTO    _CALC_END                       ;
+                      00646                                                         ;
+011D                  00647 _CALC_P                                                 ;NORMAL RUNNING CONDITIONS
+                      00648 ;               MOVFW   DIFF_HI                         ;safety checks for over-the-target:
+                      00649 ;               ANDLW   H'F0'                           ;First check for negative numbers
+                      00650 ;               BTFSC   STATUS,Z                        ;(DIFF_HI = H'FXXX)
+                      00651 ;               GOTO    _CHK_MAX                        ;
+                      00652 ;               M_CMPL_JL       DIFF_HI,H'FF',_EMERGENCY_OFF ;safety check 1: if the difference with the
+                             target
+                      00653 ;               M_CMPL_JE       DIFF_LO,0,_EMERGENCY_OFF; temperature is > 256, then temperature runaway
+011D                  00654 _CHK_MAX                                                ;
+                      00655 ;               M_CMPL_JG       TM_HI,(HIGH T_200),_EMERGENCY_OFF;safety check 2: if the measured temper
+                            ature
+                      00656 ;               M_CMPL_JL       TM_HI,(HIGH T_200),_PID_CONT;
+                      00657 ;               M_CMPL_JG       TM_LO,(LOW T_200),_EMERGENCY_OFF; is > 200 degreess
+011D                  00658 _PID_CONT                                               ;
+011D   1051           00659                 BCF     FORZA_MAX                       ;
+011E   083A           00660                 MOVFW   DIFF_HI                         ;Calculate Proportional
+011F   00C6           00661                 MOVWF   AARGB0                          ;
+0120   083B           00662                 MOVFW   DIFF_LO                         ;
+0121   00C7           00663                 MOVWF   AARGB1                          ;
+0122   3001           00664                 MOVLW   HIGH Kp                         ;
+0123   00CC           00665                 MOVWF   BARGB0                          ;
+0124   3090           00666                 MOVLW   LOW Kp                          ;
+0125   00CD           00667                 MOVWF   BARGB1                          ;
+0126   2234           00668                 CALL    FXM1616S                        ;
+0127   0846           00669                 MOVFW   AARGB0                          ;
+0128   00BC           00670                 MOVWF   T_SUM0                          ;
+0129   0847           00671                 MOVFW   AARGB1                          ;
+012A   00BD           00672                 MOVWF   T_SUM1                          ;
+012B   0848           00673                 MOVFW   AARGB2                          ;
+012C   00BE           00674                 MOVWF   T_SUM2                          ;
+012D   0849           00675                 MOVFW   AARGB3                          ;
+012E   00BF           00676                 MOVWF   T_SUM3                          ;
+                      00677                                                         ;Calculate Integral 
+012F   1FBA           00678 _LAB            BTFSS   DIFF_HI,.7                      ;check sign bit
+0130   2943           00679                 GOTO    _POS_I                          ;
+                      00680                                                         ;
+                      00681         IFDEF   FREERUN                                 ;
+0131   30FF           00682                 MOVLW   H'FF'                           ;Reduce the negative growth of the integral part
+0132   00BA           00683                 MOVWF   DIFF_HI                         ;
+0133   30E0           00684                 MOVLW   H'E0'                           ;
+0134   04BB           00685                 IORWF   DIFF_LO,F                       ;
+                      00686                                                         ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 18
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0135   09BA           00687                 COMF    DIFF_HI,F                       ;negative difference
+0136   09BB           00688                 COMF    DIFF_LO,F                       ; use 2's complement
+0137   0ABB           00689                 INCF    DIFF_LO,F                       ;
+0138   1903           00690                 SKPNZ                                   ;
+0139   0ABA           00691                 INCF    DIFF_HI,F                       ;
+                      00692         ENDIF                                           ;
+                      00693 
+                      00694         IFDEF FIXED                                     ;
+                      00695                 MOVLW   .5                              ;subtract a fixed number
+                      00696                 MOVWF   DIFF_LO                         ;
+                      00697                 CLRF    DIFF_HI                         ;
+                      00698         ENDIF                                           ;
+                      00699 
+013A   083B           00700                 MOVFW   DIFF_LO                         ;
+013B   02B9           00701                 SUBWF   SIGMA_LO,F                      ;
+013C   1C03           00702                 SKPNB                                   ;borrow?
+013D   03B8           00703                 DECF    SIGMA_HI,F                      ;
+013E   1FB8           00704                 BTFSS   SIGMA_HI,7
+                      00705 
+                      00706                 ;MOVFW  DIFF_HI                         ;
+                      00707                 ;SUBWF  SIGMA_HI,F                      ;
+                      00708                 ;SKPB                                   ;
+013F   2964           00709                 GOTO    _CALC_I                         ;
+                      00710                                                         ;
+0140   01B8           00711                 CLRF    SIGMA_HI                        ;
+0141   01B9           00712                 CLRF    SIGMA_LO                        ;
+0142   2964           00713                 GOTO    _CALC_I                         ;
+                      00714                                                         ;
+0143                  00715 _POS_I  
+0143   3000           00716                 MOVLW   HIGH    MAX_DIF_PREC            ;
+0144   023A           00717                 SUBWF   DIFF_HI,W                       ;
+0145   1D03           00718                 SKPZ                                    ;
+0146   2949           00719                 B       PI1                             ;
+                      00720                                                         ;
+0147   3064           00721                 MOVLW   LOW     MAX_DIF_PREC            ;
+0148   023B           00722                 SUBWF   DIFF_LO,W                       ;
+                      00723                                                         ;
+0149   1C03           00724 PI1             SKPNB                                   ;
+014A   2951           00725                 B       PI2                             ;
+014B   3000           00726                 MOVLW   LOW     PRECARICA_PID           ;
+014C   00B9           00727                 MOVWF   SIGMA_LO                        ;Precarico SIGMA
+014D   3006           00728                 MOVLW   HIGH    PRECARICA_PID           ;
+014E   00B8           00729                 MOVWF   SIGMA_HI                        ;Precarico SIGMA
+014F   1451           00730                 BSF     FORZA_MAX                       ;
+0150   2964           00731                 GOTO    _CALC_I                         ;
+                      00732                                                         ;
+0151   01BA           00733 PI2             CLRF    DIFF_HI                         ;Reduce positive growth
+0152   307F           00734                 MOVLW   H'7F'                           ;
+0153   05BB           00735                 ANDWF   DIFF_LO,F                       ;
+                      00736                                                         ;
+0154   083B           00737                 MOVFW   DIFF_LO                         ;positive number
+0155   07B9           00738                 ADDWF   SIGMA_LO,F                      ;
+0156   1803           00739                 SKPNC                                   ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 19
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0157   0FB8           00740                 INCFSZ  SIGMA_HI,F                      ;
+0158   295A           00741                 GOTO    _SKP1                           ;
+0159   2960           00742                 GOTO    _SIGMA_OVFL                     ;
+                      00743                                                         ;
+015A   1BB8           00744 _SKP1   BTFSC   SIGMA_HI,.7                             ;
+015B   2960           00745                 GOTO    _SIGMA_OVFL                     ;
+                      00746                                                         ;
+015C   083A           00747                 MOVFW   DIFF_HI                         ;
+015D   07B8           00748                 ADDWF   SIGMA_HI,F                      ;
+015E   1C03           00749                 SKPC                                    ;
+015F   2964           00750                 GOTO    _CALC_I                         ;
+                      00751                                                         ;
+0160                  00752 _SIGMA_OVFL                                             ;
+0160   307F           00753                 MOVLW   H'7F'                           ;overflow on sigma counter
+0161   00B8           00754                 MOVWF   SIGMA_HI                        ;
+0162   30FF           00755                 MOVLW   H'FF'                           ;
+0163   00B9           00756                 MOVWF   SIGMA_LO                        ;
+                      00757 ;               CLRF    SIGMA_HI                        ;overflow on sigma counter
+                      00758 ;               MOVLW   H'1F'                           ;
+                      00759 ;               MOVWF   SIGMA_LO                        ;
+                      00760                                                         ;
+0164   0838           00761 _CALC_I         MOVFW   SIGMA_HI                        ;
+0165   00C6           00762                 MOVWF   AARGB0                          ;
+0166   0839           00763                 MOVFW   SIGMA_LO                        ;
+0167   00C7           00764                 MOVWF   AARGB1                          ;
+0168   3000           00765                 MOVLW   HIGH Ki                         ;
+0169   00CC           00766                 MOVWF   BARGB0                          ;
+016A   300D           00767                 MOVLW   LOW Ki                          ;
+016B   00CD           00768                 MOVWF   BARGB1                          ;
+016C   2234           00769                 CALL    FXM1616S                        ;
+016D   21A1           00770                 CALL    ADD32S                          ;
+                      00771                                                         ;
+016E   0833           00772                 MOVFW   TM_LO                           ;Calculate derivative
+016F   0237           00773                 SUBWF   PT_LO,W                         ;note: subtract current from previous temperatur
+                            e (PT - TM)
+0170   00BB           00774                 MOVWF   DIFF_LO                         ;               so the difference is negative if
+                             temp is rising and
+0171   1803           00775                 BTFSC   STATUS,C                        ;               positive if falling
+0172   2975           00776                 GOTO    $+3                             ;
+0173   0A32           00777                 INCF    TM_HI,W                         ;
+0174   2976           00778                 GOTO    $+2                             ;
+0175   0832           00779                 MOVFW   TM_HI                           ;
+0176   0236           00780                 SUBWF   PT_HI,W                         ;
+0177   00BA           00781                 MOVWF   DIFF_HI                         ;
+                      00782                                                         ;
+0178   0832           00783                 MOVFW   TM_HI                           ;
+0179   00B6           00784                 MOVWF   PT_HI                           ;update previous temperature
+017A   0833           00785                 MOVFW   TM_LO                           ;
+017B   00B7           00786                 MOVWF   PT_LO                           ;
+                      00787                                                         ;
+017C   083A           00788                 MOVFW   DIFF_HI                         ;
+017D   00C6           00789                 MOVWF   AARGB0                          ;
+017E   083B           00790                 MOVFW   DIFF_LO                         ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 20
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+017F   00C7           00791                 MOVWF   AARGB1                          ;
+0180   300C           00792                 MOVLW   HIGH Kd                         ;
+0181   00CC           00793                 MOVWF   BARGB0                          ;
+0182   3000           00794                 MOVLW   LOW Kd                          ;
+0183   00CD           00795                 MOVWF   BARGB1                          ;
+0184   2234           00796                 CALL    FXM1616S                        ;
+0185   21A1           00797                 CALL    ADD32S                          ;
+                      00798                                                         ;Check the result
+                      00799 
+                      00800 ;               BTFSC   DIFF_DEB_HI,7                   ;shutoff if we're negative anyways...
+                      00801 ;               GOTO    _SHUT_OFF                       ;
+                      00802 
+0186   1C51           00803                 BTFSS   FORZA_MAX                       ;forza ff se differenza (negativa) > MAX_DIF_NEG
+                             ******************
+0187   298B           00804                 GOTO    _CON2                           ;
+                      00805                                                         ;Differenza negativa Verifico se precaricare FF
+                      00806                 ;MOVLW  HIGH    MAX_DIF_NEG
+                      00807                 ;SUBWF  DIFF_HI,W
+                      00808                 ;SKPZ
+                      00809                 ;B              PI1S
+                      00810 
+                      00811                 ;MOVLW  LOW             MAX_DIF_NEG
+                      00812                 ;SUBWF  DIFF_LO,W
+                      00813 
+0188                  00814 PI1S    ;SKPNB
+                      00815                 ;B      _CON1
+                      00816 
+                      00817                 ;CLRF   SIGMA_HI                        ;
+                      00818                 ;CLRF   SIGMA_LO                        ;
+0188   30FF           00819                 MOVLW   H'FF'
+0189   00BE           00820                 MOVWF   T_SUM2                          ;Precarico SIGMA
+018A   298D           00821                 B       _CON1
+                      00822 
+018B                  00823 _CON2                                                           ;forza 00 se Differenza (positiva) > MAX
+                            _DIF_POS
+                      00824                 ;MOVLW  HIGH    MAX_DIF_POS
+                      00825                 ;SUBWF  DIFF_HI,W
+                      00826                 ;SKPZ
+                      00827                 ;B              PI2S
+                      00828 
+                      00829                 ;MOVLW  LOW             MAX_DIF_POS
+                      00830                 ;SUBWF  DIFF_LO,W
+                      00831 
+018B                  00832 PI2S    ;SKPNB
+                      00833                 ;B      _CON1
+                      00834 
+                      00835                 ;CLRF   SIGMA_HI                        ;
+                      00836                 ;CLRF   SIGMA_LO                        ;
+018B   0000           00837                 NOP                                                     ;MOVLW  H'00'
+018C   0000           00838                 NOP                                                     ;MOVWF  T_SUM2                  
+                                    ;Precarico SIGMA
+                      00839 
+                      00840                                                                         ;++++++++++++++++++++++++++++++ 
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 21
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                            FINE MODIFICA
+018D   1BBC           00841 _CON1   BTFSC   T_SUM0,7                        ;
+018E   299D           00842                 GOTO    _SHUT_OFF                       ;
+018F   083C           00843                 MOVFW   T_SUM0                          ;If higher order bytes set, 
+0190   043D           00844                 IORWF   T_SUM1,W                        ;
+0191   1D03           00845                 SKPZ                                    ;
+0192   2994           00846                 GOTO    _SATURATE                       ;
+0193   2996           00847                 GOTO    _TURN_ON                        ;
+                      00848                                                         ;
+0194                  00849 _SATURATE                                               ;
+0194   30FF           00850                 MOVLW   NUMBER_OF_CYCLES        ;MAXIMUM NUMBER OF CYCLES               
+0195   00BE           00851                 MOVWF   T_SUM2                          ;
+0196                  00852 _TURN_ON                                                ;PARTIAL PERIOD
+0196   083E           00853                 MOVFW   T_SUM2                          ;
+0197   00A2           00854                 MOVWF   STAY_ON_PERIOD                  ;
+0198   299E           00855                 GOTO    _CALC_END                       ;
+0199                  00856 _EMERGENCY_OFF                                          ;
+0199   01B4           00857                 CLRF    TT_HI                           ;TOTAL SHUTDOWN
+019A   01B5           00858                 CLRF    TT_LO                           ;
+019B   3040           00859                 MOVLW   b'01000000'                     ;
+019C   00A1           00860                 MOVWF   FLAGS2                          ;
+019D                  00861 _SHUT_OFF                                               ;
+019D   01A2           00862                 CLRF    STAY_ON_PERIOD                  ;ZERO PERIODS
+                      00863                                                         ;
+019E                  00864 _CALC_END                                               ;
+019E   0822           00865                 MOVFW   STAY_ON_PERIOD                  ;
+019F   00C3           00866                 MOVWF   DEBUG                           ;
+01A0   0008           00867                 RETURN                                  ;
+                      00868 ;***************************************************************
+                      00869 ;Add cuadruple precision
+                      00870 ;***************************************************************
+01A1                  00871 ADD32S                                                  ;
+01A1   0849           00872                 MOVFW   AARGB3                          ;
+01A2   07BF           00873                 ADDWF   T_SUM3,F                        ;Propagate carry bit
+01A3   1C03           00874                 SKPC                                    ;
+01A4   29AA           00875                 GOTO    _ARG2                           ;
+01A5   0FC8           00876                 INCFSZ  AARGB2,F                        ;
+01A6   29AA           00877                 GOTO    _ARG2                           ;
+01A7   0FC7           00878                 INCFSZ  AARGB1,F                        ;
+01A8   29AA           00879                 GOTO    _ARG2                           ;
+01A9   0AC6           00880                 INCF    AARGB0,F                        ;
+                      00881                                                         ;
+01AA   0848           00882 _ARG2   MOVFW   AARGB2                                  ;
+01AB   07BE           00883                 ADDWF   T_SUM2,F                        ;
+01AC   1C03           00884                 SKPC                                    ;
+01AD   29B1           00885                 GOTO    _ARG1                           ;
+01AE   0FC7           00886                 INCFSZ  AARGB1,F                        ;
+01AF   29B1           00887                 GOTO    _ARG1                           ;
+01B0   0AC6           00888                 INCF    AARGB0,F                        ;
+                      00889                                                         ;
+01B1   0847           00890 _ARG1   MOVFW   AARGB1                                  ;
+01B2   07BD           00891                 ADDWF   T_SUM1,F                        ;
+01B3   1C03           00892                 SKPC                                    ;
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 22
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01B4   29B6           00893                 GOTO    _ARG0                           ;
+01B5   0AC6           00894                 INCF    AARGB0,F                        ;
+                      00895                                                         ;
+01B6   0846           00896 _ARG0   MOVFW   AARGB0                                  ;
+01B7   07BC           00897                 ADDWF   T_SUM0,F                        ;
+                      00898                                                         ;
+01B8   0008           00899                 RETURN                                  ;
+                      00900 ;***************************************************************
+01B9                  00901 ADJUST_REDUCED_TIMERS                                   ;
+01B9   0BA4           00902                 DECFSZ  PERIOD_COUNT,F                  ;6 ms counter
+01BA   29BE           00903                 GOTO    _CHECK_HALF_SEC                 ;
+01BB   1420           00904                 BSF             PERIOD_TICK             ;TICK...
+01BC   3008           00905                 MOVLW   PERIOD_SIZE                     ;
+01BD   00A4           00906                 MOVWF   PERIOD_COUNT                    ;
+                      00907                                                         ;
+01BE                  00908 _CHECK_HALF_SEC                                         ;1/2 second counter
+01BE   0BA5           00909                 DECFSZ  HLF_SECONDS_L0,F                ;
+01BF   29D1           00910                 GOTO    _END_RED                        ;
+01C0   0BA6           00911                 DECFSZ  HLF_SECONDS_HI,F                ;
+01C1   29D1           00912                 GOTO    _END_RED                        ;
+01C2   14A0           00913                 BSF     HALF_SECONDS_TICK               ;TICK...
+01C3   30F5           00914                 MOVLW   H'F5'                           ;
+01C4   00A5           00915                 MOVWF   HLF_SECONDS_L0                  ;
+01C5   3002           00916                 MOVLW   2                               ; H'2F5 -> empiricaly measured
+01C6   00A6           00917                 MOVWF   HLF_SECONDS_HI                  ;
+                      00918                                                         ;
+01C7   0BA7           00919                 DECFSZ  SECONDS,F                       ;seconds counters
+01C8   29D1           00920                 GOTO    _END_RED                        ;
+01C9   1520           00921                 BSF     SECONDS_TICK                    ;
+01CA   3002           00922                 MOVLW   2                               ;2 perds of 30"
+01CB   00A7           00923                 MOVWF   SECONDS                         ;
+                      00924                                                         ;
+01CC   0BA8           00925                 DECFSZ  MINUTE,F                        ;minute counters
+01CD   29D1           00926                 GOTO    _END_RED                        ;
+01CE   15A0           00927                 BSF     MINUTES_TICK                    ;...TOCK
+01CF   303C           00928                 MOVLW   .60                             ;
+01D0   00A8           00929                 MOVWF   MINUTE                          ;
+                      00930                                                         ;
+01D1                  00931 _END_RED                                                ;
+01D1   0008           00932                 RETURN                                  ;
+                      00933 ;************* PULIZIA RAM BANK0 ************************
+01D2                  00934 CLEAR_RAM                                               ;
+01D2   301F           00935                 MOVLW   01FH                            ;INIZIO RAM -1
+01D3   0084           00936                 MOVWF   FSR                             ;
+                      00937                                                         ;
+01D4   0A84           00938 PURA0   INCF    FSR,F                                   ;
+01D5   0180           00939                 CLRF    INDF                            ;
+01D6   305F           00940                 MOVLW   05FH                            ;FINE RAM
+01D7   0604           00941                 XORWF   FSR,W                           ;
+01D8   1D03           00942                 SKPZ                                    ;
+01D9   29D4           00943                 GOTO    PURA0                           ;
+01DA   0008           00944                 RETURN                                  ;
+                      00945 ;**********************************************************
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 23
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00946 ;Turn the comparator on but do not allow interruopts yet.
+                      00947 ;**********************************************************
+01DB                  00948 COMPARATOR_ON                                           ;
+01DB   3004           00949                 MOVLW   MASK_CMCON                      ;CM0÷CM2 = 100 (GP0:D, GP1:A) = NO OUTPUT, INTER
+                            NAL REF
+01DC   0099           00950                 MOVWF   CMCON                           ;
+01DD   118C           00951                 BCF     _CMIF                           ;COMPARATOR INT FLAG
+                      00952                                                         ;
+01DE   308F           00953                 MOVLW   MASK_VRCON_UP_TO_DOWN           ;
+01DF   1B19           00954                 BTFSC   _COUT                           ;
+01E0   3080           00955                 MOVLW   MASK_VRCON_DOWN_TO_UP           ;
+                      00956                                                         ;
+01E1   1683           00957                 RAM1                                    ;
+01E2   0099           00958                 MOVWF   VRCON                           ;
+01E3   158C           00959                 BSF     _CMIE                           ;allow ZC ints
+01E4   1283           00960                 RAM0                                    ;
+                      00961                                                         ;
+01E5   0008           00962                 RETURN                                  ;
+                      00963 ;***************************************************************
+01E6                  00964 COMPARATOR_OFF                                          ;
+01E6   0819           00965                 MOVFW   CMCON                           ;...have to read CMCON to clear CMIF (see manual
+                            )
+01E7   118C           00966                 BCF     _CMIF                           ;
+01E8   1683           00967                 RAM1                                    ;
+01E9   118C           00968                 BCF     _CMIE                           ;
+01EA   3000           00969                 MOVLW   0                               ;
+01EB   0099           00970                 MOVWF   VRCON                           ;
+01EC   1283           00971                 RAM0                                    ;
+01ED   3007           00972                 MOVLW   MASK_CMCON_OFF                  ;CM0÷CM2 = 111 OFF
+01EE   0099           00973                 MOVWF   CMCON                           ;
+01EF   0008           00974                 RETURN                                  ;
+                      00975 ;***************************************************************
+01F0                  00976 CONVERTER_ON                                            ;
+01F0   3089           00977                 MOVLW   MASK_ADCON                      ;
+01F1   009F           00978                 MOVWF   ADCON0                          ;
+                      00979                                                         ;
+01F2   1683           00980                 RAM1                                    ;
+01F3   3014           00981                 MOVLW   MASK_ANSEL                      ;
+01F4   009F           00982                 MOVWF   ANSEL                           ;
+01F5   1283           00983                 RAM0                                    ;
+01F6   0008           00984                 RETURN                                  ;
+                      00985 ;***************************************************************
+01F7                  00986 CHECK_X_INIT
+01F7   1683           00987         RAM1
+                      00988 
+                      00989   ;OSCCAL
+01F8   23FF           00990         CALL    03FFH
+01F9   0610           00991         XORWF   OSCCAL,W
+01FA   1903           00992         SKPNZ
+01FB   29FE           00993         GOTO    CXI2
+                      00994 
+01FC   23FF           00995         CALL    03FFH
+01FD   0090           00996         MOVWF   OSCCAL
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 24
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00997 
+                      00998 ;;CXI1
+                      00999 ; ;OPTION_REG
+                      01000 ;       MOVFW   OPTION_REG              option reg changes for gait time measurement
+                      01001 ;       XORLW   MASK_OPTION
+                      01002 ;       SKPNZ
+                      01003 ;       GOTO    CXI2
+                      01004 ;
+                      01005 ;       MOVLW   MASK_OPTION
+                      01006 ;       MOVWF   OPTION_REG
+                      01007 ;
+                      01008 ;  ;WPU
+01FE   0815           01009 CXI2    MOVFW   WPU
+01FF   1D03           01010         SKPZ
+0200   0195           01011         CLRF    WPU
+                      01012 
+                      01013   ;TRISIO
+0201   0805           01014         MOVFW   TRISIO
+0202   3A0F           01015         XORLW   MASK_TRISIO
+0203   1903           01016         SKPNZ
+0204   2A07           01017         GOTO    CXI3
+                      01018 
+0205   300F           01019         MOVLW   MASK_TRISIO
+0206   0085           01020         MOVWF   TRISIO
+                      01021 
+                      01022   ;T1CON
+0207   1283           01023 CXI3    RAM0
+0208   0810           01024         MOVFW   T1CON
+0209   3A30           01025         XORLW   MASK_T1CON
+020A   1D03           01026         SKPZ
+020B   1410           01027         BSF     _TMR1ON
+                      01028 
+                      01029   ;INTCON
+020C   080B           01030         MOVFW   INTCON
+020D   39C0           01031         ANDLW   0C0H
+020E   3AC0           01032         XORLW   0C0H
+020F   1903           01033         SKPNZ
+0210   2A13           01034         GOTO    CXI5
+                      01035 
+0211   30C0           01036         MOVLW   0C0H
+0212   048B           01037         IORWF   INTCON,F
+                      01038 
+                      01039   ;CMCON
+0213   0819           01040 CXI5    MOVFW   CMCON
+0214   39BF           01041         ANDLW   0BFH
+0215   3A04           01042         XORLW   MASK_CMCON
+0216   1903           01043         SKPNZ
+0217   2A1A           01044         GOTO    CXI6
+                      01045 
+0218   3004           01046         MOVLW   MASK_CMCON
+0219   0499           01047         IORWF   CMCON,F
+                      01048 
+                      01049   ;VRCON
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 25
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+021A   1683           01050 CXI6    RAM1
+021B   0819           01051         MOVFW   VRCON
+021C   39F0           01052         ANDLW   0F0H
+021D   3A80           01053         XORLW   MASK_VRCON_INIT
+021E   1903           01054         SKPNZ
+021F   2A23           01055         GOTO    CXI4
+                      01056 
+0220   3080           01057         MOVLW   MASK_VRCON_INIT
+0221   398F           01058         ANDLW   08FH
+0222   0499           01059         IORWF   VRCON,F
+                      01060 
+                      01061   ;ADCON0
+0223   1283           01062 CXI4    RAM0
+0224   081F           01063         MOVFW   ADCON0
+0225   39FD           01064         ANDLW   0FDH
+0226   3A89           01065         XORLW   MASK_ADCON
+0227   1903           01066         SKPNZ
+0228   2A2B           01067         GOTO    CXI7
+                      01068 
+0229   3089           01069         MOVLW   MASK_ADCON
+022A   049F           01070         IORWF   ADCON0,F
+                      01071 
+                      01072   ;ANSEL
+022B   1683           01073 CXI7    RAM1
+022C   081F           01074         MOVFW   ANSEL
+022D   3A14           01075         XORLW   MASK_ANSEL
+022E   1903           01076         SKPNZ
+022F   2A32           01077         GOTO    CXI8
+                      01078 
+0230   3014           01079         MOVLW   MASK_ANSEL
+0231   009F           01080         MOVWF   ANSEL
+                      01081 
+0232                  01082 CXI8
+0232   1283           01083 CXI_X   RAM0
+0233   0008           01084         RETURN
+                      01085 ;***************************************************************
+                      01086 
+                      01087         INCLUDE <MUL16X16SIGNED.INC>
+                      00001 ;       RCS Header $Id: fxm66.a16 2.3 1996/10/16 14:23:23 F.J.Testa Exp $
+                      00002 
+                      00003 ;       $Revision: 2.3 $
+                      00004 
+                      00005 ;       16x16 PIC16 FIXED POINT MULTIPLY ROUTINES
+                      00006 ;
+                      00007 ;       Input:  fixed point arguments in AARG and BARG
+                      00008 ;
+                      00009 ;       Output: product AARGxBARG in AARG
+                      00010 ;
+                      00011 ;       All timings are worst case cycle counts
+                      00012 ;
+                      00013 ;       It is useful to note that the additional unsigned routines requiring a non-power of two
+                      00014 ;       argument can be called in a signed multiply application where it is known that the
+                      00015 ;       respective argument is nonnegative, thereby offering some improvement in
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 26
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00016 ;       performance.
+                      00017 ;
+                      00018 ;         Routine            Clocks     Function
+                      00019 ;
+                      00020 ;       FXM1616S     269        16x16 -> 32 bit signed fixed point multiply
+                      00021 ;
+                      00022 ;       The above timings are based on the looped macros. If space permits,
+                      00023 ;       approximately 64-73 clocks can be saved by using the unrolled macros.
+                      00024 ;
+                      00025 ;**********************************************************************************************
+                      00026 
+                      00027 
+                      00028 #DEFINE _Z      STATUS,Z
+  00000007            00029 MSB     EQU     7
+                      00030 
+                      00031 
+                      00032 ;**********************************************************************************************
+                      00033 
+                      00034 ;       16x16 Bit Multiplication Macros
+                      00035 
+                      00036 SMUL1616L        macro
+                      00037 
+                      00038 ;       Max Timing:     2+11+6*16+15+2+6*17+16+5 = 249 clks
+                      00039 
+                      00040 ;       Min Timing:     2+7*6+5+2+6*6+5+4 = 96 clks
+                      00041 
+                      00042 ;       PM: 55            DM: 9
+                      00043 
+                      00044 
+                      00045                 MOVLW   0x8
+                      00046                 MOVWF   LOOPCOUNT
+                      00047 
+                      00048 LOOPSM1616A
+                      00049                 RRF     BARGB1, F
+                      00050                 BTFSC   _C
+                      00051                 GOTO    ALSM1616NA
+                      00052                 DECFSZ  LOOPCOUNT, F
+                      00053                 GOTO    LOOPSM1616A
+                      00054 
+                      00055                 MOVLW   0x7
+                      00056                 MOVWF   LOOPCOUNT
+                      00057 
+                      00058 LOOPSM1616B
+                      00059                 RRF     BARGB0, F
+                      00060                 BTFSC   _C
+                      00061                 GOTO    BLSM1616NA
+                      00062                 DECFSZ  LOOPCOUNT, F
+                      00063                 GOTO    LOOPSM1616B
+                      00064 
+                      00065                 CLRF    AARGB0
+                      00066                 CLRF    AARGB1
+                      00067                 RETLW   0x00
+                      00068 
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 27
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00069 ALOOPSM1616
+                      00070                 RRF     BARGB1, F
+                      00071                 BTFSS   _C
+                      00072                 GOTO    ALSM1616NA
+                      00073                 MOVF   TEMPB1,W
+                      00074                 ADDWF   AARGB1, F
+                      00075                 MOVF            TEMPB0,W
+                      00076                 BTFSC           _C
+                      00077                 INCFSZ          TEMPB0,W
+                      00078                 ADDWF           AARGB0, F
+                      00079 
+                      00080 ALSM1616NA      RLF    SIGN,W
+                      00081                 RRF    AARGB0, F
+                      00082                 RRF    AARGB1, F
+                      00083                 RRF    AARGB2, F
+                      00084                 DECFSZ  LOOPCOUNT, F
+                      00085                 GOTO    ALOOPSM1616
+                      00086 
+                      00087                 MOVLW   0x7
+                      00088                 MOVWF   LOOPCOUNT
+                      00089 
+                      00090 BLOOPSM1616
+                      00091                 RRF     BARGB0, F
+                      00092                 BTFSS   _C
+                      00093                 GOTO    BLSM1616NA
+                      00094                 MOVF   TEMPB1,W
+                      00095                 ADDWF   AARGB1, F
+                      00096                 MOVF            TEMPB0,W
+                      00097                 BTFSC           _C
+                      00098                 INCFSZ          TEMPB0,W
+                      00099                 ADDWF           AARGB0, F
+                      00100 
+                      00101 BLSM1616NA      RLF    SIGN,W
+                      00102                 RRF    AARGB0, F
+                      00103                 RRF    AARGB1, F
+                      00104                 RRF    AARGB2, F
+                      00105                 RRF             AARGB3, F
+                      00106                 DECFSZ  LOOPCOUNT, F
+                      00107                 GOTO    BLOOPSM1616
+                      00108 
+                      00109                 RLF    SIGN,W
+                      00110                 RRF    AARGB0, F
+                      00111                 RRF    AARGB1, F
+                      00112                 RRF    AARGB2, F
+                      00113                 RRF    AARGB3, F
+                      00114 
+                      00115                 endm
+                      00116 
+                      00117 ;**********************************************************************************************
+                      00118         
+                      00119 ;       16x16 Bit Signed Fixed Point Multiply 16x16 -> 32
+                      00120 
+                      00121 ;       Input:  16 bit signed fixed point multiplicand in AARGB0
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 28
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00122 ;                       16 bit signed fixed point multiplier in BARGB0
+                      00123 
+                      00124 ;       Use:    CALL    FXM1616S
+                      00125 
+                      00126 ;       Output: 32 bit signed fixed point product in AARGB0
+                      00127 
+                      00128 ;       Result: AARG  <--  AARG x BARG
+                      00129 
+                      00130 ;       Max Timing:     9+249+2 = 260 clks                B > 0
+                      00131 ;                       18+249+2 = 269 clks               B < 0
+                      00132 
+                      00133 ;       Min Timing:     9+96 = 105 clks
+                      00134 
+                      00135 ;       PM: 18+55+1 = 74              DM: 9
+                      00136 
+0234   01C8           00137 FXM1616S        CLRF    AARGB2          ; clear partial product
+0235   01C9           00138                 CLRF    AARGB3
+0236   01CF           00139                 CLRF    SIGN
+0237   0846           00140                 MOVF    AARGB0,W
+0238   0447           00141                 IORWF   AARGB1,W
+0239   1903           00142                 BTFSC   _Z
+023A   3400           00143                 RETLW   0x00
+                      00144                 
+023B   0846           00145                 MOVF    AARGB0,W
+023C   064C           00146                 XORWF   BARGB0,W
+023D   00CA           00147                 MOVWF   TEMPB0
+023E   1BCA           00148                 BTFSC   TEMPB0,MSB
+023F   09CF           00149                 COMF    SIGN,F
+                      00150 
+0240   1FCC           00151                 BTFSS   BARGB0,MSB
+0241   2A4E           00152                 GOTO    M1616SOK
+                      00153 
+0242   09CD           00154                 COMF            BARGB1, F
+0243   09CC           00155                 COMF            BARGB0, F
+0244   0ACD           00156                 INCF            BARGB1, F
+0245   1903           00157                 BTFSC           _Z
+0246   0ACC           00158                 INCF            BARGB0, F
+                      00159 
+0247   09C7           00160                 COMF            AARGB1, F
+0248   09C6           00161                 COMF            AARGB0, F
+0249   0AC7           00162                 INCF            AARGB1, F
+024A   1903           00163                 BTFSC           _Z
+024B   0AC6           00164                 INCF            AARGB0, F
+                      00165 
+024C   1BCC           00166                 BTFSC   BARGB0,MSB
+024D   2A8A           00167                 GOTO    M1616SX
+                      00168 
+024E   0846           00169 M1616SOK        MOVF   AARGB0,W
+024F   00CA           00170                 MOVWF   TEMPB0
+0250   0847           00171                 MOVF   AARGB1,W
+0251   00CB           00172                 MOVWF   TEMPB1
+                      00173 
+                      00174                 SMUL1616L
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 29
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M 
+                          M ;       Max Timing:     2+11+6*16+15+2+6*17+16+5 = 249 clks
+                          M 
+                          M ;       Min Timing:     2+7*6+5+2+6*6+5+4 = 96 clks
+                          M 
+                          M ;       PM: 55            DM: 9
+                          M 
+                          M 
+0252   3008               M                 MOVLW   0x8
+0253   00CE               M                 MOVWF   LOOPCOUNT
+                          M 
+0254                      M LOOPSM1616A
+0254   0CCD               M                 RRF     BARGB1, F
+0255   1803               M                 BTFSC   _C
+0256   2A6C               M                 GOTO    ALSM1616NA
+0257   0BCE               M                 DECFSZ  LOOPCOUNT, F
+0258   2A54               M                 GOTO    LOOPSM1616A
+                          M 
+0259   3007               M                 MOVLW   0x7
+025A   00CE               M                 MOVWF   LOOPCOUNT
+                          M 
+025B                      M LOOPSM1616B
+025B   0CCC               M                 RRF     BARGB0, F
+025C   1803               M                 BTFSC   _C
+025D   2A7D               M                 GOTO    BLSM1616NA
+025E   0BCE               M                 DECFSZ  LOOPCOUNT, F
+025F   2A5B               M                 GOTO    LOOPSM1616B
+                          M 
+0260   01C6               M                 CLRF    AARGB0
+0261   01C7               M                 CLRF    AARGB1
+0262   3400               M                 RETLW   0x00
+                          M 
+0263                      M ALOOPSM1616
+0263   0CCD               M                 RRF     BARGB1, F
+0264   1C03               M                 BTFSS   _C
+0265   2A6C               M                 GOTO    ALSM1616NA
+0266   084B               M                 MOVF   TEMPB1,W
+0267   07C7               M                 ADDWF   AARGB1, F
+0268   084A               M                 MOVF            TEMPB0,W
+0269   1803               M                 BTFSC           _C
+026A   0F4A               M                 INCFSZ          TEMPB0,W
+026B   07C6               M                 ADDWF           AARGB0, F
+                          M 
+026C   0D4F               M ALSM1616NA      RLF    SIGN,W
+026D   0CC6               M                 RRF    AARGB0, F
+026E   0CC7               M                 RRF    AARGB1, F
+026F   0CC8               M                 RRF    AARGB2, F
+0270   0BCE               M                 DECFSZ  LOOPCOUNT, F
+0271   2A63               M                 GOTO    ALOOPSM1616
+                          M 
+0272   3007               M                 MOVLW   0x7
+0273   00CE               M                 MOVWF   LOOPCOUNT
+                          M 
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 30
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0274                      M BLOOPSM1616
+0274   0CCC               M                 RRF     BARGB0, F
+0275   1C03               M                 BTFSS   _C
+0276   2A7D               M                 GOTO    BLSM1616NA
+0277   084B               M                 MOVF   TEMPB1,W
+0278   07C7               M                 ADDWF   AARGB1, F
+0279   084A               M                 MOVF            TEMPB0,W
+027A   1803               M                 BTFSC           _C
+027B   0F4A               M                 INCFSZ          TEMPB0,W
+027C   07C6               M                 ADDWF           AARGB0, F
+                          M 
+027D   0D4F               M BLSM1616NA      RLF    SIGN,W
+027E   0CC6               M                 RRF    AARGB0, F
+027F   0CC7               M                 RRF    AARGB1, F
+0280   0CC8               M                 RRF    AARGB2, F
+0281   0CC9               M                 RRF             AARGB3, F
+0282   0BCE               M                 DECFSZ  LOOPCOUNT, F
+0283   2A74               M                 GOTO    BLOOPSM1616
+                          M 
+0284   0D4F               M                 RLF    SIGN,W
+0285   0CC6               M                 RRF    AARGB0, F
+0286   0CC7               M                 RRF    AARGB1, F
+0287   0CC8               M                 RRF    AARGB2, F
+0288   0CC9               M                 RRF    AARGB3, F
+                          M 
+                      00175 
+0289   3400           00176                 RETLW           0x00
+                      00177 
+                      00178 
+028A   01C8           00179 M1616SX         CLRF    AARGB2
+028B   01C9           00180                 CLRF    AARGB3
+028C   0D4F           00181                 RLF     SIGN,W
+028D   0CC6           00182                 RRF     AARGB0,F
+028E   0CC7           00183                 RRF     AARGB1,F
+028F   0CC8           00184                 RRF     AARGB2,F
+                      00185 
+0290   3400           00186                 RETLW   0x00
+                      00187 
+                      00188 ;**********************************************************************************************
+                      00189 ;**********************************************************************************************
+                      00190 
+                      01088 
+                      01089 
+                      01090 ;*** CALIBRATION ***
+03FF                  01091         ORG     0x3FF
+03FF   3480           01092         RETLW   080H
+                      01093 
+                      01094 
+                      01095 ;***************************************************************
+2100                  01096         org 0x2100
+2100   0000 0000 0000 01097  de 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+       0000 0000 0000 
+       0000 0000 0000 
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 31
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 
+                      01098 
+2110                  01099         org 0x2110
+2110   0000 0000 0000 01100  de 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 
+                      01101 
+2120                  01102         org 0x2120
+2120   0000 0000 0000 01103  de 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 
+                      01104 
+2130                  01105         org 0x2130
+2130   0000 0000 0000 01106  de 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 
+                      01107 
+2140                  01108         org 0x2140
+2140   0000 0000 0000 01109  de 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 
+                      01110 
+2150                  01111         org 0x2150
+2150   0000 0000 0000 01112  de 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 
+                      01113 
+2160                  01114         org 0x2160
+2160   0000 0000 0000 01115  de 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 
+                      01116 
+2170                  01117         org 0x2170
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 32
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+2170   0000 0000 0000 01118  de 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 0000 0000 
+       0000 
+                      01119  ;***************************************************************
+                      01120 
+                      01121 
+                      01122         END
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 33
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+AARGB0                            00000046
+AARGB1                            00000047
+AARGB2                            00000048
+AARGB3                            00000049
+ADCON0                            0000001F
+ADCS0                             00000004
+ADCS1                             00000005
+ADCS2                             00000006
+ADD32S                            000001A1
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADJUST_REDUCED_TIMERS             000001B9
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+ALOOPSM1616                       00000263
+ALSM1616NA                        0000026C
+ANS0                              00000000
+ANS1                              00000001
+ANS2                              00000002
+ANS3                              00000003
+ANSEL                             0000009F
+BARGB0                            0000004C
+BARGB1                            0000004D
+BASE_TEMPI                        PIR1,TMR1IF
+BLOOPSM1616                       00000274
+BLSM1616NA                        0000027D
+B_FSR                             00000045
+B_PCLATH                          00000050
+B_STATUS                          00000044
+B_WREG                            0000005F
+C                                 00000000
+CAL0                              00000002
+CAL1                              00000003
+CAL2                              00000004
+CAL3                              00000005
+CAL4                              00000006
+CAL5                              00000007
+CALCULATE_PID                     000000EB
+CHECK_PHASE_TIMERS                000000C2
+CHECK_TASTO                       00000096
+CHECK_TIMER_Y                     000000AF
+CHECK_TIMER_Z                     000000A5
+CHECK_X_INIT                      000001F7
+CHS0                              00000002
+CHS1                              00000003
+CINV                              00000004
+CIS                               00000003
+CLEAR_RAM                         000001D2
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 34
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CMCON                             00000019
+CMIE                              00000003
+CMIF                              00000003
+COMPARATOR_OFF                    000001E6
+COMPARATOR_ON                     000001DB
+CONVERTER_ON                      000001F0
+COUNT_TASTO_PREMUTO               0000002E
+COUT                              00000006
+CXI2                              000001FE
+CXI3                              00000207
+CXI4                              00000223
+CXI5                              00000213
+CXI6                              0000021A
+CXI7                              0000022B
+CXI8                              00000232
+CXI_X                             00000232
+CYCLE_CNTR                        00000023
+CYCLE_ENDED                       FLAGS2,6
+CYCLE_OVER                        FLAGS,5
+DC                                00000001
+DEBUG                             00000043
+DIFF_DEB_HI                       00000040
+DIFF_DEB_LO                       00000041
+DIFF_HI                           0000003A
+DIFF_LO                           0000003B
+EEADR                             0000009B
+EECON1                            0000009C
+EECON2                            0000009D
+EEDAT                             0000009A
+EEDATA                            0000009A
+EEIE                              00000007
+EEIF                              00000007
+EQUAL                             DIFF_HI,6
+F                                 00000001
+FINE_RAM                          00000050
+FLAGS                             00000020
+FLAGS2                            00000021
+FLAGS_SEBA                        00000051
+FORZA_MAX                         FLAGS_SEBA,0
+FREERUN                           
+FSR                               00000004
+FXM1616S                          00000234
+Fosc                              .4000000
+GATE_HEAT                         GPIO,4
+GIE                               00000007
+GO                                00000001
+GO_DONE                           ADCON0,1
+GP0                               00000000
+GP1                               00000001
+GP2                               00000002
+GP3                               00000003
+GP4                               00000004
+GP5                               00000005
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 35
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+GPIE                              00000003
+GPIF                              00000000
+GPIO                              00000005
+GPIO0                             00000000
+GPIO1                             00000001
+GPIO2                             00000002
+GPIO3                             00000003
+GPIO4                             00000004
+GPIO5                             00000005
+HALF_SECONDS_TICK                 FLAGS,1
+HLF_SECONDS_HI                    00000026
+HLF_SECONDS_L0                    00000025
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IOC                               00000096
+IOC0                              00000000
+IOC1                              00000001
+IOC2                              00000002
+IOC3                              00000003
+IOC4                              00000004
+IOC5                              00000005
+IOCB                              00000096
+IOCB0                             00000000
+IOCB1                             00000001
+IOCB2                             00000002
+IOCB3                             00000003
+IOCB4                             00000004
+IOCB5                             00000005
+IRP                               00000007
+Kd                                00000C00
+Ki                                0000000D
+Kp                                00000190
+LED                               GPIO,5
+LED_BLINKER                       000000BA
+LINE_DEBOUNCE                     00000042
+LOOPCOUNT                         0000004E
+LOOPSM1616A                       00000254
+LOOPSM1616B                       0000025B
+M1616SOK                          0000024E
+M1616SX                           0000028A
+MAIN_LOOP                         00000072
+MASK_ADCON                        00000089
+MASK_ANSEL                        00000014
+MASK_CMCON                        00000004
+MASK_CMCON_OFF                    00000007
+MASK_OPTION_TMR0                  00000083
+MASK_OPTION_WDT                   0000008F
+MASK_T1CON                        00000030
+MASK_TRISIO                       0000000F
+MASK_VRCON                        00000088
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 36
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+MASK_VRCON_DOWN_TO_UP             00000080
+MASK_VRCON_INIT                   00000080
+MASK_VRCON_UP_TO_DOWN             0000008F
+MASTER_SHUTDOWN                   0000002F
+MAX_DIF_NEG                       00000064
+MAX_DIF_POS                       00000032
+MAX_DIF_PREC                      00000064
+MINUTE                            00000028
+MINUTES_TICK                      FLAGS,3
+MSB                               00000007
+M_BANKSEL_0                       
+M_BANKSEL_1                       
+M_BANKSEL_2                       
+M_BANKSEL_3                       
+M_CMPL_JE                         
+M_CMPL_JG                         
+M_CMPL_JGE                        
+M_CMPL_JL                         
+M_CMPL_JNE                        
+M_CMP_JE                          
+M_CMP_JG                          
+M_CMP_JGE                         
+M_CMP_JL                          
+M_CMP_JLE                         
+M_CMP_JNE                         
+Millisec                          .1000
+NEGATIVE                          DIFF_HI,7
+NOT_BOD                           00000000
+NOT_DONE                          00000001
+NOT_GPPU                          00000007
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NO_COMP_INT                       FLAGS,4
+NTC                               GPIO,2
+NUMBER_OF_CYCLES                  .255
+OPTION_REG                        00000081
+OSCCAL                            00000090
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PERIOD_COUNT                      00000024
+PERIOD_SIZE                       .8
+PERIOD_TICK                       FLAGS,0
+PHASE_1                           FLAGS2,1
+PHASE_1_TIMER_HI                  0000002A
+PHASE_1_TIMER_LO                  0000002B
+PHASE_2                           FLAGS2,2
+PHASE_2_TIMER                     0000002C
+PHASE_3                           FLAGS2,3
+PHASE_3_TIMER                     0000002D
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 37
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PHASE_4                           FLAGS2,4
+PHASE_PR                          FLAGS2,0
+PHASE_PR_TIMER                    00000029
+PI1                               00000149
+PI1S                              00000188
+PI2                               00000151
+PI2S                              0000018B
+PIC12F675                         
+PIE1                              0000008C
+PIR1                              0000000C
+POP                               00000031
+PRECARICA_PID                     00000600
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PT_HI                             00000036
+PT_LO                             00000037
+PURA0                             000001D4
+RAM0                              BCF     STATUS,RP0
+RAM1                              BSF     STATUS,RP0
+RD                                00000000
+REDUCED_TIME1                     00000149
+RP0                               00000005
+RP1                               00000006
+SECONDS                           00000027
+SECONDS_TICK                      FLAGS,2
+SERVICE_INTERRUPT                 00000004
+SIGMA_HI                          00000038
+SIGMA_LO                          00000039
+SIGN                              0000004F
+SKPB                              SKPNC
+SKPNB                             SKPC
+SMUL1616L                         
+START                             0000003B
+STATUS                            00000003
+STAY_ON_PERIOD                    00000022
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T0_PreScale                       .16
+T1                                00000292
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1IE                              00000000
+T1IF                              00000000
+T1OSCEN                           00000003
+T1_PreScale                       .8
+T2                                000001CD
+T3                                000000CE
+T4                                000000CE
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 38
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TASTO                             GPIO,0
+TEMPB0                            0000004A
+TEMPB1                            0000004B
+TEMPO_PR                          00000001
+TEMPO_Y                           0000001E
+TEMPO_Z                           00000258
+TEMPO_Z_ON                        FLAGS2,5
+TIME1                             0000014A
+TIME2                             00000096
+TIME3                             00000078
+TIMER_Z_H                         00000030
+TIMER_Z_L                         00000031
+TMR0                              00000001
+TMR1CS                            00000001
+TMR1GE                            00000006
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TM_HI                             00000032
+TM_LO                             00000033
+TP                                00000028
+TRISIO                            00000085
+TT_HI                             00000034
+TT_LO                             00000035
+T_130                             .206
+T_140                             .251
+T_150                             .301
+T_160                             .353
+T_180                             .461
+T_190                             .515
+T_200                             .566
+T_210                             .614
+T_220                             .658
+T_PR                              000000CE
+T_SUM0                            0000003C
+T_SUM1                            0000003D
+T_SUM2                            0000003E
+T_SUM3                            0000003F
+Timer0tick_ms                     0 - ((Fosc)/(4*T0_PreScale*Millisec))
+Timer1tick_ms                     0 - ((Fosc)/(4*T1_PreScale*Millisec))
+VCFG                              00000006
+VR0                               00000000
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             00000099
+VREN                              00000007
+VRR                               00000005
+W                                 00000000
+WPU                               00000095
+WR                                00000001
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 39
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+ZCV_RETE                          GPIO,1
+_ARG0                             000001B6
+_ARG1                             000001B1
+_ARG2                             000001AA
+_BLINK_ON                         000000C0
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_C                                STATUS,C
+_CALC_END                         0000019E
+_CALC_I                           00000164
+_CALC_P                           0000011D
+_CHECK_HALF_SEC                   000001BE
+_CHK_MAX                          0000011D
+_CMIE                             PIE1,CMIE
+_CMIF                             PIR1,CMIF
+_CON1                             0000018D
+_CON2                             0000018B
+_COUT                             CMCON,COUT
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_OFF                           00003FFF
+_CP_ON                            00003F7F
+_EC_OSC                           00003FFB
+_EMERGENCY_OFF                    00000199
+_ENDED                            000000B3
+_END_PHASE                        000000EA
+_END_RED                          000001D1
+_END_Y                            000000B9
+_EXIT_INTERRUPT                   00000031
+_EXTRC_OSC_CLKOUT                 00003FFF
+_EXTRC_OSC_NOCLKOUT               00003FFE
+_GIE                              INTCON,GIE
+_GPIF                             INTCON,GPIF
+_HALF_SECOND_TASKS                00000087
+_HS_OSC                           00003FFA
+_IDLE                             00000095
+_INTF                             INTCON,INTF
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LAB                              0000012F
+_LED_END                          000000C1
+_LP_OSC                           00003FF8
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_MINUTE_TASKS                     00000090
+_PEIE                             INTCON,PEIE
+_PERIOD_TIME                      0000007B
+_PHASE_1                          000000C6
+_PHASE_2                          000000D3
+_PHASE_3                          000000DE
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 40
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_PHASE_4                          000000E9
+_PID_CONT                         0000011D
+_POS_I                            00000143
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FEF
+_RESET_TMR0                       0000002E
+_SATURATE                         00000194
+_SECONDS_TASKS                    0000008B
+_SERV_TMR0                        00000025
+_SET_T1_TEMP                      00000112
+_SHUT_OFF                         0000019D
+_SIGMA_OVFL                       00000160
+_SKP1                             0000015A
+_T0IE                             INTCON,T0IE
+_T0IF                             INTCON,T0IF
+_T1_NORMAL                        0000010D
+_TIMR_Z_END                       000000AE
+_TMR0_INT                         00000021
+_TMR1IE                           PIE1,TMR1IE
+_TMR1ON                           T1CON,TMR1ON
+_TURN_ON                          00000196
+_WAIT_START                       0000004F
+_WAIT_TASTO                       0000009D
+_WDT_OFF                          00003FF7
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FF9
+_Z                                STATUS,Z
+_ZERO_CROSS_V                     00000013
+__12F675                          00000001
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : X---XXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0080 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+00C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0100 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0140 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0180 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+01C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0200 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0240 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0280 : XXXXXXXXXXXXXXXX X--------------- ---------------- ----------------
+03C0 : ---------------- ---------------- ---------------- ---------------X
+2000 : XXXX---X-------- ---------------- ---------------- ----------------
+MPASM  4.02 Released                                MOKA2.ASM   1-11-2006  14:57:05         PAGE 41
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+
+2100 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+2140 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+
+All other memory blocks unused.
+
+Program Memory Words Used:   655
+Program Memory Words Free:   369
+
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,    23 suppressed
+
+

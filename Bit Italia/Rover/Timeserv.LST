@@ -1,0 +1,661 @@
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;************************************************************
+                      00002 ;       TITLE:  Timing services for PIC17F876A
+                      00003 ;       FILENAME:  Timeserv.asm
+                      00004 ;       REVISION HISTORY:  31-03-03 First try
+                      00005 ;       HARDWARE: BIT SRL. transciever
+                      00006 ;       FREQUENCY: 4MHz
+                      00007 ;       Function: Provides timing services to other modules
+                      00008 ;************************************************************
+Warning[215]: Processor superceded by command line.  Verify processor symbol.
+                      00009                         list    p=16f876A       ; "A" for tests with ICE2000
+                      00010 
+                      00011 #include        <p16f876.inc>
+                      00001         LIST
+                      00002 ; P16F876.INC  Standard Header File, Version 1.00    Microchip Technology, Inc.
+                      00359         LIST
+                      00012 #include        <CC1000.h>
+                      00001 ;/* Constants defined for CC1000 */
+                      00002 
+                      00003 ;/* Register addresses */
+                      00004 
+                      00005 #define CC1000_MAIN            0x00
+                      00006 #define CC1000_FREQ_2A         0x01
+                      00007 #define CC1000_FREQ_1A         0x02
+                      00008 #define CC1000_FREQ_0A         0x03
+                      00009 #define CC1000_FREQ_2B         0x04
+                      00010 #define CC1000_FREQ_1B         0x05
+                      00011 #define CC1000_FREQ_0B         0x06
+                      00012 #define CC1000_FSEP1           0x07
+                      00013 #define CC1000_FSEP0           0x08
+                      00014 #define CC1000_CURRENT         0x09
+                      00015 #define CC1000_FRONT_END       0x0A
+                      00016 #define CC1000_PA_POW          0x0B
+                      00017 #define CC1000_PLL             0x0C
+                      00018 #define CC1000_LOCK            0x0D
+                      00019 #define CC1000_CAL             0x0E
+                      00020 #define CC1000_MODEM2          0x0F
+                      00021 #define CC1000_MODEM1          0x10
+                      00022 #define CC1000_MODEM0          0x11
+                      00023 #define CC1000_MATCH           0x12
+                      00024 #define CC1000_FSCTRL          0x13
+                      00025 #define CC1000_FSHAPE7         0x14
+                      00026 #define CC1000_FSHAPE6         0x15
+                      00027 #define CC1000_FSHAPE5         0x16
+                      00028 #define CC1000_FSHAPE4         0x17
+                      00029 #define CC1000_FSHAPE3         0x18
+                      00030 #define CC1000_FSHAPE2         0x19
+                      00031 #define CC1000_FSHAPE1         0x1A
+                      00032 #define CC1000_FSDELAY         0x1B
+                      00033 #define CC1000_PRESCALER       0x1C
+                      00034 #define CC1000_TEST6           0x40
+                      00035 #define CC1000_TEST5           0x41
+                      00036 #define CC1000_TEST4           0x42
+                      00037 #define CC1000_TEST3           0x43
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00038 #define CC1000_TEST2           0x44
+                      00039 #define CC1000_TEST1           0x45
+                      00040 #define CC1000_TEST0           0x46
+                      00041 
+                      00013 #include        <rover.h>
+                      00001 ;Pin usage definitions for the rover Master/Tranmitter
+                      00002 ;CC1000 and PIC16f76
+                      00003 ;
+                      00004 ;===========================================================
+                      00005 ;CHANGE THESE DEFINITIONS WHEN COMPILING THE ASM CODE OR THE
+                      00006 ;LIBRARY FOR MASTER OR FOR SLAVE 
+                      00007 #define         TX_MASTER
+                      00008 ;#define                RX_SLAVE
+                      00009 ;===========================================================
+                      00010 
+                      00011         ifdef   TX_MASTER
+                      00012 #define PCLK                    PORTC,1 ;
+                      00013 #define PALE                    PORTC,2 ;
+                      00014         else
+                      00015 #define PCLK                    PORTA,2 ;
+                      00016 #define PALE                    PORTA,1 ;
+                      00017         endif
+                      00018 
+                      00019 #define PDATA                   PORTC,0 ; Register interfaces
+                      00020 #define DIO                     PORTC,3 ; Data interfaces
+                      00021 #define DCLK                    PORTB,0 ;
+                      00022 #define CHP_OUT                 PORTC,5 ;not used
+                      00023 ;
+                      00024 #define PDATA_DIR               TRISC,0
+                      00025 #define DIO_DIR                 TRISC,3
+                      00026 ;
+                      00027 #define SW1                             PORTB,1 ;Switches on Trasnmitter side
+                      00028 #define SW2                             PORTB,2 ;
+                      00029 #define SW3                             PORTB,3 ;
+                      00030 #define STEERING                PORTC,1 ;
+                      00031 #define SPIN_DIR                PORTC,7 ;
+                      00032 ;
+                      00033 #define LED1                    PORTC,4 ;(IN5)LEDs on Receiver side corresponding to the 
+                      00034 #define LED2                    PORTB,2 ;(IN6) swithces above
+                      00035 #define LED3                    PORTB,1 ;(IN7)
+                      00036 ;
+                      00037 ;
+                      00038 ;ERRORS AND OTHER EVENTS
+                      00039 #define BUTTON_PRESSED  G_Events,0
+                      00040 #define REPLY_SENT              G_Events,1
+                      00041 #define NEW_COUNT               G_Events,2
+                      00042 #define TIME_0_OUT              G_Events,3
+                      00043 #define BYTE_FULL               G_Events,4
+                      00044 #define RESET_CNTRS             G_Events,5
+                      00045 #define CALIBRATION_OK  G_Events,6
+                      00046 ;
+                      00047 ;STATES
+                      00048 #define IDLE_MODE               G_State,0
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00049 #define MASTER                  G_State,1
+                      00050 #define SLAVE                   G_State,2
+                      00051 #define RXCVER                  G_State,3
+                      00052 #define TXMTER                  G_State,4
+                      00053 #define QUIET                   G_State,5
+                      00054 ;
+                      00055 ;PROTOCOL 
+                      00056 ;PROTOCOL PARTS
+                      00057 #define BOF_FOUND               G_Pr_status,0
+                      00058 #define PREAM_FINISHED  G_Pr_status,1
+                      00059 #define UI_FINISHED             G_Pr_status,2
+                      00060 #define ADDR_CMPLT              G_Pr_status,3
+                      00061 #define NBR_BYTES_RCVD  G_Pr_status,4
+                      00062 #define DATA_RECEIVED   G_Pr_status,5
+                      00063 #define SUMCHECK_DONE   G_Pr_status,6
+                      00064 #define CMMND_COMPLETE  G_Pr_status,7
+                      00065 ;
+                      00066 ;OFFSETS:
+                      00067 #define PREAMBLE                0x00
+                      00068 #define UI                              0x03
+                      00069 #define ADDRESS                 0x05
+                      00070 #define NO_BYTES                0x07
+                      00071 #define DATA_OFFS               0x08
+                      00072 #define SUM_CHECK               0x0F
+                      00073 ;
+                      00074 #define UI_CODE1                0xCD    ;unique ramdom number
+                      00075 #define UI_CODE2                0x4D    ;
+                      00076 ;
+                      00077 ;NUMBER OF BYTES
+                      00078 #define PREA_SIZE               3
+                      00079 #define UI_SIZE                 2
+                      00080 #define ADD_SIZE                2
+                      00081 #define NBR_SIZE                1
+                      00082 #define DATA_SIZE               7
+                      00083 #define CS_SIZE                 1
+                      00084 
+  00000010            00085 TOT_FRAME_SIZ                   equ     PREA_SIZE+UI_SIZE+ADD_SIZE+NBR_SIZE+DATA_SIZE+CS_SIZE
+  00000008            00086 FIXED_PART                              equ     PREA_SIZE+UI_SIZE+ADD_SIZE+NBR_SIZE
+                      00087 
+                      00088 #define RX_CURRENT              0x44 ;0100xxxx=950uA, XXXX=?????
+                      00089 #define RXPLL                   0x60
+                      00090 #define TX_CURRENT              0x81 ;1000xxxx=1450uA
+                      00091 #define TXPLL                   0x48
+                      00092 #define PA_VALUE                0xFF
+                      00093 
+                      00094 ;TIMER 1 TIMERS
+                      00095 ;;;#define      RXMIT_TIM1L             0x90    ;at 9600bps: h'3590 = 13,712uS=14ms
+                      00096 ;;;#define      RXMIT_TIM1H             0x35    ; (104uS/b*8bit/byt*16byt/frame+250uS+xx+ switch RX-TX)
+                      00097 
+                      00098 #define RXMIT_TIM1L             0xf0    ;20ms includes delays for the master switch RX -> TX
+                      00099 #define RXMIT_TIM1H             0x55    ;
+                      00100 
+                      00101 ;LOCK TIMEOUTS (this is a 16 bit integer e.g. 01FF)
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00102 #define LOCK1                   0xFF
+                      00103 #define LOCK2                   0x01
+                      00104 
+                      00105 
+                      00106 ;TOGGLES AND CONTROLS FOR LEDS
+                      00107 ;#define TOGGLE_G               L_GREEN_CTL,7
+                      00108 ;#define        GREEN_FLAG              L_GREEN_CTL,6
+                      00109 ;#define        SPEED_G                 L_GREEN_CTL,5
+                      00110 ;
+                      00111 ;#define TOGGLE_R               L_RED_CTL,7
+                      00112 ;#define        RED_FLAG                L_RED_CTL,6
+                      00113 ;#define        SPEED_R                 L_RED_CTL,5
+                      00114 ;
+                      00115 ;#define        SLOW_ON                 b'11000110'             ;1xx..=start on, x1x..=on, xx000110=6 be
+                            ats
+                      00116 ;#define        SLOW_OFF                b'01000110'             ;0xx..=start off, x1x..=on, xx000110=6 b
+                            eats
+                      00117 ;
+                      00118 ;#define        FAST_ON                 b'11000010'
+                      00119 ;#define        FAST_OFF                b'01000010'
+                      00120 ;
+                      00121 ;#define VERYSLOW               b'11010000'
+                      00122 
+                      00123 
+                      00124 
+                      00125 
+                      00126 
+                      00127 
+                      00128 
+                      00129 
+                      00130 
+                      00131 
+                      00132 
+                      00133 
+                      00014 
+                      00015 ;Local variables
+                      00016         UDATA
+0000                  00017 L_Tim1          res             1
+0001                  00018 L_Tim2          res             1
+0002                  00019 L_Tim3          res             1
+                      00020 
+  0000                00021         Extern  G_Events        ;(see hw_interf.h for flags in G_Events)
+                      00022 
+                      00023                 CODE    
+                      00024 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00025 ;Procedure:     These are actually 3 procedures that offer a combination of delays
+                      00026 ;Function:      Cause a delay by a specified number of miliseconds,100uS or uS
+                      00027 ;                       In these procedures, the flag XMIT_RCVD will be set only by the ISR
+                      00028 ;                       if a data is received.  Otherwise, if its used for just delaying,
+                      00029 ;                       it is assumed that no delays are expected (corresponding interrupt enables
+                      00030 ;                       are reset).
+                      00031 ;Inputs:        W number of 100 Ms,100Us or uS
+                      00032 ;Returns:       Nothing
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00033 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+0000                  00034 DelaymS
+  0000                00035                         global DelaymS
+0000   00??           00036                         MOVWF   L_Tim3          ;W has the number of miliseconds
+0001   300A           00037 _MILISEC        MOVLW   d'10'           ;
+0002   2???           00038                         CALL    Delay100uS      ;
+0003   0B??           00039                         DECFSZ  L_Tim3,F        ;
+0004   2???           00040                         GOTO    _MILISEC        ;
+0005   0008           00041 TIMEREXMs       RETURN                          ;
+                      00042 ;........................................................
+0006                  00043 Delay100uS
+  0000                00044                         global Delay100uS
+0006   00??           00045                         MOVWF   L_Tim2          ;W has number of 100uS to wait
+0007   3064           00046 _MIC100S        MOVLW   d'100'          ;                               
+0008   2???           00047                         CALL    DelayuS         ;
+0009   0B??           00048                         DECFSZ  L_Tim2,F        ;
+000A   2???           00049                         GOTO    _MIC100S        ;
+000B   0008           00050 TIMEREX100      RETURN                          ;
+                      00051 ;........................................................
+000C                  00052 DelayuS
+  0000                00053                         global DelayuS
+000C   110B           00054                         BCF             INTCON,T0IF     ;
+000D   00??           00055                         MOVWF   L_Tim1          ;W has the number of uS (1:1 prescaler)
+000E   09??           00056                         COMF    L_Tim1,F        ;TMR0=(256 - number of clocks)
+000F   0A??           00057                         INCF    L_Tim1,F        ;2 increments for lost instruct clocks
+0010   0A??           00058                         INCF    L_Tim1,W        ;               
+0011   0081           00059                         MOVWF   TMR0            ;
+0012   1D0B           00060 _LOOP_TIM0      BTFSS   INTCON,T0IF     ;Timer0 overflow?
+0013   2???           00061                         GOTO    _LOOP_TIM0      ;
+0014   0008           00062 TIMERXuS        RETURN                          ;
+                      00063 ;........................................................
+                      00064                         END                                             ; end timeserve code
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADDEN                             00000003
+ADDRESS                           0x05
+ADDR_CMPLT                        G_Pr_status,3
+ADD_SIZE                          2
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BOF_FOUND                         G_Pr_status,0
+BRGH                              00000002
+BUTTON_PRESSED                    G_Events,0
+BYTE_FULL                         G_Events,4
+C                                 00000000
+CALIBRATION_OK                    G_Events,6
+CC1000_CAL                        0x0E
+CC1000_CURRENT                    0x09
+CC1000_FREQ_0A                    0x03
+CC1000_FREQ_0B                    0x06
+CC1000_FREQ_1A                    0x02
+CC1000_FREQ_1B                    0x05
+CC1000_FREQ_2A                    0x01
+CC1000_FREQ_2B                    0x04
+CC1000_FRONT_END                  0x0A
+CC1000_FSCTRL                     0x13
+CC1000_FSDELAY                    0x1B
+CC1000_FSEP0                      0x08
+CC1000_FSEP1                      0x07
+CC1000_FSHAPE1                    0x1A
+CC1000_FSHAPE2                    0x19
+CC1000_FSHAPE3                    0x18
+CC1000_FSHAPE4                    0x17
+CC1000_FSHAPE5                    0x16
+CC1000_FSHAPE6                    0x15
+CC1000_FSHAPE7                    0x14
+CC1000_LOCK                       0x0D
+CC1000_MAIN                       0x00
+CC1000_MATCH                      0x12
+CC1000_MODEM0                     0x11
+CC1000_MODEM1                     0x10
+CC1000_MODEM2                     0x0F
+CC1000_PA_POW                     0x0B
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CC1000_PLL                        0x0C
+CC1000_PRESCALER                  0x1C
+CC1000_TEST0                      0x46
+CC1000_TEST1                      0x45
+CC1000_TEST2                      0x44
+CC1000_TEST3                      0x43
+CC1000_TEST4                      0x42
+CC1000_TEST5                      0x41
+CC1000_TEST6                      0x40
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHP_OUT                           PORTC,5
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CKE                               00000006
+CKP                               00000004
+CMMND_COMPLETE                    G_Pr_status,7
+CREN                              00000004
+CSRC                              00000007
+CS_SIZE                           1
+D                                 00000005
+DATA_ADDRESS                      00000005
+DATA_OFFS                         0x08
+DATA_RECEIVED                     G_Pr_status,5
+DATA_SIZE                         7
+DC                                00000001
+DCLK                              PORTB,0
+DIO                               PORTC,3
+DIO_DIR                           TRISC,3
+D_A                               00000005
+Delay100uS                        00000006
+DelaymS                           00000000
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+DelayuS                           0000000C
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FIXED_PART                        00000008
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+G_Events                          00000000
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IDLE_MODE                         G_State,0
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+LED1                              PORTC,4
+LED2                              PORTB,2
+LED3                              PORTB,1
+LOCK1                             0xFF
+LOCK2                             0x01
+L_Tim1                            00000000
+L_Tim2                            00000001
+L_Tim3                            00000002
+MASTER                            G_State,1
+NBR_BYTES_RCVD                    G_Pr_status,4
+NBR_SIZE                          1
+NEW_COUNT                         G_Events,2
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+NO_BYTES                          0x07
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PALE                              PORTC,2
+PA_VALUE                          0xFF
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCLK                              PORTC,1
+PCON                              0000008E
+PDATA                             PORTC,0
+PDATA_DIR                         TRISC,0
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PR2                               00000092
+PREAMBLE                          0x00
+PREAM_FINISHED                    G_Pr_status,1
+PREA_SIZE                         3
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+QUIET                             G_State,5
+R                                 00000002
+RBIE                              00000003
+RBIF                              00000000
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+READ_WRITE                        00000002
+REPLY_SENT                        G_Events,1
+RESET_CNTRS                       G_Events,5
+RP0                               00000005
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+RXCVER                            G_State,3
+RXMIT_TIM1H                       0x55
+RXMIT_TIM1L                       0xf0
+RXPLL                             0x60
+RX_CURRENT                        0x44
+R_W                               00000002
+S                                 00000003
+SEN                               00000000
+SLAVE                             G_State,2
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SPIN_DIR                          PORTC,7
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+STEERING                          PORTC,1
+SUMCHECK_DONE                     G_Pr_status,6
+SUM_CHECK                         0x0F
+SW1                               PORTB,1
+SW2                               PORTB,2
+SW3                               PORTB,3
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TIMEREX100                        0000000B
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TIMEREXMs                         00000005
+TIMERXuS                          00000014
+TIME_0_OUT                        G_Events,3
+TMR0                              00000001
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOT_FRAME_SIZ                     00000010
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISB                             00000086
+TRISC                             00000087
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXMTER                            G_State,4
+TXPLL                             0x48
+TXREG                             00000019
+TXSTA                             00000098
+TX_CURRENT                        0x81
+TX_MASTER                         
+UA                                00000001
+UI                                0x03
+UI_CODE1                          0xCD
+UI_CODE2                          0x4D
+UI_FINISHED                       G_Pr_status,2
+UI_SIZE                           2
+W                                 00000000
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00000FCF
+MPASM 03.60 Released                             TIMESERV.ASM   6-21-2004  12:54:44         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_CP_HALF                          00001FDF
+_CP_OFF                           00003FFF
+_CP_UPPER_256                     00002FEF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_HS_OSC                           00003FFE
+_LOOP_TIM0                        00000012
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_MIC100S                          00000007
+_MILISEC                          00000001
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_ENABLE_OFF                   00003DFF
+_WRT_ENABLE_ON                    00003FFF
+_XT_OSC                           00003FFD
+__16F876                          00000001
+
+Errors   :     0
+Warnings :     1 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

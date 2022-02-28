@@ -1,0 +1,711 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+ABORT_SDO	C:\Embedded\Joystick\jcan.h	271;"	m	line:271	union:SDO_Command
+ACCELERATION	C:\Embedded\Joystick\japplication_data.h	145;"	e	line:145	enum:Acceleration
+ACCESS_BITS	C:\Embedded\Joystick\jdict.h	41;"	e	line:41	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+ANONYMOUS	C:\Embedded\Joystick\jcan.h	277;"	m	line:277	union:SDO_Command
+Acceleration	C:\Embedded\Joystick\japplication_data.h	143;"	g	line:143
+Access_dictionary	C:\Embedded\Joystick\jprototype.h	20;"	p	line:20	signature:(unsigned char)
+B0	C:\Embedded\Joystick\jcan.h	306;"	m	line:306	struct:TXB_BUFF::<anonymous>
+B1	C:\Embedded\Joystick\jcan.h	305;"	m	line:305	struct:TXB_BUFF::<anonymous>
+B2	C:\Embedded\Joystick\jcan.h	304;"	m	line:304	struct:TXB_BUFF::<anonymous>
+B3	C:\Embedded\Joystick\jcan.h	303;"	m	line:303	struct:TXB_BUFF::<anonymous>
+BANK_DEV_DESCRIPTION	C:\Embedded\Joystick\japplication_data.h	48;"	d	line:48
+BANK_GENERAL_DATA1	C:\Embedded\Joystick\japplication_data.h	47;"	d	line:47
+BANK_GENERAL_DATA2	C:\Embedded\Joystick\japplication_data.h	49;"	d	line:49
+BANK_RAMP_DOWN	C:\Embedded\Joystick\japplication_data.h	44;"	d	line:44
+BANK_RAMP_LEFT	C:\Embedded\Joystick\japplication_data.h	45;"	d	line:45
+BANK_RAMP_RIGHT	C:\Embedded\Joystick\japplication_data.h	46;"	d	line:46
+BANK_RAMP_UP	C:\Embedded\Joystick\japplication_data.h	43;"	d	line:43
+BANK_TEMP	C:\Embedded\Joystick\japplication_data.h	42;"	d	line:42
+BOOTUP_MSG	C:\Embedded\Joystick\jcan.h	58;"	d	line:58
+BOOT_REPLY	C:\Embedded\Joystick\jcan.h	59;"	d	line:59
+CAN_BAUD_1000K	C:\Embedded\Joystick\jcan.h	21;"	d	line:21
+CAN_BAUD_100K	C:\Embedded\Joystick\jcan.h	25;"	d	line:25
+CAN_BAUD_125K	C:\Embedded\Joystick\jcan.h	24;"	d	line:24
+CAN_BAUD_20K	C:\Embedded\Joystick\jcan.h	27;"	d	line:27
+CAN_BAUD_250K	C:\Embedded\Joystick\jcan.h	23;"	d	line:23
+CAN_BAUD_500K	C:\Embedded\Joystick\jcan.h	22;"	d	line:22
+CAN_BAUD_50K	C:\Embedded\Joystick\jcan.h	26;"	d	line:26
+CAN_DONWLOADING	C:\Embedded\Joystick\jcan.h	125;"	e	line:125	enum:CAN_PROCESS
+CAN_NOTHING	C:\Embedded\Joystick\jcan.h	124;"	e	line:124	enum:CAN_PROCESS
+CAN_OPEN_IdEMCY	C:\Embedded\Joystick\jcan.h	135;"	e	line:135	enum:CAN_OPEN_TX
+CAN_OPEN_IdErr	C:\Embedded\Joystick\jcan.h	134;"	e	line:134	enum:CAN_OPEN_TX
+CAN_OPEN_IdErrIn	C:\Embedded\Joystick\jcan.h	145;"	e	line:145	enum:CAN_OPEN_RX
+CAN_OPEN_IdNet	C:\Embedded\Joystick\jcan.h	144;"	e	line:144	enum:CAN_OPEN_RX
+CAN_OPEN_IdSdoRx	C:\Embedded\Joystick\jcan.h	143;"	e	line:143	enum:CAN_OPEN_RX
+CAN_OPEN_IdSdoTx	C:\Embedded\Joystick\jcan.h	133;"	e	line:133	enum:CAN_OPEN_TX
+CAN_OPEN_IdTx	C:\Embedded\Joystick\jcan.h	132;"	e	line:132	enum:CAN_OPEN_TX
+CAN_OPEN_PDO1	C:\Embedded\Joystick\jcan.h	141;"	e	line:141	enum:CAN_OPEN_RX
+CAN_OPEN_PDO2	C:\Embedded\Joystick\jcan.h	142;"	e	line:142	enum:CAN_OPEN_RX
+CAN_OPEN_RX	C:\Embedded\Joystick\jcan.h	139;"	g	line:139
+CAN_OPEN_RX_END	C:\Embedded\Joystick\jcan.h	146;"	e	line:146	enum:CAN_OPEN_RX
+CAN_OPEN_TX	C:\Embedded\Joystick\jcan.h	130;"	g	line:130
+CAN_OPEN_TX_END	C:\Embedded\Joystick\jcan.h	136;"	e	line:136	enum:CAN_OPEN_TX
+CAN_PROCESS	C:\Embedded\Joystick\jcan.h	122;"	g	line:122
+CAN_REQUEST_ENTER_PREOP	C:\Embedded\Joystick\jcan.h	42;"	d	line:42
+CAN_REQUEST_RESET	C:\Embedded\Joystick\jcan.h	43;"	d	line:43
+CAN_REQUEST_RESET_COMMS	C:\Embedded\Joystick\jcan.h	44;"	d	line:44
+CAN_REQUEST_START	C:\Embedded\Joystick\jcan.h	40;"	d	line:40
+CAN_REQUEST_STOP	C:\Embedded\Joystick\jcan.h	41;"	d	line:41
+CAN_STATE_BOOTUP	C:\Embedded\Joystick\jcan.h	34;"	d	line:34
+CAN_STATE_INITIALISING	C:\Embedded\Joystick\jcan.h	38;"	d	line:38
+CAN_STATE_OPERATIONAL	C:\Embedded\Joystick\jcan.h	36;"	d	line:36
+CAN_STATE_PREOPERATIONAL	C:\Embedded\Joystick\jcan.h	37;"	d	line:37
+CAN_STATE_STOPPED	C:\Embedded\Joystick\jcan.h	35;"	d	line:35
+CAN_UPLOADING	C:\Embedded\Joystick\jcan.h	126;"	e	line:126	enum:CAN_PROCESS
+CCS_SDO_INIT_DOWNLOAD	C:\Embedded\Joystick\jcan.h	47;"	d	line:47
+CCS_SDO_INIT_UPLOAD_RESP	C:\Embedded\Joystick\jcan.h	48;"	d	line:48
+CCS_SDO_SEGMNT_DOWNLOAD	C:\Embedded\Joystick\jcan.h	46;"	d	line:46
+CCS_SDO_UPLOAD_SEGMNT	C:\Embedded\Joystick\jcan.h	49;"	d	line:49
+CM_controlError	C:\Embedded\Joystick\japplication_data.h	202;"	m	line:202	struct:device_status_word::<anonymous>
+CM_limitTouched	C:\Embedded\Joystick\japplication_data.h	201;"	m	line:201	struct:device_status_word::<anonymous>
+CM_rampRunning	C:\Embedded\Joystick\japplication_data.h	200;"	m	line:200	struct:device_status_word::<anonymous>
+CM_reserved	C:\Embedded\Joystick\japplication_data.h	199;"	m	line:199	struct:device_status_word::<anonymous>
+CM_targetReached	C:\Embedded\Joystick\japplication_data.h	203;"	m	line:203	struct:device_status_word::<anonymous>
+CNTRL_MODE_CLOSED_LOOP	C:\Embedded\Joystick\japplication_data.h	166;"	e	line:166	enum:Dev_control_mode
+CNTRL_MODE_FORCE_AXIS	C:\Embedded\Joystick\japplication_data.h	172;"	e	line:172	enum:Dev_control_mode
+CNTRL_MODE_NOT_DEFINEDE	C:\Embedded\Joystick\japplication_data.h	164;"	e	line:164	enum:Dev_control_mode
+CNTRL_MODE_OPEN_LOOP	C:\Embedded\Joystick\japplication_data.h	165;"	e	line:165	enum:Dev_control_mode
+CNTRL_MODE_OPEN_LOOP_MOVE	C:\Embedded\Joystick\japplication_data.h	170;"	e	line:170	enum:Dev_control_mode
+CNTRL_MODE_POSTNL_DECEL	C:\Embedded\Joystick\japplication_data.h	174;"	e	line:174	enum:Dev_control_mode
+CNTRL_MODE_POS_CNTRL	C:\Embedded\Joystick\japplication_data.h	173;"	e	line:173	enum:Dev_control_mode
+CNTRL_MODE_PRESS_VALVE_CL	C:\Embedded\Joystick\japplication_data.h	168;"	e	line:168	enum:Dev_control_mode
+CNTRL_MODE_PRESS_VALVE_OL	C:\Embedded\Joystick\japplication_data.h	167;"	e	line:167	enum:Dev_control_mode
+CNTRL_MODE_P_Q_CTRL_VALVE	C:\Embedded\Joystick\japplication_data.h	169;"	e	line:169	enum:Dev_control_mode
+CNTRL_MODE_VELOC_CNTRL_AXIS	C:\Embedded\Joystick\japplication_data.h	171;"	e	line:171	enum:Dev_control_mode
+COMMAND	C:\Embedded\Joystick\jcan.h	309;"	m	line:309	struct:TXB_BUFF::<anonymous>
+COMMAND	C:\Embedded\Joystick\jcan.h	325;"	m	line:325	struct:TXB_BUFF::<anonymous>
+COMMUNICATIONS	C:\Embedded\Joystick\jcan.h	174;"	m	line:174	struct:ERROR_REGISTER::<anonymous>
+CON1_CKP_hi	C:\Embedded\Joystick\japplication_data.h	29;"	d	line:29
+CON1_CKP_lo	C:\Embedded\Joystick\japplication_data.h	30;"	d	line:30
+CON1_SSPEN_dis	C:\Embedded\Joystick\japplication_data.h	28;"	d	line:28
+CON1_SSPEN_ena	C:\Embedded\Joystick\japplication_data.h	27;"	d	line:27
+CONST	C:\Embedded\Joystick\jdict.h	44;"	e	line:44	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+CS_SDO_ABORT	C:\Embedded\Joystick\jcan.h	51;"	d	line:51
+CURRENT	C:\Embedded\Joystick\jcan.h	171;"	m	line:171	struct:ERROR_REGISTER::<anonymous>
+CanIn	C:\Embedded\Joystick\jmain.c	379;"	f	line:379	signature:(void)
+CanIn	C:\Embedded\Joystick\jprototype.h	12;"	p	line:12	signature:(void)
+CanOut	C:\Embedded\Joystick\jmain.c	127;"	f	line:127	signature:(void)
+CanOut	C:\Embedded\Joystick\jmain.c	577;"	p	line:577	file:
+CanOut	C:\Embedded\Joystick\jprototype.h	11;"	p	line:11	signature:(void)
+CheckBusError	C:\Embedded\Joystick\jmain.c	71;"	f	line:71	signature:(void)
+CheckBusError	C:\Embedded\Joystick\jprototype.h	10;"	p	line:10	signature:(void)
+Control	C:\Embedded\Joystick\jController.c	22;"	f	line:22	signature:(void)
+Control	C:\Embedded\Joystick\jprototype.h	34;"	p	line:34	signature:(void)
+Copy_RAM_to_RAM	C:\Embedded\Joystick\jdict.c	168;"	f	line:168	signature:(char * from, char * to, int n)
+D	C:\Embedded\Joystick\japplication_data.h	121;"	m	line:121	struct:device_control_word::<anonymous>
+D0	C:\Embedded\Joystick\jcan.h	324;"	m	line:324	struct:TXB_BUFF::<anonymous>
+D1	C:\Embedded\Joystick\jcan.h	323;"	m	line:323	struct:TXB_BUFF::<anonymous>
+D2	C:\Embedded\Joystick\jcan.h	322;"	m	line:322	struct:TXB_BUFF::<anonymous>
+D3	C:\Embedded\Joystick\jcan.h	321;"	m	line:321	struct:TXB_BUFF::<anonymous>
+D4	C:\Embedded\Joystick\jcan.h	320;"	m	line:320	struct:TXB_BUFF::<anonymous>
+D5	C:\Embedded\Joystick\jcan.h	319;"	m	line:319	struct:TXB_BUFF::<anonymous>
+D6	C:\Embedded\Joystick\jcan.h	318;"	m	line:318	struct:TXB_BUFF::<anonymous>
+DEAD_BAND_COMP_A	C:\Embedded\Joystick\japplication_data.h	68;"	d	line:68
+DEAD_BAND_COMP_B	C:\Embedded\Joystick\japplication_data.h	69;"	d	line:69
+DEAD_BAND_COMP_THRHLD	C:\Embedded\Joystick\japplication_data.h	70;"	d	line:70
+DECELERATION	C:\Embedded\Joystick\japplication_data.h	146;"	e	line:146	enum:Acceleration
+DEMAND_LOWERLIMIT_0	C:\Embedded\Joystick\japplication_data.h	57;"	d	line:57
+DEMAND_REFVALUE_100	C:\Embedded\Joystick\japplication_data.h	54;"	d	line:54
+DEMAND_SCALEFACTOR11	C:\Embedded\Joystick\japplication_data.h	58;"	d	line:58
+DEMAND_SCALEOFFSET_0	C:\Embedded\Joystick\japplication_data.h	59;"	d	line:59
+DEMAND_UPPERLIMIT_100	C:\Embedded\Joystick\japplication_data.h	56;"	d	line:56
+DEMAND_ZEROCORRECTION_0	C:\Embedded\Joystick\japplication_data.h	60;"	d	line:60
+DEVICE_LOCAL_CONTROL_WORD_LOCAL	C:\Embedded\Joystick\japplication_data.h	182;"	e	line:182	enum:Device_Local
+DEVICE_LOCAL_CONTROL_WORD_VIA_CAN	C:\Embedded\Joystick\japplication_data.h	181;"	e	line:181	enum:Device_Local
+DEV_CONTROL_WORD_0	C:\Embedded\Joystick\japplication_data.h	51;"	d	line:51
+DEV_DUMMY_DEV_CODE_NUM	C:\Embedded\Joystick\japplication_data.h	52;"	d	line:52
+DEV_MODE_AUTOMATIC	C:\Embedded\Joystick\japplication_data.h	156;"	e	line:156	enum:Device_mode
+DEV_MODE_INPUT_LOCAL	C:\Embedded\Joystick\japplication_data.h	153;"	e	line:153	enum:Device_mode
+DEV_MODE_INSTALL_MODE	C:\Embedded\Joystick\japplication_data.h	154;"	e	line:154	enum:Device_mode
+DEV_MODE_NONE	C:\Embedded\Joystick\japplication_data.h	151;"	e	line:151	enum:Device_mode
+DEV_MODE_REF_MODE	C:\Embedded\Joystick\japplication_data.h	155;"	e	line:155	enum:Device_mode
+DEV_MODE_SETPOINT_VIA_BUS	C:\Embedded\Joystick\japplication_data.h	152;"	e	line:152	enum:Device_mode
+DEV_MODE_SINGLE_STEP	C:\Embedded\Joystick\japplication_data.h	157;"	e	line:157	enum:Device_mode
+DEV_NET_IdMsAck	C:\Embedded\Joystick\jcan.h	162;"	e	line:162	enum:DEV_NET_RX
+DEV_NET_IdMsPCC	C:\Embedded\Joystick\jcan.h	161;"	e	line:161	enum:DEV_NET_RX
+DEV_NET_IdSvAck	C:\Embedded\Joystick\jcan.h	153;"	e	line:153	enum:DEV_NET_TX
+DEV_NET_IdSvCic	C:\Embedded\Joystick\jcan.h	152;"	e	line:152	enum:DEV_NET_TX
+DEV_NET_IdSvExp	C:\Embedded\Joystick\jcan.h	151;"	e	line:151	enum:DEV_NET_TX
+DEV_NET_IdSvMSR	C:\Embedded\Joystick\jcan.h	160;"	e	line:160	enum:DEV_NET_RX
+DEV_NET_IdSvUER	C:\Embedded\Joystick\jcan.h	159;"	e	line:159	enum:DEV_NET_RX
+DEV_NET_RX	C:\Embedded\Joystick\jcan.h	157;"	g	line:157
+DEV_NET_RX_END	C:\Embedded\Joystick\jcan.h	163;"	e	line:163	enum:DEV_NET_RX
+DEV_NET_TX	C:\Embedded\Joystick\jcan.h	149;"	g	line:149
+DEV_NET_TX_END	C:\Embedded\Joystick\jcan.h	154;"	e	line:154	enum:DEV_NET_TX
+DEV_SETCODE_0	C:\Embedded\Joystick\japplication_data.h	53;"	d	line:53
+DICT_CTL	C:\Embedded\Joystick\jdict.h	39;"	g	line:39	struct:_DICTIONARY_EXTENDED_OBJECT
+DICT_INFO	C:\Embedded\Joystick\jdict.h	98;"	e	line:98	enum:_SDO_REQ_TYPE
+DICT_OBJ	C:\Embedded\Joystick\jdict.h	92;"	t	line:92
+DICT_OBJECT_TEMPLATE	C:\Embedded\Joystick\jdict.h	19;"	t	line:19
+DICT_OBJ_INFO	C:\Embedded\Joystick\jdict.h	124;"	e	line:124	enum:_DICTIONARY_DATA::_DICT_OBJECT_REQUEST
+DICT_OBJ_READ	C:\Embedded\Joystick\jdict.h	125;"	e	line:125	enum:_DICTIONARY_DATA::_DICT_OBJECT_REQUEST
+DICT_OBJ_WRITE	C:\Embedded\Joystick\jdict.h	126;"	e	line:126	enum:_DICTIONARY_DATA::_DICT_OBJECT_REQUEST
+DICT_PARAM	C:\Embedded\Joystick\jdict.h	129;"	t	line:129
+DICT_PTRS	C:\Embedded\Joystick\jdict.h	84;"	u	line:84	struct:_DICTIONARY_EXTENDED_OBJECT
+DICT_READ	C:\Embedded\Joystick\jdict.h	96;"	e	line:96	enum:_SDO_REQ_TYPE
+DICT_WRITE	C:\Embedded\Joystick\jdict.h	97;"	e	line:97	enum:_SDO_REQ_TYPE
+DIRECTIONAL_GAIN_1	C:\Embedded\Joystick\japplication_data.h	226;"	e	line:226	enum:direction_dependant_gain
+DIR_DEPENDNT_GAIN	C:\Embedded\Joystick\japplication_data.h	67;"	d	line:67
+DOWNLOAD_RESPONSE	C:\Embedded\Joystick\jcan.h	235;"	m	line:235	union:SDO_Command
+DOWNLOAD_SEGMT	C:\Embedded\Joystick\jcan.h	228;"	m	line:228	union:SDO_Command
+Delay1KTCYx	C:\Embedded\Joystick\jprototype.h	14;"	p	line:14	signature:( unsigned char)
+Dev_control_mode	C:\Embedded\Joystick\japplication_data.h	162;"	g	line:162
+Device_Local	C:\Embedded\Joystick\japplication_data.h	179;"	g	line:179
+Device_mode	C:\Embedded\Joystick\japplication_data.h	149;"	g	line:149
+Direction	C:\Embedded\Joystick\japplication_data.h	137;"	g	line:137
+Download_to_EEPROM	C:\Embedded\Joystick\jdict.c	92;"	f	line:92	signature:(unsigned char * from, int n)
+Download_to_EEPROM	C:\Embedded\Joystick\jprototype.h	30;"	p	line:30	signature:(unsigned char * from, int n)
+Download_to_RAM	C:\Embedded\Joystick\jdict.c	184;"	f	line:184	signature:(char * from, char * to, int n)
+Download_to_RAM	C:\Embedded\Joystick\jprototype.h	27;"	p	line:27	signature:(char *, char *, int)
+EE	C:\Embedded\Joystick\jdict.h	66;"	e	line:66	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+EEPROM_CAN_BAUDRATE	C:\Embedded\Joystick\japplication_data.h	10;"	d	line:10
+EEPROM_DEBOUNCE_RATE	C:\Embedded\Joystick\japplication_data.h	13;"	d	line:13
+EEPROM_HEART_BEAT	C:\Embedded\Joystick\japplication_data.h	11;"	d	line:11
+EEPROM_NODE_ID	C:\Embedded\Joystick\japplication_data.h	9;"	d	line:9
+EEPROM_POT_RX_ID1	C:\Embedded\Joystick\japplication_data.h	20;"	d	line:20
+EEPROM_POT_RX_ID2	C:\Embedded\Joystick\japplication_data.h	21;"	d	line:21
+EEPROM_POT_RX_ID3	C:\Embedded\Joystick\japplication_data.h	22;"	d	line:22
+EEPROM_POT_RX_ID4	C:\Embedded\Joystick\japplication_data.h	23;"	d	line:23
+EEPROM_Product_code	C:\Embedded\Joystick\japplication_data.h	15;"	d	line:15
+EEPROM_SWITCH1	C:\Embedded\Joystick\japplication_data.h	19;"	d	line:19
+EEPROM_SYNC_TIME	C:\Embedded\Joystick\japplication_data.h	12;"	d	line:12
+EEPROM_Vendor_Id	C:\Embedded\Joystick\japplication_data.h	14;"	d	line:14
+EEPROM_number_rx_nodes	C:\Embedded\Joystick\japplication_data.h	18;"	d	line:18
+EEPROM_revision_numb	C:\Embedded\Joystick\japplication_data.h	16;"	d	line:16
+EEPROM_serial_numb	C:\Embedded\Joystick\japplication_data.h	17;"	d	line:17
+EE_BIT	C:\Embedded\Joystick\jdict.h	65;"	e	line:65	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+EE_CS	C:\Embedded\Joystick\japplication_data.h	25;"	d	line:25
+ERROR_CODE	C:\Embedded\Joystick\jmain.c	45;"	v	line:45
+ERROR_REGISTER	C:\Embedded\Joystick\jcan.h	166;"	u	line:166
+E_CANNOT_READ	C:\Embedded\Joystick\jcan.h	342;"	e	line:342	enum:M_SDO_REQ_STATUS
+E_CANNOT_WRITE	C:\Embedded\Joystick\jcan.h	343;"	e	line:343	enum:M_SDO_REQ_STATUS
+E_CS_CMD	C:\Embedded\Joystick\jcan.h	339;"	e	line:339	enum:M_SDO_REQ_STATUS
+E_DEV_STATE	C:\Embedded\Joystick\jcan.h	361;"	e	line:361	enum:M_SDO_REQ_STATUS
+E_GENERAL	C:\Embedded\Joystick\jcan.h	358;"	e	line:358	enum:M_SDO_REQ_STATUS
+E_GEN_INTERNAL_COMP	C:\Embedded\Joystick\jcan.h	348;"	e	line:348	enum:M_SDO_REQ_STATUS
+E_GEN_PARAM_COMP	C:\Embedded\Joystick\jcan.h	347;"	e	line:347	enum:M_SDO_REQ_STATUS
+E_HARDWARE	C:\Embedded\Joystick\jcan.h	349;"	e	line:349	enum:M_SDO_REQ_STATUS
+E_LEN_SERVICE	C:\Embedded\Joystick\jcan.h	350;"	e	line:350	enum:M_SDO_REQ_STATUS
+E_LEN_SERVICE_HIGH	C:\Embedded\Joystick\jcan.h	351;"	e	line:351	enum:M_SDO_REQ_STATUS
+E_LEN_SERVICE_LOW	C:\Embedded\Joystick\jcan.h	352;"	e	line:352	enum:M_SDO_REQ_STATUS
+E_LOCAL_CONTROL	C:\Embedded\Joystick\jcan.h	360;"	e	line:360	enum:M_SDO_REQ_STATUS
+E_MAX_LT_MIN	C:\Embedded\Joystick\jcan.h	357;"	e	line:357	enum:M_SDO_REQ_STATUS
+E_MEMORY_OUT	C:\Embedded\Joystick\jcan.h	340;"	e	line:340	enum:M_SDO_REQ_STATUS
+E_NO_DICTIONARY	C:\Embedded\Joystick\jcan.h	362;"	e	line:362	enum:M_SDO_REQ_STATUS
+E_OBJ_CANNOT_MAP	C:\Embedded\Joystick\jcan.h	345;"	e	line:345	enum:M_SDO_REQ_STATUS
+E_OBJ_MAP_LEN	C:\Embedded\Joystick\jcan.h	346;"	e	line:346	enum:M_SDO_REQ_STATUS
+E_OBJ_NOT_FOUND	C:\Embedded\Joystick\jcan.h	344;"	e	line:344	enum:M_SDO_REQ_STATUS
+E_PARAM_HIGH	C:\Embedded\Joystick\jcan.h	355;"	e	line:355	enum:M_SDO_REQ_STATUS
+E_PARAM_LOW	C:\Embedded\Joystick\jcan.h	356;"	e	line:356	enum:M_SDO_REQ_STATUS
+E_PARAM_RANGE	C:\Embedded\Joystick\jcan.h	354;"	e	line:354	enum:M_SDO_REQ_STATUS
+E_SDO_TIME	C:\Embedded\Joystick\jcan.h	338;"	e	line:338	enum:M_SDO_REQ_STATUS
+E_SUBINDEX_NOT_FOUND	C:\Embedded\Joystick\jcan.h	353;"	e	line:353	enum:M_SDO_REQ_STATUS
+E_SUCCESS	C:\Embedded\Joystick\jcan.h	336;"	e	line:336	enum:M_SDO_REQ_STATUS
+E_TOGGLE	C:\Embedded\Joystick\jcan.h	337;"	e	line:337	enum:M_SDO_REQ_STATUS
+E_TRANSFER	C:\Embedded\Joystick\jcan.h	359;"	e	line:359	enum:M_SDO_REQ_STATUS
+E_UNSUPP_ACCESS	C:\Embedded\Joystick\jcan.h	341;"	e	line:341	enum:M_SDO_REQ_STATUS
+Error_Code	C:\Embedded\Joystick\jcan.h	182;"	s	line:182
+FALSE	C:\Embedded\Joystick\jcan.h	4;"	d	line:4
+FDEF	C:\Embedded\Joystick\jdict.h	70;"	e	line:70	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+FDEF_BIT	C:\Embedded\Joystick\jdict.h	69;"	e	line:69	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+FSUB	C:\Embedded\Joystick\jdict.h	78;"	e	line:78	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+FSUB_BIT	C:\Embedded\Joystick\jdict.h	77;"	e	line:77	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+FUNC	C:\Embedded\Joystick\jdict.h	51;"	e	line:51	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+Fosc	C:\Embedded\Joystick\japplication_data.h	82;"	d	line:82
+GENERIC	C:\Embedded\Joystick\jcan.h	170;"	m	line:170	struct:ERROR_REGISTER::<anonymous>
+H	C:\Embedded\Joystick\japplication_data.h	122;"	m	line:122	struct:device_control_word::<anonymous>
+HALF_SECOND	C:\Embedded\Joystick\japplication_data.h	86;"	d	line:86
+HEARTBEAT	C:\Embedded\Joystick\jcan.h	88;"	u	line:88
+HOLD_SETVALUE_0	C:\Embedded\Joystick\japplication_data.h	55;"	d	line:55
+IN	C:\Embedded\Joystick\jcan.h	195;"	m	line:195	struct:STAT_TX_B::<anonymous>
+INDEX	C:\Embedded\Joystick\jcan.h	308;"	m	line:308	struct:TXB_BUFF::<anonymous>
+INIT_DOWNLOAD	C:\Embedded\Joystick\jcan.h	214;"	m	line:214	union:SDO_Command
+INIT_DOWNLOAD_RESPONSE	C:\Embedded\Joystick\jcan.h	220;"	m	line:220	union:SDO_Command
+INIT_RT	C:\Embedded\Joystick\jController.c	54;"	f	line:54	signature:(void)
+INIT_RT	C:\Embedded\Joystick\jprototype.h	39;"	p	line:39	signature:(void)
+INIT_UPLOAD	C:\Embedded\Joystick\jcan.h	241;"	m	line:241	union:SDO_Command
+INIT_UPLOAD_RESPONSE	C:\Embedded\Joystick\jcan.h	250;"	m	line:250	union:SDO_Command
+INTER_SDO_TIMER	C:\Embedded\Joystick\jcan.h	29;"	d	line:29
+Id	C:\Embedded\Joystick\jmain.c	34;"	v	line:34
+Id_high	C:\Embedded\Joystick\jcan.h	104;"	m	line:104	struct:LONGID::<anonymous>
+Id_low	C:\Embedded\Joystick\jcan.h	103;"	m	line:103	struct:LONGID::<anonymous>
+Id_p	C:\Embedded\Joystick\jmain.c	32;"	v	line:32
+Id_p	C:\Embedded\Joystick\jmain.c	382;"	l	line:382
+Idword	C:\Embedded\Joystick\jcan.h	100;"	m	line:100	union:LONGID
+Index	C:\Embedded\Joystick\jmain.c	35;"	v	line:35
+Init_profile_data	C:\Embedded\Joystick\jprototype.h	31;"	p	line:31	signature:(void)
+InterruptHandler	C:\Embedded\Joystick\jinit.c	97;"	f	line:97	signature:(void)
+InterruptRxCAN	C:\Embedded\Joystick\jprototype.h	9;"	p	line:9	signature:(void)
+LINEAR_1	C:\Embedded\Joystick\japplication_data.h	213;"	e	line:213	enum:ramp_type
+LINEAR_2	C:\Embedded\Joystick\japplication_data.h	214;"	e	line:214	enum:ramp_type
+LINEAR_3	C:\Embedded\Joystick\japplication_data.h	215;"	e	line:215	enum:ramp_type
+LONGID	C:\Embedded\Joystick\jcan.h	98;"	u	line:98
+M	C:\Embedded\Joystick\japplication_data.h	123;"	m	line:123	struct:device_control_word::<anonymous>
+MANUFACTURER	C:\Embedded\Joystick\jcan.h	177;"	m	line:177	struct:ERROR_REGISTER::<anonymous>
+MAP	C:\Embedded\Joystick\jdict.h	74;"	e	line:74	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+MAP_BIT	C:\Embedded\Joystick\jdict.h	73;"	e	line:73	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+MASTER_OR_SLAVE	C:\Embedded\Joystick\japplication_data.h	91;"	d	line:91
+MAX_CAN_IN	C:\Embedded\Joystick\jcan.h	147;"	e	line:147	enum:CAN_OPEN_RX
+MAX_CAN_OUT	C:\Embedded\Joystick\jcan.h	137;"	e	line:137	enum:CAN_OPEN_TX
+MONITORING_DELAY	C:\Embedded\Joystick\japplication_data.h	71;"	d	line:71
+MONITORING_SWITHCHOFF	C:\Embedded\Joystick\japplication_data.h	76;"	d	line:76
+MONITORING_SWITHCHON	C:\Embedded\Joystick\japplication_data.h	75;"	d	line:75
+MONITORING_TRHLD	C:\Embedded\Joystick\japplication_data.h	72;"	d	line:72
+MONITORING_TRHLD_DOWN	C:\Embedded\Joystick\japplication_data.h	74;"	d	line:74
+MONITORING_TRHLD_UP	C:\Embedded\Joystick\japplication_data.h	73;"	d	line:73
+MON_DYNAMIC_3	C:\Embedded\Joystick\japplication_data.h	253;"	e	line:253	enum:monitoring_type
+MON_DYNAMIC_4	C:\Embedded\Joystick\japplication_data.h	254;"	e	line:254	enum:monitoring_type
+MON_STANDARD_1	C:\Embedded\Joystick\japplication_data.h	251;"	e	line:251	enum:monitoring_type
+MON_STANDARD_2	C:\Embedded\Joystick\japplication_data.h	252;"	e	line:252	enum:monitoring_type
+M_ABORT	C:\Embedded\Joystick\jcan.h	75;"	t	line:75
+M_CONTROL_WORD	C:\Embedded\Joystick\japplication_data.h	135;"	t	line:135
+M_ERROR_CODE	C:\Embedded\Joystick\jcan.h	186;"	t	line:186
+M_ERROR_REGISTER	C:\Embedded\Joystick\jcan.h	180;"	t	line:180
+M_HEARTBEAT	C:\Embedded\Joystick\jcan.h	96;"	t	line:96
+M_LONGID	C:\Embedded\Joystick\jcan.h	106;"	t	line:106
+M_LONG_TO_ARRAY	C:\Embedded\Joystick\jcan.h	120;"	t	line:120
+M_MULTIPLEXOR	C:\Embedded\Joystick\jdict.h	116;"	t	line:116
+M_PDO_ENABLE	C:\Embedded\Joystick\japplication_data.h	105;"	t	line:105
+M_POT_VAL	C:\Embedded\Joystick\jmain.c	507;"	t	line:507	file:
+M_SDO_Command_header	C:\Embedded\Joystick\jcan.h	281;"	t	line:281
+M_SDO_REQ_STATUS	C:\Embedded\Joystick\jcan.h	334;"	g	line:334
+M_STATUS_WORD	C:\Embedded\Joystick\japplication_data.h	208;"	t	line:208
+M_STAT_TX_B	C:\Embedded\Joystick\jcan.h	203;"	t	line:203
+M_TIMER_1_CONVERT	C:\Embedded\Joystick\jcan.h	86;"	t	line:86
+M_TXB_BUFF	C:\Embedded\Joystick\jcan.h	332;"	t	line:332
+Milisec	C:\Embedded\Joystick\japplication_data.h	85;"	d	line:85
+NA	C:\Embedded\Joystick\jdict.h	43;"	e	line:43	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+NEGATIVE	C:\Embedded\Joystick\japplication_data.h	139;"	e	line:139	enum:Direction
+NO_COMPENSATION_0	C:\Embedded\Joystick\japplication_data.h	242;"	e	line:242	enum:characteristic_compensation_type
+NO_DEADBAND_COMP_0	C:\Embedded\Joystick\japplication_data.h	233;"	e	line:233	enum:dead_bad_compensation_type
+NO_DIRECTIONAL_GAIN_0	C:\Embedded\Joystick\japplication_data.h	225;"	e	line:225	enum:direction_dependant_gain
+NO_MONITORING_0	C:\Embedded\Joystick\japplication_data.h	250;"	e	line:250	enum:monitoring_type
+NO_RAMP_0	C:\Embedded\Joystick\japplication_data.h	212;"	e	line:212	enum:ramp_type
+NO_TARGET_MON_0	C:\Embedded\Joystick\japplication_data.h	261;"	e	line:261	enum:target_moni_type
+N_EE	C:\Embedded\Joystick\jdict.h	67;"	e	line:67	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+N_FDEF	C:\Embedded\Joystick\jdict.h	71;"	e	line:71	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+N_FSUB	C:\Embedded\Joystick\jdict.h	79;"	e	line:79	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+N_MAP	C:\Embedded\Joystick\jdict.h	75;"	e	line:75	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+N_RD	C:\Embedded\Joystick\jdict.h	55;"	e	line:55	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+N_ROM	C:\Embedded\Joystick\jdict.h	63;"	e	line:63	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+N_WR	C:\Embedded\Joystick\jdict.h	59;"	e	line:59	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+OUT	C:\Embedded\Joystick\jcan.h	196;"	m	line:196	struct:STAT_TX_B::<anonymous>
+PDOS_ENABLED	C:\Embedded\Joystick\japplication_data.h	26;"	d	line:26
+PDO_COUNT	C:\Embedded\Joystick\japplication_data.h	90;"	d	line:90
+PDO_Enable	C:\Embedded\Joystick\japplication_data.h	93;"	u	line:93
+PDO_byte	C:\Embedded\Joystick\japplication_data.h	104;"	m	line:104	union:PDO_Enable
+PDO_enable	C:\Embedded\Joystick\jmain.c	27;"	v	line:27
+POSITIVE	C:\Embedded\Joystick\japplication_data.h	140;"	e	line:140	enum:Direction
+PROFILE	C:\Embedded\Joystick\jcan.h	175;"	m	line:175	struct:ERROR_REGISTER::<anonymous>
+PROF_GEN_5	C:\Embedded\Joystick\japplication_data.h	217;"	e	line:217	enum:ramp_type
+PROF_GEN_6	C:\Embedded\Joystick\japplication_data.h	218;"	e	line:218	enum:ramp_type
+Pot1	C:\Embedded\Joystick\japplication_data.h	98;"	m	line:98	struct:PDO_Enable::<anonymous>
+Pot2	C:\Embedded\Joystick\japplication_data.h	99;"	m	line:99	struct:PDO_Enable::<anonymous>
+Pot3	C:\Embedded\Joystick\japplication_data.h	100;"	m	line:100	struct:PDO_Enable::<anonymous>
+Pot4	C:\Embedded\Joystick\japplication_data.h	101;"	m	line:101	struct:PDO_Enable::<anonymous>
+Pot_val	C:\Embedded\Joystick\jmain.c	499;"	u	line:499	file:
+RAMP_ACCELTIME_0	C:\Embedded\Joystick\japplication_data.h	61;"	d	line:61
+RAMP_ACCELTIME_NEG_0	C:\Embedded\Joystick\japplication_data.h	63;"	d	line:63
+RAMP_ACCELTIME_POS_0	C:\Embedded\Joystick\japplication_data.h	62;"	d	line:62
+RAMP_DECELTIME_0	C:\Embedded\Joystick\japplication_data.h	64;"	d	line:64
+RAMP_DECELTIME_NEG_0	C:\Embedded\Joystick\japplication_data.h	66;"	d	line:66
+RAMP_DECELTIME_POS_0	C:\Embedded\Joystick\japplication_data.h	65;"	d	line:65
+RD	C:\Embedded\Joystick\jdict.h	54;"	e	line:54	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+RDSR	C:\Embedded\Joystick\japplication_data.h	39;"	d	line:39
+RD_BIT	C:\Embedded\Joystick\jdict.h	53;"	e	line:53	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+READ	C:\Embedded\Joystick\japplication_data.h	37;"	d	line:37
+REQ_STAT	C:\Embedded\Joystick\jcan.h	363;"	t	line:363
+RESERVED	C:\Embedded\Joystick\jcan.h	176;"	m	line:176	struct:ERROR_REGISTER::<anonymous>
+RFault	C:\Embedded\Joystick\japplication_data.h	124;"	m	line:124	struct:device_control_word::<anonymous>
+RO	C:\Embedded\Joystick\jdict.h	46;"	e	line:46	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+ROM	C:\Embedded\Joystick\jdict.h	62;"	e	line:62	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+ROM_BIT	C:\Embedded\Joystick\jdict.h	61;"	e	line:61	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+RO_EE	C:\Embedded\Joystick\jdict.h	49;"	e	line:49	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+RW	C:\Embedded\Joystick\jdict.h	45;"	e	line:45	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+RW_EE	C:\Embedded\Joystick\jdict.h	48;"	e	line:48	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+RXB_B	C:\Embedded\Joystick\jmain.c	26;"	v	line:26
+RXB_B_BST_BR_R	C:\Embedded\Joystick\jinit.c	65;"	v	line:65
+RXB_B_BTXBD0	C:\Embedded\Joystick\jinit.c	57;"	v	line:57
+RXB_B_BTXBD1	C:\Embedded\Joystick\jinit.c	58;"	v	line:58
+RXB_B_BTXBD2	C:\Embedded\Joystick\jinit.c	59;"	v	line:59
+RXB_B_BTXBD3	C:\Embedded\Joystick\jinit.c	60;"	v	line:60
+RXB_B_BTXBD4	C:\Embedded\Joystick\jinit.c	61;"	v	line:61
+RXB_B_BTXBD5	C:\Embedded\Joystick\jinit.c	62;"	v	line:62
+RXB_B_BTXBD6	C:\Embedded\Joystick\jinit.c	63;"	v	line:63
+RXB_B_BTXBD7	C:\Embedded\Joystick\jinit.c	64;"	v	line:64
+RXB_B_BTXBDLC	C:\Embedded\Joystick\jinit.c	68;"	v	line:68
+RXB_B_BTXBSIDH	C:\Embedded\Joystick\jinit.c	67;"	v	line:67
+RXB_B_BTXBSIDL	C:\Embedded\Joystick\jinit.c	66;"	v	line:66
+R_R	C:\Embedded\Joystick\jcan.h	194;"	m	line:194	struct:STAT_TX_B::<anonymous>
+ReadEEprom_OnBoard	C:\Embedded\Joystick\jinit.c	209;"	f	line:209	signature:(unsigned char EEaddress)
+ReadEEprom_OnBoard	C:\Embedded\Joystick\jprototype.h	33;"	p	line:33	signature:(unsigned char)
+Ready	C:\Embedded\Joystick\japplication_data.h	195;"	m	line:195	struct:device_status_word::<anonymous>
+SCS_SDO_DOWNLOAD_RESP	C:\Embedded\Joystick\jcan.h	54;"	d	line:54
+SCS_SDO_INIT_DOWNLOAD_RESP	C:\Embedded\Joystick\jcan.h	56;"	d	line:56
+SCS_SDO_INIT_UPLOAD	C:\Embedded\Joystick\jcan.h	55;"	d	line:55
+SCS_SDO_UPLOAD_SEG_RESP	C:\Embedded\Joystick\jcan.h	53;"	d	line:53
+SDO_Command	C:\Embedded\Joystick\jcan.h	205;"	u	line:205
+SDO_Process	C:\Embedded\Joystick\jmain.c	37;"	v	line:37
+SDO_RX_HOLD_DATA	C:\Embedded\Joystick\jProfile_data.c	43;"	v	line:43
+SDO_RX_INDEX	C:\Embedded\Joystick\jmain.c	38;"	v	line:38
+SINE_SQR_4	C:\Embedded\Joystick\japplication_data.h	216;"	e	line:216	enum:ramp_type
+STATO_TX_B	C:\Embedded\Joystick\jcan.h	201;"	m	line:201	struct:STAT_TX_B::<anonymous>
+STAT_CKE_Xact	C:\Embedded\Joystick\japplication_data.h	32;"	d	line:32
+STAT_CKE_Xidl	C:\Embedded\Joystick\japplication_data.h	33;"	d	line:33
+STAT_TX_B	C:\Embedded\Joystick\jcan.h	189;"	u	line:189
+ST_B	C:\Embedded\Joystick\jcan.h	298;"	m	line:298	struct:TXB_BUFF::<anonymous>
+ST_B	C:\Embedded\Joystick\jcan.h	313;"	m	line:313	struct:TXB_BUFF::<anonymous>
+ST_B	C:\Embedded\Joystick\jcan.h	329;"	m	line:329	struct:TXB_BUFF::<anonymous>
+SUB_INDEX	C:\Embedded\Joystick\jcan.h	307;"	m	line:307	struct:TXB_BUFF::<anonymous>
+SWparSet	C:\Embedded\Joystick\japplication_data.h	126;"	m	line:126	struct:device_control_word::<anonymous>
+SendBoot	C:\Embedded\Joystick\jmain.c	169;"	f	line:169	signature:(void)
+SendBoot	C:\Embedded\Joystick\jprototype.h	15;"	p	line:15	signature:(void)
+SendEmergency	C:\Embedded\Joystick\jmain.c	177;"	f	line:177	signature:(void)
+SendEmergency	C:\Embedded\Joystick\jprototype.h	16;"	p	line:16	signature:(void)
+SendHeartbeat	C:\Embedded\Joystick\jmain.c	194;"	f	line:194	signature:(void)
+SendHeartbeat	C:\Embedded\Joystick\jprototype.h	17;"	p	line:17	signature:(void)
+Send_Download_resp	C:\Embedded\Joystick\jmain.c	215;"	f	line:215	signature:(unsigned char t)
+Send_Download_resp	C:\Embedded\Joystick\jprototype.h	23;"	p	line:23	signature:(unsigned char)
+Send_Init_Download_resp	C:\Embedded\Joystick\jmain.c	203;"	f	line:203	signature:(int i, unsigned char s)
+Send_Init_Download_resp	C:\Embedded\Joystick\jprototype.h	21;"	p	line:21	signature:(int, unsigned char)
+Send_Init_Upload_resp	C:\Embedded\Joystick\jmain.c	226;"	f	line:226	signature:(void)
+Send_Init_Upload_resp	C:\Embedded\Joystick\jprototype.h	24;"	p	line:24	signature:(void)
+Send_SDO_Abort	C:\Embedded\Joystick\jmain.c	247;"	f	line:247	signature:(int i, unsigned char s, char retcode)
+Send_SDO_Abort	C:\Embedded\Joystick\jprototype.h	22;"	p	line:22	signature:(int, unsigned char, char)
+Send_Upload_Segment	C:\Embedded\Joystick\jmain.c	235;"	f	line:235	signature:(unsigned char n, unsigned char t, unsigned char c)
+Send_Upload_Segment	C:\Embedded\Joystick\jprototype.h	25;"	p	line:25	signature:(unsigned char, unsigned char, unsigned char)
+StatoUnita	C:\Embedded\Joystick\jmain.c	33;"	v	line:33
+Stop_unit	C:\Embedded\Joystick\jprototype.h	18;"	p	line:18	signature:(void)
+SubIndex	C:\Embedded\Joystick\jmain.c	36;"	v	line:36
+SwitchBank1	C:\Embedded\Joystick\japplication_data.h	97;"	m	line:97	struct:PDO_Enable::<anonymous>
+T0_1ms	C:\Embedded\Joystick\jController.h	17;"	v	line:17
+T0_PreScale	C:\Embedded\Joystick\japplication_data.h	83;"	d	line:83
+T1	C:\Embedded\Joystick\jmain.c	41;"	v	line:41
+T1_PreScale	C:\Embedded\Joystick\japplication_data.h	84;"	d	line:84
+T1_int	C:\Embedded\Joystick\jcan.h	80;"	m	line:80	union:TIMER_1_CONVERT
+T1high_byte	C:\Embedded\Joystick\jcan.h	84;"	m	line:84	struct:TIMER_1_CONVERT::<anonymous>
+T1low_byte	C:\Embedded\Joystick\jcan.h	83;"	m	line:83	struct:TIMER_1_CONVERT::<anonymous>
+TARGET_MONITORING_TRHLD	C:\Embedded\Joystick\japplication_data.h	77;"	d	line:77
+TARGET_MONTNG_TRHLD_DOWN	C:\Embedded\Joystick\japplication_data.h	79;"	d	line:79
+TARGET_MONTNG_TRHLD_UP	C:\Embedded\Joystick\japplication_data.h	78;"	d	line:78
+TARG_STANDARD_1	C:\Embedded\Joystick\japplication_data.h	262;"	e	line:262	enum:target_moni_type
+TARG_SYMMETRIC_2	C:\Embedded\Joystick\japplication_data.h	263;"	e	line:263	enum:target_moni_type
+TEMPERATURE	C:\Embedded\Joystick\jcan.h	173;"	m	line:173	struct:ERROR_REGISTER::<anonymous>
+TIMER_1_CONVERT	C:\Embedded\Joystick\jcan.h	78;"	u	line:78
+TRUE	C:\Embedded\Joystick\jcan.h	3;"	d	line:3
+TXBD0	C:\Embedded\Joystick\jcan.h	294;"	m	line:294	struct:TXB_BUFF::<anonymous>
+TXBD1	C:\Embedded\Joystick\jcan.h	293;"	m	line:293	struct:TXB_BUFF::<anonymous>
+TXBD2	C:\Embedded\Joystick\jcan.h	292;"	m	line:292	struct:TXB_BUFF::<anonymous>
+TXBD3	C:\Embedded\Joystick\jcan.h	291;"	m	line:291	struct:TXB_BUFF::<anonymous>
+TXBD4	C:\Embedded\Joystick\jcan.h	290;"	m	line:290	struct:TXB_BUFF::<anonymous>
+TXBD5	C:\Embedded\Joystick\jcan.h	289;"	m	line:289	struct:TXB_BUFF::<anonymous>
+TXBD6	C:\Embedded\Joystick\jcan.h	288;"	m	line:288	struct:TXB_BUFF::<anonymous>
+TXBD7	C:\Embedded\Joystick\jcan.h	287;"	m	line:287	struct:TXB_BUFF::<anonymous>
+TXBDLC	C:\Embedded\Joystick\jcan.h	295;"	m	line:295	struct:TXB_BUFF::<anonymous>
+TXBDLC	C:\Embedded\Joystick\jcan.h	310;"	m	line:310	struct:TXB_BUFF::<anonymous>
+TXBDLC	C:\Embedded\Joystick\jcan.h	326;"	m	line:326	struct:TXB_BUFF::<anonymous>
+TXBSIDH	C:\Embedded\Joystick\jcan.h	297;"	m	line:297	struct:TXB_BUFF::<anonymous>
+TXBSIDH	C:\Embedded\Joystick\jcan.h	312;"	m	line:312	struct:TXB_BUFF::<anonymous>
+TXBSIDH	C:\Embedded\Joystick\jcan.h	328;"	m	line:328	struct:TXB_BUFF::<anonymous>
+TXBSIDL	C:\Embedded\Joystick\jcan.h	296;"	m	line:296	struct:TXB_BUFF::<anonymous>
+TXBSIDL	C:\Embedded\Joystick\jcan.h	311;"	m	line:311	struct:TXB_BUFF::<anonymous>
+TXBSIDL	C:\Embedded\Joystick\jcan.h	327;"	m	line:327	struct:TXB_BUFF::<anonymous>
+TXB_B	C:\Embedded\Joystick\jmain.c	25;"	v	line:25
+TXB_BUFF	C:\Embedded\Joystick\jcan.h	283;"	u	line:283
+TYPE_1	C:\Embedded\Joystick\japplication_data.h	234;"	e	line:234	enum:dead_bad_compensation_type
+TYPE_2	C:\Embedded\Joystick\japplication_data.h	235;"	e	line:235	enum:dead_bad_compensation_type
+TempCANCON	C:\Embedded\Joystick\jinit.c	111;"	l	line:111
+TempCANSTAT	C:\Embedded\Joystick\jinit.c	111;"	l	line:111
+Timer0tick_ms	C:\Embedded\Joystick\japplication_data.h	87;"	d	line:87
+Timer1tick_ms	C:\Embedded\Joystick\japplication_data.h	88;"	d	line:88
+TimingControl	C:\Embedded\Joystick\jController.c	35;"	f	line:35	signature:(void)
+TimingControl	C:\Embedded\Joystick\jprototype.h	35;"	p	line:35	signature:(void)
+UNSIGNED16_MUX	C:\Embedded\Joystick\jdict.h	101;"	u	line:101
+UPLOAD_SEGMT	C:\Embedded\Joystick\jcan.h	257;"	m	line:257	union:SDO_Command
+UPLOAD_SEGMT_RESP	C:\Embedded\Joystick\jcan.h	265;"	m	line:265	union:SDO_Command
+Upload_from_RAM	C:\Embedded\Joystick\jdict.c	200;"	f	line:200	signature:(char * from, char * to, int n)
+Upload_from_RAM	C:\Embedded\Joystick\jprototype.h	28;"	p	line:28	signature:(char *, char *, int)
+Upload_from_ROM	C:\Embedded\Joystick\jdict.c	215;"	f	line:215	signature:(rom unsigned char * from, char * to, int n)
+Upload_from_ROM	C:\Embedded\Joystick\jprototype.h	29;"	p	line:29	signature:(rom unsigned char *, char *, int)
+VOLTAGE	C:\Embedded\Joystick\jcan.h	172;"	m	line:172	struct:ERROR_REGISTER::<anonymous>
+WO	C:\Embedded\Joystick\jdict.h	47;"	e	line:47	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+WO_EE	C:\Embedded\Joystick\jdict.h	50;"	e	line:50	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+WR	C:\Embedded\Joystick\jdict.h	58;"	e	line:58	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+WRITE	C:\Embedded\Joystick\japplication_data.h	36;"	d	line:36
+WRI_DI	C:\Embedded\Joystick\japplication_data.h	38;"	d	line:38
+WRI_ENA	C:\Embedded\Joystick\japplication_data.h	40;"	d	line:40
+WRI_SR	C:\Embedded\Joystick\japplication_data.h	35;"	d	line:35
+WR_BIT	C:\Embedded\Joystick\jdict.h	57;"	e	line:57	enum:_DICTIONARY_EXTENDED_OBJECT::DICT_CTL
+WriteEEprom_OnBoard	C:\Embedded\Joystick\jinit.c	189;"	f	line:189	signature:(unsigned char EEPROM_address,unsigned char EEPROM_data)
+WriteEEprom_OnBoard	C:\Embedded\Joystick\jprototype.h	32;"	p	line:32	signature:(unsigned char,unsigned char)
+_DICTIONARY_DATA	C:\Embedded\Joystick\jdict.h	119;"	s	line:119
+_DICTIONARY_EXTENDED_OBJECT	C:\Embedded\Joystick\jdict.h	22;"	s	line:22
+_DICTIONARY_OBJECT_TEMPLATE	C:\Embedded\Joystick\jdict.h	12;"	s	line:12
+_DICT_OBJECT_REQUEST	C:\Embedded\Joystick\jdict.h	122;"	g	line:122	struct:_DICTIONARY_DATA
+_MULTIPLEXOR	C:\Embedded\Joystick\jdict.h	111;"	s	line:111
+_OFF	C:\Embedded\Joystick\jcan.h	6;"	d	line:6
+_ON	C:\Embedded\Joystick\jcan.h	5;"	d	line:5
+_SDO_REQ_TYPE	C:\Embedded\Joystick\jdict.h	94;"	g	line:94
+__dummy	C:\Embedded\Joystick\jdict.c	58;"	v	line:58
+_db_objects	C:\Embedded\Joystick\jdict.c	70;"	v	line:70
+_null	C:\Embedded\Joystick\jdict.c	234;"	l	line:234
+_p18f4580	C:\Embedded\Joystick\jpic_include.h	2;"	d	line:2
+_pTmpDBase	C:\Embedded\Joystick\jdict.c	65;"	v	line:65
+_tDBaseLen	C:\Embedded\Joystick\jdict.c	66;"	v	line:66
+_uDictTemp	C:\Embedded\Joystick\jdict.c	67;"	v	line:67
+_uSDO1COMMIndx	C:\Embedded\Joystick\jdict.c	34;"	v	line:34
+a	C:\Embedded\Joystick\jdict.c	171;"	l	line:171
+a	C:\Embedded\Joystick\jdict.c	187;"	l	line:187
+a	C:\Embedded\Joystick\jdict.c	203;"	l	line:203
+a	C:\Embedded\Joystick\jdict.c	238;"	l	line:238
+abort_code	C:\Embedded\Joystick\jcan.h	61;"	u	line:61
+abort_code	C:\Embedded\Joystick\jmain.c	250;"	l	line:250
+b	C:\Embedded\Joystick\jcan.h	279;"	m	line:279	union:SDO_Command
+b0	C:\Embedded\Joystick\jcan.h	112;"	m	line:112	struct:long_array::<anonymous>
+b0	C:\Embedded\Joystick\jcan.h	68;"	m	line:68	struct:abort_code::<anonymous>
+b0	C:\Embedded\Joystick\jdict.h	105;"	m	line:105	struct:UNSIGNED16_MUX::<anonymous>
+b1	C:\Embedded\Joystick\jcan.h	113;"	m	line:113	struct:long_array::<anonymous>
+b1	C:\Embedded\Joystick\jcan.h	67;"	m	line:67	struct:abort_code::<anonymous>
+b1	C:\Embedded\Joystick\jdict.h	106;"	m	line:106	struct:UNSIGNED16_MUX::<anonymous>
+b2	C:\Embedded\Joystick\jcan.h	114;"	m	line:114	struct:long_array::<anonymous>
+b2	C:\Embedded\Joystick\jcan.h	66;"	m	line:66	struct:abort_code::<anonymous>
+b3	C:\Embedded\Joystick\jcan.h	115;"	m	line:115	struct:long_array::<anonymous>
+b3	C:\Embedded\Joystick\jcan.h	65;"	m	line:65	struct:abort_code::<anonymous>
+baud	C:\Embedded\Joystick\jinit.c	74;"	v	line:74
+baud_rate	C:\Embedded\Joystick\jinit.c	226;"	l	line:226
+bus_passive	C:\Embedded\Joystick\jmain.c	48;"	v	line:48
+c	C:\Embedded\Joystick\jcan.h	224;"	m	line:224	struct:SDO_Command::<anonymous>
+c	C:\Embedded\Joystick\jcan.h	261;"	m	line:261	struct:SDO_Command::<anonymous>
+cc	C:\Embedded\Joystick\jdict.c	86;"	v	line:86
+ccs	C:\Embedded\Joystick\jcan.h	213;"	m	line:213	struct:SDO_Command::<anonymous>
+ccs	C:\Embedded\Joystick\jcan.h	227;"	m	line:227	struct:SDO_Command::<anonymous>
+ccs	C:\Embedded\Joystick\jcan.h	249;"	m	line:249	struct:SDO_Command::<anonymous>
+ccs	C:\Embedded\Joystick\jcan.h	256;"	m	line:256	struct:SDO_Command::<anonymous>
+characteristic_compensation_type	C:\Embedded\Joystick\japplication_data.h	240;"	g	line:240
+cmd	C:\Embedded\Joystick\jdict.h	127;"	m	line:127	struct:_DICTIONARY_DATA
+cme_EnaLeakage	C:\Embedded\Joystick\japplication_data.h	129;"	m	line:129	struct:device_control_word::<anonymous>
+cme_EnaPressure	C:\Embedded\Joystick\japplication_data.h	127;"	m	line:127	struct:device_control_word::<anonymous>
+cme_MasterSlave	C:\Embedded\Joystick\japplication_data.h	128;"	m	line:128	struct:device_control_word::<anonymous>
+count	C:\Embedded\Joystick\jcan.h	90;"	m	line:90	union:HEARTBEAT
+cs	C:\Embedded\Joystick\jcan.h	270;"	m	line:270	struct:SDO_Command::<anonymous>
+cs	C:\Embedded\Joystick\jcan.h	276;"	m	line:276	struct:SDO_Command::<anonymous>
+ctl	C:\Embedded\Joystick\jdict.h	16;"	m	line:16	struct:_DICTIONARY_OBJECT_TEMPLATE
+ctl	C:\Embedded\Joystick\jdict.h	80;"	m	line:80	struct:_DICTIONARY_EXTENDED_OBJECT
+dead_bad_compensation_type	C:\Embedded\Joystick\japplication_data.h	231;"	g	line:231
+debounce	C:\Embedded\Joystick\jinit.c	77;"	v	line:77
+debug	C:\Embedded\Joystick\jconfig.h	16;"	d	line:16
+dev_mode	C:\Embedded\Joystick\japplication_data.h	130;"	m	line:130	struct:device_control_word::<anonymous>
+deviceModeActiveEnable	C:\Embedded\Joystick\japplication_data.h	194;"	m	line:194	struct:device_status_word::<anonymous>
+device_control_word	C:\Embedded\Joystick\japplication_data.h	117;"	u	line:117
+device_disable	C:\Embedded\Joystick\jmain.c	486;"	f	line:486	signature:(void)
+device_disable	C:\Embedded\Joystick\jprototype.h	37;"	p	line:37	signature:(void)
+device_enable	C:\Embedded\Joystick\jmain.c	477;"	f	line:477	signature:(void)
+device_enable	C:\Embedded\Joystick\jprototype.h	36;"	p	line:36	signature:(void)
+device_status_word	C:\Embedded\Joystick\japplication_data.h	188;"	u	line:188
+direction_dependant_gain	C:\Embedded\Joystick\japplication_data.h	223;"	g	line:223
+disabled	C:\Embedded\Joystick\japplication_data.h	192;"	m	line:192	struct:device_status_word::<anonymous>
+downloadbytes	C:\Embedded\Joystick\jmain.c	40;"	v	line:40
+dummy	C:\Embedded\Joystick\jRT_INIT.h	1;"	d	line:1
+e	C:\Embedded\Joystick\jcan.h	210;"	m	line:210	struct:SDO_Command::<anonymous>
+e	C:\Embedded\Joystick\jcan.h	246;"	m	line:246	struct:SDO_Command::<anonymous>
+ebyte	C:\Embedded\Joystick\jcan.h	179;"	m	line:179	union:ERROR_REGISTER
+err_high	C:\Embedded\Joystick\jcan.h	184;"	m	line:184	struct:Error_Code
+err_low	C:\Embedded\Joystick\jcan.h	185;"	m	line:185	struct:Error_Code
+find_dictionary_entry	C:\Embedded\Joystick\jdict.c	484;"	f	line:484	signature:(unsigned int i, char s)
+find_dictionary_entry	C:\Embedded\Joystick\jprototype.h	26;"	p	line:26	signature:(unsigned int, char)
+getActualValue	C:\Embedded\Joystick\jController.c	44;"	f	line:44	signature:(void)
+getActualValue	C:\Embedded\Joystick\jprototype.h	38;"	p	line:38	signature:(void)
+heartbeat_count	C:\Embedded\Joystick\jmain.c	42;"	v	line:42
+heartbeat_rate	C:\Embedded\Joystick\jmain.c	43;"	v	line:43
+heartbit_rate	C:\Embedded\Joystick\jinit.c	75;"	v	line:75
+high	C:\Embedded\Joystick\jcan.h	72;"	m	line:72	struct:abort_code::<anonymous>
+high_byte	C:\Embedded\Joystick\jcan.h	94;"	m	line:94	struct:HEARTBEAT::<anonymous>
+hold	C:\Embedded\Joystick\japplication_data.h	193;"	m	line:193	struct:device_status_word::<anonymous>
+i	C:\Embedded\Joystick\jdict.c	170;"	l	line:170
+i	C:\Embedded\Joystick\jdict.c	186;"	l	line:186
+i	C:\Embedded\Joystick\jdict.c	202;"	l	line:202
+i	C:\Embedded\Joystick\jdict.c	217;"	l	line:217
+i	C:\Embedded\Joystick\jdict.c	237;"	l	line:237
+i	C:\Embedded\Joystick\jdict.c	94;"	l	line:94
+i	C:\Embedded\Joystick\jinit.c	226;"	l	line:226
+i	C:\Embedded\Joystick\jmain.c	129;"	l	line:129
+index	C:\Embedded\Joystick\jdict.h	113;"	m	line:113	struct:_MULTIPLEXOR
+index	C:\Embedded\Joystick\jdict.h	14;"	m	line:14	struct:_DICTIONARY_OBJECT_TEMPLATE
+index	C:\Embedded\Joystick\jdict.h	36;"	m	line:36	struct:_DICTIONARY_EXTENDED_OBJECT
+init_cip	C:\Embedded\Joystick\jinit.c	224;"	f	line:224	signature:( void )
+init_cip	C:\Embedded\Joystick\jprototype.h	13;"	p	line:13	signature:( void )
+initialize_slaves	C:\Embedded\Joystick\jmain.c	97;"	f	line:97	signature:(void)
+initialize_slaves	C:\Embedded\Joystick\jprototype.h	40;"	p	line:40	signature:(void)
+j	C:\Embedded\Joystick\jinit.c	226;"	l	line:226
+jIO_Potentiometer_1	C:\Embedded\Joystick\jProfile_data.c	34;"	v	line:34
+jIO_Potentiometer_2	C:\Embedded\Joystick\jProfile_data.c	35;"	v	line:35
+jIO_Potentiometer_3	C:\Embedded\Joystick\jProfile_data.c	36;"	v	line:36
+jIO_Potentiometer_4	C:\Embedded\Joystick\jProfile_data.c	37;"	v	line:37
+jIO_switch1_value	C:\Embedded\Joystick\jProfile_data.c	27;"	v	line:27
+k	C:\Embedded\Joystick\jinit.c	227;"	l	line:227
+k	C:\Embedded\Joystick\jmain.c	381;"	l	line:381
+l	C:\Embedded\Joystick\jcan.h	119;"	m	line:119	union:long_array
+lastseg	C:\Embedded\Joystick\jdict.c	235;"	l	line:235
+len	C:\Embedded\Joystick\jdict.h	17;"	m	line:17	struct:_DICTIONARY_OBJECT_TEMPLATE
+len	C:\Embedded\Joystick\jdict.h	82;"	m	line:82	struct:_DICTIONARY_EXTENDED_OBJECT
+length	C:\Embedded\Joystick\jdict.h	115;"	m	line:115	struct:_MULTIPLEXOR
+localControl	C:\Embedded\Joystick\japplication_data.h	196;"	m	line:196	struct:device_status_word::<anonymous>
+long_array	C:\Embedded\Joystick\jcan.h	108;"	u	line:108
+low	C:\Embedded\Joystick\jcan.h	73;"	m	line:73	struct:abort_code::<anonymous>
+low_byte	C:\Embedded\Joystick\jcan.h	93;"	m	line:93	struct:HEARTBEAT::<anonymous>
+lta	C:\Embedded\Joystick\jinit.c	24;"	v	line:24
+main	C:\Embedded\Joystick\jmain.c	566;"	f	line:566
+manfSpecific	C:\Embedded\Joystick\japplication_data.h	204;"	m	line:204	struct:device_status_word::<anonymous>
+monitoring_type	C:\Embedded\Joystick\japplication_data.h	248;"	g	line:248
+multiplexor	C:\Embedded\Joystick\jmain.c	29;"	v	line:29
+n	C:\Embedded\Joystick\jcan.h	211;"	m	line:211	struct:SDO_Command::<anonymous>
+n	C:\Embedded\Joystick\jcan.h	225;"	m	line:225	struct:SDO_Command::<anonymous>
+n	C:\Embedded\Joystick\jcan.h	247;"	m	line:247	struct:SDO_Command::<anonymous>
+n	C:\Embedded\Joystick\jcan.h	262;"	m	line:262	struct:SDO_Command::<anonymous>
+next_PDO	C:\Embedded\Joystick\jmain.c	67;"	v	line:67
+node_id	C:\Embedded\Joystick\jinit.c	73;"	v	line:73
+num_nodes	C:\Embedded\Joystick\jinit.c	84;"	v	line:84
+numchars	C:\Embedded\Joystick\jdict.c	235;"	l	line:235
+obj	C:\Embedded\Joystick\jdict.h	121;"	m	line:121	struct:_DICTIONARY_DATA
+od_entry	C:\Embedded\Joystick\jdict.c	49;"	v	line:49
+p	C:\Embedded\Joystick\jdict.h	90;"	m	line:90	struct:_DICTIONARY_EXTENDED_OBJECT
+pEEDATA	C:\Embedded\Joystick\jdict.h	89;"	m	line:89	union:_DICTIONARY_EXTENDED_OBJECT::DICT_PTRS
+pFunc	C:\Embedded\Joystick\jdict.h	86;"	m	line:86	union:_DICTIONARY_EXTENDED_OBJECT::DICT_PTRS
+pRAM	C:\Embedded\Joystick\jdict.h	87;"	m	line:87	union:_DICTIONARY_EXTENDED_OBJECT::DICT_PTRS
+pROM	C:\Embedded\Joystick\jdict.h	18;"	m	line:18	struct:_DICTIONARY_OBJECT_TEMPLATE
+pROM	C:\Embedded\Joystick\jdict.h	88;"	m	line:88	union:_DICTIONARY_EXTENDED_OBJECT::DICT_PTRS
+pdo_rate	C:\Embedded\Joystick\jinit.c	90;"	v	line:90
+pot1	C:\Embedded\Joystick\jinit.c	86;"	v	line:86
+pot2	C:\Embedded\Joystick\jinit.c	87;"	v	line:87
+pot3	C:\Embedded\Joystick\jinit.c	88;"	v	line:88
+pot4	C:\Embedded\Joystick\jinit.c	89;"	v	line:89
+pot_high	C:\Embedded\Joystick\jmain.c	504;"	m	line:504	struct:Pot_val::<anonymous>	file:
+pot_int	C:\Embedded\Joystick\jmain.c	506;"	m	line:506	union:Pot_val	file:
+pot_low	C:\Embedded\Joystick\jmain.c	503;"	m	line:503	struct:Pot_val::<anonymous>	file:
+pot_value	C:\Embedded\Joystick\jmain.c	509;"	l	line:509
+prod_code	C:\Embedded\Joystick\jinit.c	81;"	v	line:81
+q_cc	C:\Embedded\Joystick\jdict.c	487;"	l	line:487
+q_copy_from_RAM	C:\Embedded\Joystick\jdict.c	82;"	v	line:82
+q_copy_from_ROM	C:\Embedded\Joystick\jdict.c	84;"	v	line:84
+q_copy_to	C:\Embedded\Joystick\jdict.c	85;"	v	line:85
+q_copy_to_RAM	C:\Embedded\Joystick\jdict.c	83;"	v	line:83
+q_dop	C:\Embedded\Joystick\jdict.c	486;"	l	line:486
+q_k	C:\Embedded\Joystick\jdict.c	489;"	l	line:489
+q_k	C:\Embedded\Joystick\jdict.c	493;"	l	line:493
+q_num_objs	C:\Embedded\Joystick\jdict.c	488;"	l	line:488
+rCO_DevHardwareVer	C:\Embedded\Joystick\jProfile_data.c	17;"	v	line:17
+rCO_DevIdentityIndx	C:\Embedded\Joystick\jProfile_data.c	19;"	v	line:19
+rCO_DevName	C:\Embedded\Joystick\jProfile_data.c	16;"	v	line:16
+rCO_DevProductCode	C:\Embedded\Joystick\jProfile_data.c	21;"	v	line:21
+rCO_DevRevNo	C:\Embedded\Joystick\jProfile_data.c	22;"	v	line:22
+rCO_DevSerialNo	C:\Embedded\Joystick\jProfile_data.c	23;"	v	line:23
+rCO_DevSoftwareVer	C:\Embedded\Joystick\jProfile_data.c	18;"	v	line:18
+rCO_DevType	C:\Embedded\Joystick\jProfile_data.c	15;"	v	line:15
+rCO_DevVendorID	C:\Embedded\Joystick\jProfile_data.c	20;"	v	line:20
+rMaxIndex1	C:\Embedded\Joystick\jdict.c	53;"	v	line:53
+rMaxIndex2	C:\Embedded\Joystick\jdict.c	55;"	v	line:55
+rMaxIndex4	C:\Embedded\Joystick\jdict.c	54;"	v	line:54
+ramp_type	C:\Embedded\Joystick\japplication_data.h	210;"	g	line:210
+reqLen	C:\Embedded\Joystick\jdict.h	33;"	m	line:33	struct:_DICTIONARY_EXTENDED_OBJECT
+reqOffst	C:\Embedded\Joystick\jdict.h	34;"	m	line:34	struct:_DICTIONARY_EXTENDED_OBJECT
+reserv1	C:\Embedded\Joystick\japplication_data.h	125;"	m	line:125	struct:device_control_word::<anonymous>
+reserv2	C:\Embedded\Joystick\japplication_data.h	131;"	m	line:131	struct:device_control_word::<anonymous>
+reserved	C:\Embedded\Joystick\japplication_data.h	198;"	m	line:198	struct:device_status_word::<anonymous>
+ret	C:\Embedded\Joystick\jdict.h	128;"	m	line:128	struct:_DICTIONARY_DATA
+return_code	C:\Embedded\Joystick\jdict.c	236;"	l	line:236
+return_code	C:\Embedded\Joystick\jdict.c	95;"	l	line:95
+rev_num	C:\Embedded\Joystick\jinit.c	82;"	v	line:82
+s	C:\Embedded\Joystick\jcan.h	209;"	m	line:209	struct:SDO_Command::<anonymous>
+s	C:\Embedded\Joystick\jcan.h	245;"	m	line:245	struct:SDO_Command::<anonymous>
+s	C:\Embedded\Joystick\jmain.c	498;"	l	line:498
+scs	C:\Embedded\Joystick\jcan.h	219;"	m	line:219	struct:SDO_Command::<anonymous>
+scs	C:\Embedded\Joystick\jcan.h	234;"	m	line:234	struct:SDO_Command::<anonymous>
+scs	C:\Embedded\Joystick\jcan.h	240;"	m	line:240	struct:SDO_Command::<anonymous>
+scs	C:\Embedded\Joystick\jcan.h	264;"	m	line:264	struct:SDO_Command::<anonymous>
+sdo_req	C:\Embedded\Joystick\jdict.c	87;"	v	line:87
+sendDigitalInputs	C:\Embedded\Joystick\jmain.c	496;"	f	line:496	signature:(void)
+sendPDO_count	C:\Embedded\Joystick\jmain.c	44;"	v	line:44
+serial	C:\Embedded\Joystick\jinit.c	83;"	v	line:83
+sindex	C:\Embedded\Joystick\jdict.h	114;"	m	line:114	struct:_MULTIPLEXOR
+status_word	C:\Embedded\Joystick\japplication_data.h	134;"	m	line:134	union:device_control_word
+status_word	C:\Embedded\Joystick\japplication_data.h	206;"	m	line:206	union:device_status_word
+subindex	C:\Embedded\Joystick\jdict.h	15;"	m	line:15	struct:_DICTIONARY_OBJECT_TEMPLATE
+subindex	C:\Embedded\Joystick\jdict.h	37;"	m	line:37	struct:_DICTIONARY_EXTENDED_OBJECT
+switches	C:\Embedded\Joystick\jinit.c	85;"	v	line:85
+sync_time	C:\Embedded\Joystick\jinit.c	76;"	v	line:76
+t	C:\Embedded\Joystick\jcan.h	226;"	m	line:226	struct:SDO_Command::<anonymous>
+t	C:\Embedded\Joystick\jcan.h	233;"	m	line:233	struct:SDO_Command::<anonymous>
+t	C:\Embedded\Joystick\jcan.h	255;"	m	line:255	struct:SDO_Command::<anonymous>
+t	C:\Embedded\Joystick\jcan.h	263;"	m	line:263	struct:SDO_Command::<anonymous>
+t	C:\Embedded\Joystick\jmain.c	498;"	l	line:498
+target_moni_type	C:\Embedded\Joystick\japplication_data.h	259;"	g	line:259
+ten_millisec_count	C:\Embedded\Joystick\jmain.c	46;"	v	line:46
+to	C:\Embedded\Joystick\jdict.c	96;"	l	line:96
+toggle	C:\Embedded\Joystick\jmain.c	39;"	v	line:39
+treat_SDO	C:\Embedded\Joystick\jdict.c	232;"	f	line:232	signature:(M_TXB_BUFF sdobuf)
+treat_SDO	C:\Embedded\Joystick\jprototype.h	19;"	p	line:19	signature:(M_TXB_BUFF)
+uCO_COMM_NMTE_GuardTime	C:\Embedded\Joystick\jdict.c	30;"	v	line:30
+uCO_COMM_NMTE_HeartBeat	C:\Embedded\Joystick\jdict.c	32;"	v	line:32
+uCO_COMM_NMTE_LifeTimeFactor	C:\Embedded\Joystick\jdict.c	31;"	v	line:31
+uCO_COMM_RPDO1_COBID	C:\Embedded\Joystick\jdict.c	39;"	v	line:39
+uCO_COMM_RPDO2_COBID	C:\Embedded\Joystick\jdict.c	40;"	v	line:40
+uCO_COMM_SDO1_CLIENT_COBID	C:\Embedded\Joystick\jdict.c	35;"	v	line:35
+uCO_COMM_SDO1_SERVER_COBID	C:\Embedded\Joystick\jdict.c	36;"	v	line:36
+uCO_COMM_SYNC_COBID	C:\Embedded\Joystick\jdict.c	29;"	v	line:29
+uCO_COMM_TPDO1_COBID	C:\Embedded\Joystick\jdict.c	43;"	v	line:43
+uCO_COMM_TPDO1_Type	C:\Embedded\Joystick\jdict.c	44;"	v	line:44
+uCO_COMM_TPDO2_COBID	C:\Embedded\Joystick\jdict.c	45;"	v	line:45
+uCO_COMM_TPDO2_Type	C:\Embedded\Joystick\jdict.c	46;"	v	line:46
+uCO_DevErrReg	C:\Embedded\Joystick\jmain.c	28;"	v	line:28
+uCO_DevManufacturerStatReg	C:\Embedded\Joystick\jdict.c	27;"	v	line:27
+uDemoTPDO1Len	C:\Embedded\Joystick\jdict.c	56;"	v	line:56
+uDict	C:\Embedded\Joystick\jdict.c	63;"	v	line:63
+uIOin1Filter	C:\Embedded\Joystick\jProfile_data.c	29;"	v	line:29
+uIOin1IntChange	C:\Embedded\Joystick\jProfile_data.c	31;"	v	line:31
+uIOin1IntEnable	C:\Embedded\Joystick\jProfile_data.c	30;"	v	line:30
+uIOin1IntFall	C:\Embedded\Joystick\jProfile_data.c	33;"	v	line:33
+uIOin1IntRise	C:\Embedded\Joystick\jProfile_data.c	32;"	v	line:32
+uIOin1Polarity	C:\Embedded\Joystick\jProfile_data.c	28;"	v	line:28
+uLocalRcvBuffer	C:\Embedded\Joystick\jdict.c	48;"	v	line:48
+uPDO1Dummy	C:\Embedded\Joystick\jdict.c	61;"	v	line:61
+uRPDO1Map	C:\Embedded\Joystick\jdict.c	60;"	v	line:60
+uTPDO1Map	C:\Embedded\Joystick\jdict.c	59;"	v	line:59
+ultimo_out	C:\Embedded\Joystick\jmain.c	47;"	v	line:47
+unused	C:\Embedded\Joystick\japplication_data.h	102;"	m	line:102	struct:PDO_Enable::<anonymous>
+variabile_16_bit_ns	C:\Embedded\Joystick\jController.h	11;"	v	line:11
+variabile_16_bit_segnata	C:\Embedded\Joystick\jController.h	12;"	v	line:12
+variabile_32_bit	C:\Embedded\Joystick\jController.h	13;"	v	line:13
+variabile_8_bit_nonsegnata	C:\Embedded\Joystick\jController.h	9;"	v	line:9
+variabile_8_segnata	C:\Embedded\Joystick\jController.h	10;"	v	line:10
+vendor_id	C:\Embedded\Joystick\jinit.c	80;"	v	line:80
+vs	C:\Embedded\Joystick\japplication_data.h	132;"	m	line:132	struct:device_control_word::<anonymous>
+w	C:\Embedded\Joystick\jdict.h	108;"	m	line:108	union:UNSIGNED16_MUX
+warning	C:\Embedded\Joystick\japplication_data.h	197;"	m	line:197	struct:device_status_word::<anonymous>
+x	C:\Embedded\Joystick\jcan.h	212;"	m	line:212	struct:SDO_Command::<anonymous>
+x	C:\Embedded\Joystick\jcan.h	218;"	m	line:218	struct:SDO_Command::<anonymous>
+x	C:\Embedded\Joystick\jcan.h	232;"	m	line:232	struct:SDO_Command::<anonymous>
+x	C:\Embedded\Joystick\jcan.h	239;"	m	line:239	struct:SDO_Command::<anonymous>
+x	C:\Embedded\Joystick\jcan.h	248;"	m	line:248	struct:SDO_Command::<anonymous>
+x	C:\Embedded\Joystick\jcan.h	254;"	m	line:254	struct:SDO_Command::<anonymous>
+x	C:\Embedded\Joystick\jcan.h	269;"	m	line:269	struct:SDO_Command::<anonymous>
+x	C:\Embedded\Joystick\jcan.h	275;"	m	line:275	struct:SDO_Command::<anonymous>
+z_EEPROM_bank	C:\Embedded\Joystick\jmain.c	53;"	v	line:53
+z_EEPROM_offset	C:\Embedded\Joystick\jmain.c	55;"	v	line:55
+z_EEPROM_page	C:\Embedded\Joystick\jmain.c	54;"	v	line:54
+z_SDO_timer	C:\Embedded\Joystick\jmain.c	49;"	v	line:49
+z_bytes_for_xfer	C:\Embedded\Joystick\jmain.c	52;"	v	line:52
+z_master	C:\Embedded\Joystick\jmain.c	64;"	v	line:64
+z_master_initializing	C:\Embedded\Joystick\jmain.c	65;"	v	line:65
+z_node_1	C:\Embedded\Joystick\jmain.c	60;"	v	line:60
+z_node_2	C:\Embedded\Joystick\jmain.c	61;"	v	line:61
+z_node_3	C:\Embedded\Joystick\jmain.c	62;"	v	line:62
+z_node_4	C:\Embedded\Joystick\jmain.c	63;"	v	line:63
+z_number_of_nodes	C:\Embedded\Joystick\jmain.c	58;"	v	line:58
+z_slave_count	C:\Embedded\Joystick\jmain.c	66;"	v	line:66
+z_sw_node	C:\Embedded\Joystick\jmain.c	59;"	v	line:59

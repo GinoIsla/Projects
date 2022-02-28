@@ -1,0 +1,600 @@
+MPLINK 3.80, Linker
+Linker Map File - Created Thu Nov 11 17:31:54 2004
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000008
+                   .org_1       code   0x000004    program   0x000002
+                   .org_2       code   0x000005    program   0x000b5c
+                   .cinit    romdata   0x0005b3    program   0x000004
+                    .code       code   0x0005b5    program   0x000000
+                  .config       code   0x002007    program   0x000002
+                   .org_3       code   0x002100    program   0x000004
+                   .org_4       code   0x002102    program   0x000004
+                   .org_5       code   0x002104    program   0x000004
+                   .org_6       code   0x002106    program   0x000004
+                   .org_7       code   0x002108    program   0x000004
+                   .org_8       code   0x00210a    program   0x000010
+                   .org_9       code   0x002112    program   0x000010
+                  .org_10       code   0x00211a    program   0x000010
+                  .org_11       code   0x002122    program   0x000010
+                  .org_12       code   0x00212a    program   0x000002
+                  .org_13       code   0x00212b    program   0x000002
+                  .org_14       code   0x00212c    program   0x000004
+                  .org_15       code   0x00212e    program   0x000004
+                  .org_16       code   0x002130    program   0x000002
+                  .org_17       code   0x002131    program   0x000002
+                  .org_18       code   0x002132    program   0x000004
+                  .org_19       code   0x002134    program   0x000140
+                  .org_20       code   0x0021d4    program   0x000004
+                  .org_21       code   0x0021d6    program   0x000004
+                  .org_22       code   0x0021d8    program   0x000004
+                  .org_23       code   0x0021da    program   0x000004
+                  .org_24       code   0x0021dc    program   0x000004
+                Bank1Data      udata   0x000020       data   0x00004e
+               .udata_shr      udata   0x000071       data   0x00000d
+                Bank2Data      udata   0x0000a0       data   0x000030
+                   .udata      udata   0x000120       data   0x000037
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x0005b4      
+                            0x002007    0x002007      
+                            0x002100    0x0021dd      
+            1684 out of 4361 program addresses used, program memory utilization is 38%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                 CALC_AVG   0x0002a2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  CALC_CS   0x00043c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             CHECK_SERIAL   0x00048f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             COPY_FROM_RX   0x000304    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           COPY_TO_EEPROM   0x000583    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               COPY_TO_RX   0x0004bc    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               COPY_TO_TX   0x0004cd    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            ERROR_HANDLER   0x0004ed    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          FIND_EMPTY_RX_Q   0x0004a7    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          FIND_EMPTY_TX_Q   0x000495    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          FUNC_A_THR_XING   0x0000c2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          FUNC_B_THR_XING   0x0000fb    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            FUNZ_INGRESSO   0x000092    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  GENERAL   0x0004f0    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              GET_SAMPLES   0x000287    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  GO_HIGH   0x000485    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   GO_LOW   0x00048a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 INGRESSI   0x000503    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_SEND   0x0003bc    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              READ_EEPROM   0x0005a2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         READ_STABLE_DATA   0x0004f0    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              RECEIVE_BIT   0x000473    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             RECEIVE_BYTE   0x000454    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+        RECEIVE_START_BIT   0x000412    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             SCAN_RX_QUEU   0x0002f4    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             SCAN_TX_QUEU   0x00038d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                SEND_BYTE   0x0003c2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          SEND_EEPROM_MSG   0x00055a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          SEND_PROG_REPLY   0x000381    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             SEND_REF_MSG   0x0002e1    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            SND_PORT_PARS   0x0002c4    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+        Service_Interrupt   0x0003ea    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    Start   0x000005    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 TAKE_BUS   0x0003a6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+       THRESHOLD_A_PERIOD   0x0001e4    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+       THRESHOLD_B_PERIOD   0x00020e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00A2   0x0000a2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00A4   0x0000a4    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00D8   0x0000d8    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00DD   0x0000dd    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00DF   0x0000df    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00E7   0x0000e7    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0291   0x000291    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0293   0x000293    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_029B   0x00029b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_029E   0x00029e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_02B6   0x0002b6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_02B8   0x0002b8    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_02DC   0x0002dc    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0374   0x000374    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_03A1   0x0003a1    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_03AA   0x0003aa    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_03AE   0x0003ae    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0427   0x000427    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0440   0x000440    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_049E   0x00049e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0528   0x000528    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0553   0x000553    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_057E   0x00057e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0586   0x000586    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_05A5   0x0005a5    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _ADCON_GO   0x00029c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _ADCON_RDY   0x00029f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _B0_DWN   0x00014a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _B0_DWN_CNT   0x00014d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _B0_SAME   0x00011b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   _B0_UP   0x00011e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _B1_DWN   0x0001af    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _B1_DWN_CNT   0x0001b2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _B1_SAME   0x000180    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   _B1_UP   0x000183    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         _CANDIDATE_FOUND   0x000394    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _CHK_BUS   0x0003ad    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _CHK_TIME   0x0001f6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _CLEAR_DISC   0x00037f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _CLR_RX   0x000029    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _CLR_TX   0x000020    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _CPU_FIN   0x00034d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _CS_DONE   0x000444    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _DELAY_INI   0x000035    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _DELETE_MSG   0x00036f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _DISCARD   0x000379    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _EE_MSG_SND   0x00057c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _END_RX_BIT   0x000484    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _END_RX_BIT2   0x000468    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _END_SMPL   0x0000c1    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _END_THR_B   0x000286    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _ERROR_OUT   0x0002f2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _FIND_E_TX   0x00049a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _FIND_RX   0x0003f9    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _FIND_RX_Q   0x0002f9    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _FIND_TX   0x000391    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _FND_QRX   0x0004ad    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         _FUNCT_SND_THR_0   0x000519    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         _FUNCT_SND_THR_1   0x000544    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _FUNC_B0_THR   0x0000b2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _FUNC_B1_THR   0x0000bd    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _FUNC_CONT   0x0000ce    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _HOLD_HIGH   0x000487    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _HOLD_LOW   0x00048c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    _IDLE   0x000091    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _INGRESSO_0   0x000503    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _INGRESSO_1   0x00052d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _INTERROG_PROGR   0x00034e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           _INTERROG_STAT   0x000352    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _ISR_END   0x00044b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _LOOP_CS   0x00043e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _MAIN_LOOP   0x000070    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _MAX_RETRIES   0x000577    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _MIN_RETRIES   0x00057a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _MSG_DONE   0x0003e1    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _MSG_FOUND   0x0003a6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _NEXT_R_BIT   0x000457    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _NEXT_T_BIT   0x0003cb    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _NOFREESLOT   0x0004a6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _NOT_THIS_MSG   0x000373    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _NOT_YET   0x00020d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _NO_HI_THR   0x0000e3    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _NO_MORE_MSG   0x0003e7    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _NO_RESET   0x000055    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _NXT_BYTE   0x00055f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _NXT_FIND_TX   0x0003a0    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _NXT_HIGH   0x00047e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _NXT_HIGH2   0x000462    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _NXT_PORT_NBR   0x00020a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _NXT_PORT_TIMER   0x0001e5    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _NXT_R_BYTE   0x000412    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _NXT_SUM   0x0002ad    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _NXT_T_BYTE   0x0003c0    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _PORTS1   0x0002cc    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _PORT_0_B   0x000101    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _PORT_0_TIM   0x0001e8    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _PORT_1B_PERIOD   0x00023e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _PORT_1_B   0x000166    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _PORT_1_THRS   0x0000b6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _PORT_1_TIM   0x0001ef    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _PORT_ERROR   0x0002d4    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           _PORT_PARS_FIN   0x0002e0    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _POR_0_THR_A   0x0000c5    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _POR_1_THR_A   0x0000ca    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _PROGRAMMAZIONE   0x000335    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _RD_EE_THR0   0x000524    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _RD_EE_THR1   0x00054f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _READ_DELAY   0x000295    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _REF_OUT   0x0002f3    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _REPLY_TO_CPU   0x000340    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         _REPLY_TO_MY_MSG   0x000356    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _RESET_RXMIT   0x0003df    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    _RET1   0x00007a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    _RET2   0x00007f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    _RET3   0x000084    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   _RET_5   0x00008f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   _RET_6   0x000090    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _RISP_FIN   0x00038c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _RXQ_FIN   0x000380    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _RX_ABORT   0x000447    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _RX_B_ABORT   0x000472    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _RX_CONT1   0x000406    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   _RX_CS   0x00042b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _RX_MSG_FOUND   0x000302    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _RX_Q_FOUND   0x0004b6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _RX_Q_NOT_FOUND   0x0004ba    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _SCAN_JOBS   0x000081    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _SCAN_TX   0x00007c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _SEND_STAT   0x000086    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _SET_D0   0x000162    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _SET_D1   0x0001c7    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           _SET_DWN_0_TMR   0x00015d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           _SET_DWN_1_TMR   0x0001c2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _SET_UP_0_TMR   0x000142    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _SET_UP_1_TMR   0x0001a7    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _SFTY_CONT   0x000410    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _SFTY_HIGH   0x00040a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _SLOT_FOUND   0x0004a3    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _SND_0_UP_MSG   0x000132    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _SND_1_UP_MSG   0x000197    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _SND_PP   0x0002d6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _STABLE_DONE   0x000558    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _STEPA0   0x000511    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _STEPA1   0x00053c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _THR_0_DOWN   0x00010f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _THR_1_DOWN   0x000174    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _THR_A_END   0x0000fa    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _THR_B_END   0x0001cb    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _THR_B_EPILOGUE   0x00026e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _THR_DONE   0x0001e3    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _THR_PASSED   0x0000ee    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _TIME_0_DOWN   0x00022b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _TIME_1_DOWN   0x00025b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _TRY_NEXT_TXQ   0x00035b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _TXD_Q_SEAR   0x000379    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _WAI_HIGH   0x00047c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _WAI_HIGH2   0x000460    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _WAI_LOW   0x000476    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _WAI_LOW2   0x00045a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    BIT_0   0x000136       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 CURSOR_0   0x0000a4       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 CURSOR_1   0x0000a5       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               DATA_TIMER   0x000077       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             DATA_TIMER_1   0x000078       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                E2ADDRESS   0x000149       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  E2VALUE   0x00014a       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   FLAGS0   0x000137       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   FLAGS1   0x000138       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           FUNZIONE_ING_0   0x000127       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           FUNZIONE_ING_1   0x000128       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              GARBAGE_CAN   0x0000c6       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              I_FREE_RX_Q   0x000148       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               I_FSR_TEMP   0x000142       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               I_NBR_BITS   0x000145       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              I_NBR_BYTES   0x000146       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            I_STATUS_TEMP   0x000141       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            I_SUPERVISION   0x000147       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               I_TEMP_BIT   0x000143       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              I_TEMP_BYT0   0x000144       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 I_W_TEMP   0x000071       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              KEY_TO_PORT   0x000154       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_ARGT   0x000152       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_DISC   0x000151       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               MSG_EXPIRE   0x00014d       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              MSG_HEAD_EE   0x00013d       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_SERL   0x000150       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_SUBT   0x00014f       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_TYPE   0x00014e       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 NBR_BITS   0x000073       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                NBR_BYTES   0x000074       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              NBR_ENTRIES   0x00013f       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              OWN_PROGRAM   0x00013b       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               OWN_SERIAL   0x00013a       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             PERIOD_AVG_0   0x000075       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             PERIOD_AVG_1   0x000076       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  PORT_IN   0x00013e       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         REFERENCE_SAMPLE   0x000132       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+       REFERENCE_SAMPLE_1   0x000133       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             RX_MSG_START   0x00014c       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  RX_QUEU   0x000050       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  SAMPLES   0x00012a       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              SAMPLE_CNTR   0x000129       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           SAMPLE_TIMER_1   0x000124       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           SAMPLE_TIMER_2   0x000125       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+        SAVE_SAMPLE_TIM_1   0x000155       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+        SAVE_SAMPLE_TIM_2   0x000156       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               SEND_FLAGS   0x000139       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                SND_STATS   0x000123       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 STEPBACK   0x000126       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   STEP_A   0x000134       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  STEP_A1   0x000135       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            TEMPO_INVIO_0   0x000079       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            TEMPO_INVIO_1   0x00007a       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 TEMP_BIT   0x000072       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                TEMP_BYT0   0x00007b       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                TEMP_BYT1   0x00007c       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                TEMP_BYT2   0x00007d       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  TEMP_SC   0x000153       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             THRLD_B0_DWN   0x0000ae       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              THRLD_B0_UP   0x0000a6       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             THRLD_B1_DWN   0x0000be       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              THRLD_B1_UP   0x0000b6       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         THRSHD_EX_PERIOD   0x00013c       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              TIMER_0_DWN   0x0000a1       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               TIMER_0_UP   0x0000a0       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              TIMER_1_DWN   0x0000a3       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               TIMER_1_UP   0x0000a2       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             TIME_SAMPLES   0x000122       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             TIME_SCAN_RX   0x000121       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             TIME_SCAN_TX   0x000120       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             TX_MSG_START   0x00014b       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  TX_QUEU   0x000020       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           WAIT_BUS_CLEAR   0x000140       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    Start   0x000005    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _CLR_TX   0x000020    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _CLR_RX   0x000029    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _DELAY_INI   0x000035    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _NO_RESET   0x000055    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _MAIN_LOOP   0x000070    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    _RET1   0x00007a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _SCAN_TX   0x00007c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    _RET2   0x00007f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _SCAN_JOBS   0x000081    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    _RET3   0x000084    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _SEND_STAT   0x000086    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   _RET_5   0x00008f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   _RET_6   0x000090    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    _IDLE   0x000091    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            FUNZ_INGRESSO   0x000092    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00A2   0x0000a2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00A4   0x0000a4    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _FUNC_B0_THR   0x0000b2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _PORT_1_THRS   0x0000b6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _FUNC_B1_THR   0x0000bd    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _END_SMPL   0x0000c1    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          FUNC_A_THR_XING   0x0000c2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _POR_0_THR_A   0x0000c5    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _POR_1_THR_A   0x0000ca    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _FUNC_CONT   0x0000ce    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00D8   0x0000d8    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00DD   0x0000dd    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00DF   0x0000df    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _NO_HI_THR   0x0000e3    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_00E7   0x0000e7    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _THR_PASSED   0x0000ee    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _THR_A_END   0x0000fa    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          FUNC_B_THR_XING   0x0000fb    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _PORT_0_B   0x000101    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _THR_0_DOWN   0x00010f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _B0_SAME   0x00011b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   _B0_UP   0x00011e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _SND_0_UP_MSG   0x000132    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _SET_UP_0_TMR   0x000142    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _B0_DWN   0x00014a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _B0_DWN_CNT   0x00014d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           _SET_DWN_0_TMR   0x00015d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _SET_D0   0x000162    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _PORT_1_B   0x000166    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _THR_1_DOWN   0x000174    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _B1_SAME   0x000180    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   _B1_UP   0x000183    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _SND_1_UP_MSG   0x000197    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _SET_UP_1_TMR   0x0001a7    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _B1_DWN   0x0001af    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _B1_DWN_CNT   0x0001b2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           _SET_DWN_1_TMR   0x0001c2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _SET_D1   0x0001c7    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _THR_B_END   0x0001cb    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _THR_DONE   0x0001e3    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+       THRESHOLD_A_PERIOD   0x0001e4    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _NXT_PORT_TIMER   0x0001e5    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _PORT_0_TIM   0x0001e8    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _PORT_1_TIM   0x0001ef    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _CHK_TIME   0x0001f6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _NXT_PORT_NBR   0x00020a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _NOT_YET   0x00020d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+       THRESHOLD_B_PERIOD   0x00020e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _TIME_0_DOWN   0x00022b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _PORT_1B_PERIOD   0x00023e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _TIME_1_DOWN   0x00025b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _THR_B_EPILOGUE   0x00026e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _END_THR_B   0x000286    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              GET_SAMPLES   0x000287    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0291   0x000291    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0293   0x000293    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _READ_DELAY   0x000295    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_029B   0x00029b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _ADCON_GO   0x00029c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_029E   0x00029e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _ADCON_RDY   0x00029f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 CALC_AVG   0x0002a2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _NXT_SUM   0x0002ad    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_02B6   0x0002b6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_02B8   0x0002b8    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            SND_PORT_PARS   0x0002c4    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _PORTS1   0x0002cc    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _PORT_ERROR   0x0002d4    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _SND_PP   0x0002d6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_02DC   0x0002dc    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           _PORT_PARS_FIN   0x0002e0    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             SEND_REF_MSG   0x0002e1    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _ERROR_OUT   0x0002f2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _REF_OUT   0x0002f3    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             SCAN_RX_QUEU   0x0002f4    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _FIND_RX_Q   0x0002f9    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _RX_MSG_FOUND   0x000302    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             COPY_FROM_RX   0x000304    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _PROGRAMMAZIONE   0x000335    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _REPLY_TO_CPU   0x000340    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _CPU_FIN   0x00034d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _INTERROG_PROGR   0x00034e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           _INTERROG_STAT   0x000352    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         _REPLY_TO_MY_MSG   0x000356    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _TRY_NEXT_TXQ   0x00035b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _DELETE_MSG   0x00036f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            _NOT_THIS_MSG   0x000373    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0374   0x000374    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _TXD_Q_SEAR   0x000379    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _DISCARD   0x000379    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _CLEAR_DISC   0x00037f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _RXQ_FIN   0x000380    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          SEND_PROG_REPLY   0x000381    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _RISP_FIN   0x00038c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             SCAN_TX_QUEU   0x00038d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _FIND_TX   0x000391    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         _CANDIDATE_FOUND   0x000394    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _NXT_FIND_TX   0x0003a0    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_03A1   0x0003a1    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 TAKE_BUS   0x0003a6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _MSG_FOUND   0x0003a6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_03AA   0x0003aa    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _CHK_BUS   0x0003ad    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_03AE   0x0003ae    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_SEND   0x0003bc    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _NXT_T_BYTE   0x0003c0    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                SEND_BYTE   0x0003c2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _NEXT_T_BIT   0x0003cb    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _RESET_RXMIT   0x0003df    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _MSG_DONE   0x0003e1    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _NO_MORE_MSG   0x0003e7    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+        Service_Interrupt   0x0003ea    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _FIND_RX   0x0003f9    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _RX_CONT1   0x000406    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _SFTY_HIGH   0x00040a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _SFTY_CONT   0x000410    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _NXT_R_BYTE   0x000412    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+        RECEIVE_START_BIT   0x000412    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0427   0x000427    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   _RX_CS   0x00042b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  CALC_CS   0x00043c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _LOOP_CS   0x00043e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0440   0x000440    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _CS_DONE   0x000444    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _RX_ABORT   0x000447    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _ISR_END   0x00044b    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             RECEIVE_BYTE   0x000454    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _NEXT_R_BIT   0x000457    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _WAI_LOW2   0x00045a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _WAI_HIGH2   0x000460    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _NXT_HIGH2   0x000462    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _END_RX_BIT2   0x000468    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _RX_B_ABORT   0x000472    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              RECEIVE_BIT   0x000473    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _WAI_LOW   0x000476    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _WAI_HIGH   0x00047c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _NXT_HIGH   0x00047e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _END_RX_BIT   0x000484    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  GO_HIGH   0x000485    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _HOLD_HIGH   0x000487    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   GO_LOW   0x00048a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _HOLD_LOW   0x00048c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             CHECK_SERIAL   0x00048f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          FIND_EMPTY_TX_Q   0x000495    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               _FIND_E_TX   0x00049a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_049E   0x00049e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _SLOT_FOUND   0x0004a3    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _NOFREESLOT   0x0004a6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          FIND_EMPTY_RX_Q   0x0004a7    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 _FND_QRX   0x0004ad    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _RX_Q_FOUND   0x0004b6    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          _RX_Q_NOT_FOUND   0x0004ba    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               COPY_TO_RX   0x0004bc    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               COPY_TO_TX   0x0004cd    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            ERROR_HANDLER   0x0004ed    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         READ_STABLE_DATA   0x0004f0    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  GENERAL   0x0004f0    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 INGRESSI   0x000503    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _INGRESSO_0   0x000503    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _STEPA0   0x000511    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         _FUNCT_SND_THR_0   0x000519    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _RD_EE_THR0   0x000524    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0528   0x000528    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _INGRESSO_1   0x00052d    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  _STEPA1   0x00053c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         _FUNCT_SND_THR_1   0x000544    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _RD_EE_THR1   0x00054f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0553   0x000553    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _STABLE_DONE   0x000558    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+          SEND_EEPROM_MSG   0x00055a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                _NXT_BYTE   0x00055f    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _MAX_RETRIES   0x000577    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _MIN_RETRIES   0x00057a    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              _EE_MSG_SND   0x00057c    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_057E   0x00057e    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           COPY_TO_EEPROM   0x000583    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_0586   0x000586    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              READ_EEPROM   0x0005a2    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             _.org_2_05A5   0x0005a5    program     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  TX_QUEU   0x000020       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  RX_QUEU   0x000050       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 I_W_TEMP   0x000071       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 TEMP_BIT   0x000072       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 NBR_BITS   0x000073       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                NBR_BYTES   0x000074       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             PERIOD_AVG_0   0x000075       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             PERIOD_AVG_1   0x000076       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               DATA_TIMER   0x000077       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             DATA_TIMER_1   0x000078       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            TEMPO_INVIO_0   0x000079       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            TEMPO_INVIO_1   0x00007a       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                TEMP_BYT0   0x00007b       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                TEMP_BYT1   0x00007c       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                TEMP_BYT2   0x00007d       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               TIMER_0_UP   0x0000a0       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              TIMER_0_DWN   0x0000a1       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               TIMER_1_UP   0x0000a2       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              TIMER_1_DWN   0x0000a3       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 CURSOR_0   0x0000a4       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 CURSOR_1   0x0000a5       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              THRLD_B0_UP   0x0000a6       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             THRLD_B0_DWN   0x0000ae       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              THRLD_B1_UP   0x0000b6       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             THRLD_B1_DWN   0x0000be       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              GARBAGE_CAN   0x0000c6       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             TIME_SCAN_TX   0x000120       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             TIME_SCAN_RX   0x000121       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             TIME_SAMPLES   0x000122       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                SND_STATS   0x000123       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           SAMPLE_TIMER_1   0x000124       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           SAMPLE_TIMER_2   0x000125       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 STEPBACK   0x000126       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           FUNZIONE_ING_0   0x000127       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           FUNZIONE_ING_1   0x000128       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              SAMPLE_CNTR   0x000129       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  SAMPLES   0x00012a       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         REFERENCE_SAMPLE   0x000132       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+       REFERENCE_SAMPLE_1   0x000133       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   STEP_A   0x000134       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  STEP_A1   0x000135       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                    BIT_0   0x000136       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   FLAGS0   0x000137       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                   FLAGS1   0x000138       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               SEND_FLAGS   0x000139       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               OWN_SERIAL   0x00013a       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              OWN_PROGRAM   0x00013b       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+         THRSHD_EX_PERIOD   0x00013c       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              MSG_HEAD_EE   0x00013d       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  PORT_IN   0x00013e       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              NBR_ENTRIES   0x00013f       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+           WAIT_BUS_CLEAR   0x000140       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            I_STATUS_TEMP   0x000141       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               I_FSR_TEMP   0x000142       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               I_TEMP_BIT   0x000143       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              I_TEMP_BYT0   0x000144       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               I_NBR_BITS   0x000145       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              I_NBR_BYTES   0x000146       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+            I_SUPERVISION   0x000147       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              I_FREE_RX_Q   0x000148       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                E2ADDRESS   0x000149       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  E2VALUE   0x00014a       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             TX_MSG_START   0x00014b       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+             RX_MSG_START   0x00014c       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+               MSG_EXPIRE   0x00014d       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_TYPE   0x00014e       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_SUBT   0x00014f       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_SERL   0x000150       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_DISC   0x000151       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                 MSG_ARGT   0x000152       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                  TEMP_SC   0x000153       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+              KEY_TO_PORT   0x000154       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+        SAVE_SAMPLE_TIM_1   0x000155       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+        SAVE_SAMPLE_TIM_2   0x000156       data     static C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+
+

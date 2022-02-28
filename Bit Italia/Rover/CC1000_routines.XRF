@@ -1,0 +1,491 @@
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  1
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+@DIOIN                            M   CC1000_ROUTINES.ASM                 46*  304.  410.
+@DIOOUT                           M   CC1000_ROUTINES.ASM                 39*  474.
+@PDATAIN                          M   CC1000_ROUTINES.ASM                 33*  141.
+@PDATAOUT                         M   CC1000_ROUTINES.ASM                 27*  158.
+ACKDT                             C   P16F876.INC                        259*
+ACKEN                             C   P16F876.INC                        260*
+ACKSTAT                           C   P16F876.INC                        258*
+ADCON0                            C   P16F876.INC                         81*
+ADCON1                            C   P16F876.INC                         97*
+ADCS0                             C   P16F876.INC                        213*
+ADCS1                             C   P16F876.INC                        212*
+ADDEN                             C   P16F876.INC                        195*
+ADDRESS                           M   ROVER.H                             69*
+ADDR_CMPLT                        M   ROVER.H                             60*
+ADD_SIZE                          M   ROVER.H                             80*   85.   86.
+ADFM                              C   P16F876.INC                        304*
+ADIE                              C   P16F876.INC                        235*
+ADIF                              C   P16F876.INC                        131*
+ADON                              C   P16F876.INC                        220*
+ADRESH                            C   P16F876.INC                         80*
+ADRESL                            C   P16F876.INC                         96*
+BCLIE                             C   P16F876.INC                        246*
+BCLIF                             C   P16F876.INC                        142*
+BF                                C   P16F876.INC                        287*
+BOF_FOUND                         M   ROVER.H                             57*
+BRGH                              C   P16F876.INC                        297*
+BUTTON_PRESSED                    M   ROVER.H                             39*
+BYTE_FULL                         M   ROVER.H                             43*
+C                                 C   P16F876.INC                        116*
+CALIBRATION_OK                    M   CC1000_ROUTINES.ASM                406.  465.  520.  523.
+                                      ROVER.H                             45*
+CC1000_CAL                        M   CC1000_ROUTINES.ASM                491.  497.  524.
+                                      CC1000.H                            19*
+CC1000_CURRENT                    M   CC1000_ROUTINES.ASM                274.  321.  379.  439.
+                                      CC1000.H                            14*
+CC1000_FREQ_0A                    M   CC1000.H                             8*
+CC1000_FREQ_0B                    M   CC1000.H                            11*
+CC1000_FREQ_1A                    M   CC1000.H                             7*
+CC1000_FREQ_1B                    M   CC1000.H                            10*
+CC1000_FREQ_2A                    M   CC1000.H                             6*
+CC1000_FREQ_2B                    M   CC1000.H                             9*
+CC1000_FRONT_END                  M   CC1000.H                            15*
+CC1000_FSCTRL                     M   CC1000.H                            24*
+CC1000_FSDELAY                    M   CC1000.H                            32*
+CC1000_FSEP0                      M   CC1000.H                            13*
+CC1000_FSEP1                      M   CC1000.H                            12*
+CC1000_FSHAPE1                    M   CC1000.H                            31*
+CC1000_FSHAPE2                    M   CC1000.H                            30*
+CC1000_FSHAPE3                    M   CC1000.H                            29*
+CC1000_FSHAPE4                    M   CC1000.H                            28*
+CC1000_FSHAPE5                    M   CC1000.H                            27*
+CC1000_FSHAPE6                    M   CC1000.H                            26*
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  2
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+CC1000_FSHAPE7                    M   CC1000.H                            25*
+CC1000_LOCK                       M   CC1000_ROUTINES.ASM                395.  454.  507.
+                                      CC1000.H                            18*
+CC1000_MAIN                       M   CC1000_ROUTINES.ASM                199.  218.  222.  268.  289.  298.  315.  336.  352.  367.
+                                                                         427.
+                                      CC1000.H                             5*
+CC1000_MATCH                      M   CC1000.H                            23*
+CC1000_MODEM0                     M   CC1000.H                            22*
+CC1000_MODEM1                     M   CC1000.H                            21*
+CC1000_MODEM2                     M   CC1000.H                            20*
+CC1000_PA_POW                     M   CC1000_ROUTINES.ASM                205.  346.  421.  468.  486.  530.
+                                      CC1000.H                            16*
+CC1000_PLL                        M   CC1000_ROUTINES.ASM                280.  327.  373.  433.
+                                      CC1000.H                            17*
+CC1000_PRESCALER                  M   CC1000.H                            33*
+CC1000_TEST0                      M   CC1000.H                            40*
+CC1000_TEST1                      M   CC1000.H                            39*
+CC1000_TEST2                      M   CC1000.H                            38*
+CC1000_TEST3                      M   CC1000.H                            37*
+CC1000_TEST4                      M   CC1000.H                            36*
+CC1000_TEST5                      M   CC1000.H                            35*
+CC1000_TEST6                      M   CC1000.H                            34*
+CC1Kregs                          E   CC1000_ROUTINES.ASM                 22*
+CCP1CON                           C   P16F876.INC                         73*
+CCP1IE                            C   P16F876.INC                        239*
+CCP1IF                            C   P16F876.INC                        135*
+CCP1M0                            C   P16F876.INC                        184*
+CCP1M1                            C   P16F876.INC                        183*
+CCP1M2                            C   P16F876.INC                        182*
+CCP1M3                            C   P16F876.INC                        181*
+CCP1X                             C   P16F876.INC                        179*
+CCP1Y                             C   P16F876.INC                        180*
+CCP2CON                           C   P16F876.INC                         79*
+CCP2IE                            C   P16F876.INC                        247*
+CCP2IF                            C   P16F876.INC                        143*
+CCP2M0                            C   P16F876.INC                        208*
+CCP2M1                            C   P16F876.INC                        207*
+CCP2M2                            C   P16F876.INC                        206*
+CCP2M3                            C   P16F876.INC                        205*
+CCP2X                             C   P16F876.INC                        203*
+CCP2Y                             C   P16F876.INC                        204*
+CCPR1H                            C   P16F876.INC                         72*
+CCPR1L                            C   P16F876.INC                         71*
+CCPR2H                            C   P16F876.INC                         78*
+CCPR2L                            C   P16F876.INC                         77*
+CHP_OUT                           M   ROVER.H                             22*
+CHS0                              C   P16F876.INC                        216*
+CHS1                              C   P16F876.INC                        215*
+CHS2                              C   P16F876.INC                        214*
+CKE                               C   P16F876.INC                        269*
+CKP                               C   P16F876.INC                        171*
+CMMND_COMPLETE                    M   ROVER.H                             64*
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  3
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+CREN                              C   P16F876.INC                        194*
+CSRC                              C   P16F876.INC                        291*
+CS_SIZE                           M   ROVER.H                             83*   85.
+CalibrateCC1000                   A   CC1000_ROUTINES.ASM                405.  464.  484*  485*
+D                                 C   P16F876.INC                        270*
+DATA_ADDRESS                      C   P16F876.INC                        275*
+DATA_OFFS                         M   ROVER.H                             71*
+DATA_RECEIVED                     M   ROVER.H                             62*
+DATA_SIZE                         M   ROVER.H                             82*   85.
+DC                                C   P16F876.INC                        115*
+DCLK                              M   ROVER.H                             21*
+DIO                               M   ROVER.H                             20*
+DIO_DIR                           M   CC1000_ROUTINES.ASM                 49.   42.
+                                      ROVER.H                             25*
+D_A                               C   P16F876.INC                        274*
+Delay100uS                        E   CC1000_ROUTINES.ASM                 21*  386.  446.
+DelaymS                           E   CC1000_ROUTINES.ASM                 21*  232.  287.  334.
+DelayuS                           E   CC1000_ROUTINES.ASM                 21*  296.  343.  388.  448.
+EEADR                             C   P16F876.INC                        100*
+EEADRH                            C   P16F876.INC                        102*
+EECON1                            C   P16F876.INC                        104*
+EECON2                            C   P16F876.INC                        105*
+EEDATA                            C   P16F876.INC                         99*
+EEDATH                            C   P16F876.INC                        101*
+EEIE                              C   P16F876.INC                        245*
+EEIF                              C   P16F876.INC                        141*
+EEPGD                             C   P16F876.INC                        312*
+F                                 C   P16F876.INC                         47*
+FERR                              C   P16F876.INC                        196*
+FIXED_PART                        C   ROVER.H                             86*
+FSR                               C   P16F876.INC                         55*
+F_Carry                           M   CC1000_ROUTINES.ASM                 17*  107.  179.
+GCEN                              C   P16F876.INC                        257*
+GET_NEXT_REGISTER                 E   CC1000_ROUTINES.ASM                 21*  245.  248.
+GIE                               C   P16F876.INC                        120*
+GO                                C   P16F876.INC                        217*
+GO_DONE                           C   P16F876.INC                        219*
+G_CC_Data                         A   CC1000_ROUTINES.ASM                 56*   73*   86.  144.  147.  150.  152.  202.  207.  225.
+                                                                         229.  250.  271.  277.  283.  292.  301.  318.  324.  330.
+                                                                         339.  349.  355.  370.  376.  382.  398.  423.  430.  436.
+                                                                         442.  457.  471.  488.  494.  500.  510.  516.  527.  533.
+G_CC_Reg                          A   CC1000_ROUTINES.ASM                 55*   73*  171.  200.  206.  219.  223.  252.  269.  275.
+                                                                         281.  290.  299.  316.  322.  328.  337.  347.  353.  368.
+                                                                         374.  380.  396.  422.  428.  434.  440.  455.  469.  487.
+                                                                         492.  498.  508.  525.  531.
+G_Events                          E   CC1000_ROUTINES.ASM                 74*  406.  465.  520.  523.
+G_Pr_status                       E   CC1000_ROUTINES.ASM                 74*
+I2C_DATA                          C   P16F876.INC                        271*
+I2C_READ                          C   P16F876.INC                        281*
+I2C_START                         C   P16F876.INC                        279*
+I2C_STOP                          C   P16F876.INC                        277*
+IDLE_MODE                         M   ROVER.H                             48*
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  4
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+INDF                              C   P16F876.INC                         51*
+INTCON                            C   P16F876.INC                         61*
+INTE                              C   P16F876.INC                        123*
+INTEDG                            C   P16F876.INC                        225*
+INTF                              C   P16F876.INC                        126*
+IRP                               C   P16F876.INC                        109*
+LED1                              M   ROVER.H                             33*
+LED2                              M   ROVER.H                             34*
+LED3                              M   ROVER.H                             35*
+LOCK1                             M   CC1000_ROUTINES.ASM                390.  450.  503.
+                                      ROVER.H                            102*
+LOCK2                             M   CC1000_ROUTINES.ASM                392.  452.  505.
+                                      ROVER.H                            103*
+L_BITCOU_R                        A   CC1000_ROUTINES.ASM                 60*  143.  155.
+L_BITCOU_S                        A   CC1000_ROUTINES.ASM                 61*  176.  187.
+L_BITCOU_W                        A   CC1000_ROUTINES.ASM                 59*  104.  113.
+L_RX_CUR                          A   CC1000_ROUTINES.ASM                 65*  267.  276.  366.  381.
+L_SUP_REG                         A   CC1000_ROUTINES.ASM                 64*  243.  244.  247.  251.  255.
+L_TEMPADD                         A   CC1000_ROUTINES.ASM                 62*  172.  174.  178.
+L_TEMPDATA                        A   CC1000_ROUTINES.ASM                 63*   87.  106.
+L_TIMEOUT1                        A   CC1000_ROUTINES.ASM                 68*  391.  400.  451.  459.  504.  512.
+L_TIMEOUT2                        A   CC1000_ROUTINES.ASM                 69*  393.  402.  453.  461.  506.  514.
+L_TX_CUR                          A   CC1000_ROUTINES.ASM                 66*  314.  323.  420.  441.
+MASTER                            M   ROVER.H                             49*
+NBR_BYTES_RCVD                    M   ROVER.H                             61*
+NBR_SIZE                          M   ROVER.H                             81*   85.   86.
+NEW_COUNT                         M   ROVER.H                             41*
+NOT_A                             C   P16F876.INC                        272*
+NOT_ADDRESS                       C   P16F876.INC                        273*
+NOT_BO                            C   P16F876.INC                        252*
+NOT_BOR                           C   P16F876.INC                        253*
+NOT_DONE                          C   P16F876.INC                        218*
+NOT_PD                            C   P16F876.INC                        113*
+NOT_POR                           C   P16F876.INC                        251*
+NOT_RBPU                          C   P16F876.INC                        224*
+NOT_RC8                           C   P16F876.INC                        191*
+NOT_T1SYNC                        C   P16F876.INC                        150*
+NOT_TO                            C   P16F876.INC                        112*
+NOT_TX8                           C   P16F876.INC                        293*
+NOT_W                             C   P16F876.INC                        282*
+NOT_WRITE                         C   P16F876.INC                        283*
+NO_BYTES                          M   ROVER.H                             70*
+OERR                              C   P16F876.INC                        197*
+OPTION_REG                        C   CC1000_ROUTINES.ASM                 48.   41.
+                                      P16F876.INC                         83*
+P                                 C   P16F876.INC                        276*
+PALE                              M   CC1000_ROUTINES.ASM                 98.  117.  139.  161.  170.  173.
+                                      ROVER.H                             13*
+PA_VALUE                          M   CC1000_ROUTINES.ASM                348.  470.  532.
+                                      ROVER.H                             92*
+PCFG0                             C   P16F876.INC                        308*
+PCFG1                             C   P16F876.INC                        307*
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  5
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+PCFG2                             C   P16F876.INC                        306*
+PCFG3                             C   P16F876.INC                        305*
+PCL                               C   P16F876.INC                         53*
+PCLATH                            C   CC1000_ROUTINES.ASM                246.
+                                      P16F876.INC                         60*
+PCLK                              M   CC1000_ROUTINES.ASM                 89.   93.   95.  105.  112.  115.  128.  132.  136.  148.
+                                                                         154.  159.  177.  186.
+                                      ROVER.H                             12*
+PCON                              C   P16F876.INC                         89*
+PDATA                             M   CC1000_ROUTINES.ASM                 91.  109.  111.  116.  130.  138.  151.  160.  181.  183.
+                                      ROVER.H                             19*
+PDATA_DIR                         M   CC1000_ROUTINES.ASM                 35.   29.
+                                      ROVER.H                             24*
+PEIE                              C   P16F876.INC                        121*
+PEN                               C   P16F876.INC                        262*
+PIE1                              C   P16F876.INC                         87*
+PIE2                              C   P16F876.INC                         88*
+PIR1                              C   P16F876.INC                         62*
+PIR2                              C   P16F876.INC                         63*
+PORTA                             C   P16F876.INC                         56*
+PORTB                             C   P16F876.INC                         57*
+PORTC                             C   CC1000_ROUTINES.ASM                 89.   91.   93.   95.   98.  105.  109.  111.  112.  115.
+                                                                         116.  117.  128.  130.  132.  136.  138.  139.  148.  151.
+                                                                         154.  159.  160.  161.  170.  173.  177.  181.  183.  186.
+                                      P16F876.INC                         58*
+PR2                               C   P16F876.INC                         91*
+PREAMBLE                          M   ROVER.H                             67*
+PREAM_FINISHED                    M   ROVER.H                             58*
+PREA_SIZE                         M   ROVER.H                             78*   85.   86.
+PS0                               C   P16F876.INC                        231*
+PS1                               C   P16F876.INC                        230*
+PS2                               C   P16F876.INC                        229*
+PSA                               C   P16F876.INC                        228*
+QUIET                             M   ROVER.H                             53*
+R                                 C   P16F876.INC                        280*
+RBIE                              C   P16F876.INC                        124*
+RBIF                              C   P16F876.INC                        127*
+RC8_9                             C   P16F876.INC                        192*
+RC9                               C   P16F876.INC                        190*
+RCD8                              C   P16F876.INC                        199*
+RCEN                              C   P16F876.INC                        261*
+RCIE                              C   P16F876.INC                        236*
+RCIF                              C   P16F876.INC                        132*
+RCREG                             C   P16F876.INC                         76*
+RCSTA                             C   P16F876.INC                         74*
+RD                                C   P16F876.INC                        316*
+READ_WRITE                        C   P16F876.INC                        285*
+REPLY_SENT                        M   ROVER.H                             40*
+RESET_CNTRS                       M   ROVER.H                             44*
+RP0                               C   CC1000_ROUTINES.ASM                 34.   36.   28.   30.   47.   50.   40.   43.
+                                      P16F876.INC                        111*
+RP1                               C   P16F876.INC                        110*
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  6
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+RSEN                              C   P16F876.INC                        263*
+RX9                               C   P16F876.INC                        189*
+RX9D                              C   P16F876.INC                        198*
+RXCVER                            M   ROVER.H                             51*
+RXMIT_TIM1H                       M   ROVER.H                             99*
+RXMIT_TIM1L                       M   ROVER.H                             98*
+RXPLL                             M   CC1000_ROUTINES.ASM                282.  375.
+                                      ROVER.H                             89*
+RX_CURRENT                        M   ROVER.H                             88*
+R_W                               C   P16F876.INC                        284*
+ReadFromCC1000register            A   CC1000_ROUTINES.ASM                125*  126*  220.  397.  456.  499.  509.
+Reset_CC1000                      A   CC1000_ROUTINES.ASM                216*  217*
+S                                 C   P16F876.INC                        278*
+SEN                               C   P16F876.INC                        264*
+SLAVE                             M   ROVER.H                             50*
+SMP                               C   P16F876.INC                        268*
+SPBRG                             C   P16F876.INC                         95*
+SPEN                              C   P16F876.INC                        188*
+SPIN_DIR                          M   ROVER.H                             31*
+SREN                              C   P16F876.INC                        193*
+SSPADD                            C   P16F876.INC                         92*
+SSPBUF                            C   P16F876.INC                         69*
+SSPCON                            C   P16F876.INC                         70*
+SSPCON2                           C   P16F876.INC                         90*
+SSPEN                             C   P16F876.INC                        170*
+SSPIE                             C   P16F876.INC                        238*
+SSPIF                             C   P16F876.INC                        134*
+SSPM0                             C   P16F876.INC                        175*
+SSPM1                             C   P16F876.INC                        174*
+SSPM2                             C   P16F876.INC                        173*
+SSPM3                             C   P16F876.INC                        172*
+SSPOV                             C   P16F876.INC                        169*
+SSPSTAT                           C   P16F876.INC                         93*
+STATUS                            C   CC1000_ROUTINES.ASM                107.   34.   36.   28.   30.  179.  256.   47.   50.   40.
+                                                                          43.
+                                      P16F876.INC                         54*
+STEERING                          M   ROVER.H                             30*
+SUMCHECK_DONE                     M   ROVER.H                             63*
+SUM_CHECK                         M   ROVER.H                             72*
+SW1                               M   ROVER.H                             27*
+SW2                               M   ROVER.H                             28*
+SW3                               M   ROVER.H                             29*
+SYNC                              C   P16F876.INC                        296*
+Send_address_to_CC1000            A   CC1000_ROUTINES.ASM                 88.  127.  169*
+SetupCC1000Rx                     A   CC1000_ROUTINES.ASM                364*  365*
+SetupCC1000Tx                     A   CC1000_ROUTINES.ASM                418*  419*
+Setup_CC1000All                   A   CC1000_ROUTINES.ASM                241*  242*
+Setup_CC1000PD                    A   CC1000_ROUTINES.ASM                197*  198*
+T0CS                              C   P16F876.INC                        226*
+T0IE                              C   P16F876.INC                        122*
+T0IF                              C   P16F876.INC                        125*
+T0SE                              C   P16F876.INC                        227*
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  7
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+T1CKPS0                           C   P16F876.INC                        148*
+T1CKPS1                           C   P16F876.INC                        147*
+T1CON                             C   P16F876.INC                         66*
+T1INSYNC                          C   P16F876.INC                        151*
+T1OSCEN                           C   P16F876.INC                        149*
+T1SYNC                            C   P16F876.INC                        152*
+T2CKPS0                           C   P16F876.INC                        164*
+T2CKPS1                           C   P16F876.INC                        163*
+T2CON                             C   P16F876.INC                         68*
+TIME_0_OUT                        M   ROVER.H                             42*
+TMR0                              C   P16F876.INC                         52*
+TMR1CS                            C   P16F876.INC                        153*
+TMR1H                             C   P16F876.INC                         65*
+TMR1IE                            C   P16F876.INC                        241*
+TMR1IF                            C   P16F876.INC                        137*
+TMR1L                             C   P16F876.INC                         64*
+TMR1ON                            C   P16F876.INC                        154*
+TMR2                              C   P16F876.INC                         67*
+TMR2IE                            C   P16F876.INC                        240*
+TMR2IF                            C   P16F876.INC                        136*
+TMR2ON                            C   P16F876.INC                        162*
+TOT_FRAME_SIZ                     C   ROVER.H                             85*
+TOUTPS0                           C   P16F876.INC                        161*
+TOUTPS1                           C   P16F876.INC                        160*
+TOUTPS2                           C   P16F876.INC                        159*
+TOUTPS3                           C   P16F876.INC                        158*
+TREAT_ERROR                       E   CC1000_ROUTINES.ASM                 21*  407.  466.  519.
+TRISA                             C   P16F876.INC                         84*
+TRISB                             C   P16F876.INC                         85*
+TRISC                             C   CC1000_ROUTINES.ASM                 35.   29.   49.   42.
+                                      P16F876.INC                         86*
+TRMT                              C   P16F876.INC                        298*
+TX8_9                             C   P16F876.INC                        294*
+TX9                               C   P16F876.INC                        292*
+TX9D                              C   P16F876.INC                        299*
+TXD8                              C   P16F876.INC                        300*
+TXEN                              C   P16F876.INC                        295*
+TXIE                              C   P16F876.INC                        237*
+TXIF                              C   P16F876.INC                        133*
+TXMTER                            M   ROVER.H                             52*
+TXPLL                             M   CC1000_ROUTINES.ASM                329.  435.
+                                      ROVER.H                             91*
+TXREG                             C   P16F876.INC                         75*
+TXSTA                             C   P16F876.INC                         94*
+TX_CURRENT                        M   ROVER.H                             90*
+TX_MASTER                         M   ROVER.H                              7*   11.
+UA                                C   P16F876.INC                        286*
+UI                                M   ROVER.H                             68*
+UI_CODE1                          M   ROVER.H                             74*
+UI_CODE2                          M   ROVER.H                             75*
+UI_FINISHED                       M   ROVER.H                             59*
+UI_SIZE                           M   ROVER.H                             79*   85.   86.
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  8
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+W                                 C   P16F876.INC                         46*
+WCOL                              C   P16F876.INC                        168*
+WR                                C   P16F876.INC                        315*
+WREN                              C   P16F876.INC                        314*
+WRERR                             C   P16F876.INC                        313*
+WakeUpCC1000toRx                  A   CC1000_ROUTINES.ASM                265*  266*
+WakeUpCC1000toTx                  A   CC1000_ROUTINES.ASM                312*  313*
+WriteToCC1000register             A   CC1000_ROUTINES.ASM                 84*   85*  203.  208.  226.  230.  253.  272.  278.  284.
+                                                                         293.  302.  319.  325.  331.  340.  350.  356.  371.  377.
+                                                                         383.  424.  431.  437.  443.  472.  489.  495.  528.  534.
+Z                                 C   CC1000_ROUTINES.ASM                256.
+                                      P16F876.INC                        114*
+_.code_0017                       A   CC1000_ROUTINES.ASM                110*
+_.code_004F                       A   CC1000_ROUTINES.ASM                182*
+_ADDR_0                           A   CC1000_ROUTINES.ASM                177*  188.
+_ADDR_1                           A   CC1000_ROUTINES.ASM                180.  183*
+_BODEN_OFF                        C   P16F876.INC                        349*
+_BODEN_ON                         C   P16F876.INC                        348*
+_CONT_1R                          A   CC1000_ROUTINES.ASM                399.  409*
+_CONT_1T                          A   CC1000_ROUTINES.ASM                458.  468*
+_CONT_CAL                         A   CC1000_ROUTINES.ASM                511.  517.  523*
+_CONT_CALE                        A   CC1000_ROUTINES.ASM                521.  524*
+_CPD_OFF                          C   P16F876.INC                        345*
+_CPD_ON                           C   P16F876.INC                        344*
+_CP_ALL                           C   P16F876.INC                        336*
+_CP_HALF                          C   P16F876.INC                        337*
+_CP_OFF                           C   P16F876.INC                        339*
+_CP_UPPER_256                     C   P16F876.INC                        338*
+_DEBUG_OFF                        C   P16F876.INC                        341*
+_DEBUG_ON                         C   P16F876.INC                        340*
+_HS_OSC                           C   P16F876.INC                        356*
+_LP_OSC                           C   P16F876.INC                        354*
+_LVP_OFF                          C   P16F876.INC                        347*
+_LVP_ON                           C   P16F876.INC                        346*
+_PWRTE_OFF                        C   P16F876.INC                        350*
+_PWRTE_ON                         C   P16F876.INC                        351*
+_RC_OSC                           C   P16F876.INC                        357*
+_RDATA_1                          A   CC1000_ROUTINES.ASM                146*  156.
+_SETUP                            A   CC1000_ROUTINES.ASM                244*  257.
+_WAIT_CAL                         A   CC1000_ROUTINES.ASM                499*  501.
+_WAIT_RX_LK                       A   CC1000_ROUTINES.ASM                395*  401.  403.
+_WAIT_TX_LK                       A   CC1000_ROUTINES.ASM                454*  460.  462.
+_WAI_CAL_LK                       A   CC1000_ROUTINES.ASM                507*  513.  515.
+_WDATA_1                          A   CC1000_ROUTINES.ASM                105*  114.
+_WDATA_2                          A   CC1000_ROUTINES.ASM                108.  111*
+_WDT_OFF                          C   P16F876.INC                        353*
+_WDT_ON                           C   P16F876.INC                        352*
+_WRT_ENABLE_OFF                   C   P16F876.INC                        343*
+_WRT_ENABLE_ON                    C   P16F876.INC                        342*
+_XT_OSC                           C   P16F876.INC                        355*
+__16F876                          V   CC1000_ROUTINES.ASM                  0*
+                                      P16F876.INC                         36.
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  9
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+
+
+LABEL TYPES
+-----------
+A  Address 
+C  Constant
+E  External
+M  Macro   
+S  Segment 
+U  Unknown 
+V  Variable
+X  Other   

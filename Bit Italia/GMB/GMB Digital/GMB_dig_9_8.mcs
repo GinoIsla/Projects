@@ -1,0 +1,69 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=C:\Embedded\GMB\GMB Digital\GMB_dig_9_8.o
+Folder=Intermediary
+DeviceName=PIC16F628
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=C:\Program Files\MPLAB IDE\MCHIP_Tools\mpasmwin.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|GMB_dig_9_8.asm||<obj>||<lib>||<lkr>|16f628ai.lkr||
+SuiteArgsString=
+ToolArgsString=/rDEC
+[File001]
+Location=C:\Embedded\GMB\GMB Digital\GMB_dig_9_8.ERR
+Folder=Intermediary
+DeviceName=PIC16F628
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={49D3CA3F-D9A3-4518-9943-226A347E8CC7}
+LanguageToolLocation=C:\Program Files\MPLAB IDE\MCHIP_Tools\mpasmwin.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|GMB_dig_9_8.asm||<obj>||<lib>||<lkr>|16f628ai.lkr||
+SuiteArgsString=
+ToolArgsString=/rDEC
+[File002]
+Location=GMB_dig_9_8.lst
+Folder=Output
+DeviceName=PIC16F628
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Program Files\MPLAB IDE\MCHIP_Tools\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|GMB_dig_9_8.asm||<obj>||<lib>||<lkr>|16f628ai.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(TARGETBASE).cof"
+[File003]
+Location=GMB_dig_9_8.cof
+Folder=Output
+DeviceName=PIC16F628
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Program Files\MPLAB IDE\MCHIP_Tools\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|GMB_dig_9_8.asm||<obj>||<lib>||<lkr>|16f628ai.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(TARGETBASE).cof"
+[File004]
+Location=GMB_dig_9_8.cod
+Folder=Output
+DeviceName=PIC16F628
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Program Files\MPLAB IDE\MCHIP_Tools\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|GMB_dig_9_8.asm||<obj>||<lib>||<lkr>|16f628ai.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(TARGETBASE).cof"
+[File005]
+Location=GMB_dig_9_8.hex
+Folder=Output
+DeviceName=PIC16F628
+LanguageToolSuiteID={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Program Files\MPLAB IDE\MCHIP_Tools\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|GMB_dig_9_8.asm||<obj>||<lib>||<lkr>|16f628ai.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(TARGETBASE).cof"

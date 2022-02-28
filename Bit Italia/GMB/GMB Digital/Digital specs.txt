@@ -1,0 +1,98 @@
+
+===============================================================================================================
+Cambiamenti implementati nella versione 2 del software:
+===============================================================================================================
+
+LE TEMPORIZZAZIONE PER LE FUNZIONE uSCITA TEMPORIZZATA E TAPPARELLA SONO DATE IN GRANULARITA' DI 4 SECONDI
+
+TIPO FUNZIONE USCITA 'VISUALIZZAZIONE' = 240 (0xF0)
+
+MESSAGGI FUNZIONAMENTO VERSO ZONA:
+85,17,ZONA,0,0   -> NORMAL OFF  
+85,17,ZONA,0,1   -> NORMAL ON
+85,17,ZONA,FF,0  -> FORZ. OFF
+85,17,ZONA,FF,1  -> FORZ. ON
+
+
+IMPOSTAZZION DIVERSE (UN SOLO BYTE):
+170,0,NS,42,TIPO_SCHEDA
+170,0,NS,43,SW_VERSION                          ;default = 2
+170,0,NS,44,RITARDO USCITE                      ;granularita' 50ms (0 a 255 periodi * 50ms = 12.75 sec max.)
+170,0,NS,45,RITARDO SCHEDA                      ;granularita' 100ms (1 a 255   "    * 100ms = 25.5 sec max.)
+170,0,NS,46,RITARDO COMMANDO MULTIPLO           ;granularita' 50ms (0 a 255 periodi * 50ms = 12.75 sec max.)
+170,0,NS,47,POLARITA                            ;0 = polarita' positiva, 1= polarita' negativa
+
+IMPOSTAZZIONE ASSEGNAMENTO INGRESSO -> ZONA
+170,1,NS,58+,ZONA DA COMMANDDARE   [INTERNAMENTE FORZA 50+ A VALORE 0 PER INDICARE L'INGRESSO ASSGNATO A UNA ZONA]
+
+INGRESSO1	X	1	NSM	58	ZONA DA COMMANDDARE
+INGRESSO2	X	1	NSM	59	ZONA DA COMMANDDARE
+INGRESSO3	X	1	NSM	60	ZONA DA COMMANDDARE
+INGRESSO4	X	1	NSM	61	ZONA DA COMMANDDARE
+INGRESSO5	X	1	NSM	62	ZONA DA COMMANDDARE
+INGRESSO6	X	1	NSM	63	ZONA DA COMMANDDARE
+INGRESSO7	X	1	NSM	64	ZONA DA COMMANDDARE
+INGRESSO8	X	1	NSM	65	ZONA DA COMMANDDARE
+
+IMPOSTAZZIONE ASSEGNAMENTO INGRESSO -> TIPO DI MESSAGGIO DA INVIARE
+170,0,NS,114+,TIPO
+
+INGRESSO1	X	0	NSM	114	TIPO
+INGRESSO2	X	0	NSM	115	TIPO
+INGRESSO3	X	0	NSM	116	TIPO
+INGRESSO4	X	0	NSM	117	TIPO
+INGRESSO5	X	0	NSM	118	TIPO
+INGRESSO6	X	0	NSM	119	TIPO
+INGRESSO7	X	0	NSM	120	TIPO
+INGRESSO8	X	0	NSM	121	TIPO
+
+IMPOSTAZZIONE ASSEGNAMENTO ZONA -> TIPO DI MESSAGGIO DA INVIARE
+170,0,NS,33+,TIPO
+
+INGRESSO1	X	0	NSM	33	TIPO
+INGRESSO2	X	0	NSM	34	TIPO
+INGRESSO3	X	0	NSM	35	TIPO
+INGRESSO4	X	0	NSM	36	TIPO
+INGRESSO5	X	0	NSM	37	TIPO
+INGRESSO6	X	0	NSM	38	TIPO
+INGRESSO7	X	0	NSM	39	TIPO
+INGRESSO8	X	0	NSM	40	TIPO
+
+
+170,0,NS,106+,ZONAD DI APPARTENENZA
+IMPOSTAZZIONE ASSEGNAMENTO USCITA -> ZONA
+USCITA1		X	0	NSM	106	ZONA DI APPARTENENZA
+USCITA2		X	0	NSM	107	ZONA DI APPARTENENZA
+USCITA3		X	0	NSM	108	ZONA DI APPARTENENZA
+USCITA4		X	0	NSM	109	ZONA DI APPARTENENZA
+USCITA5		X	0	NSM	110	ZONA DI APPARTENENZA
+USCITA6		X	0	NSM	111	ZONA DI APPARTENENZA
+USCITA7		X	0	NSM	112	ZONA DI APPARTENENZA
+USCITA8		X	0	NSM	113	ZONA DI APPARTENENZA
+
+
+===============================================================================================================
+===============================================================================================================
+===============================================================================================================
+;EEPROM ADDRESSES	       (0x2100 +  )
+EE_MULTK_KEY_TIPO	EQU	33	;Tipo messaggio MULTIKEY commands (DEFAULT = 0,0,0.. = NORMALE)
+EE_STATO_USCITE		EQU	41	;save area for port states (DEFAULT = 0 = ALL PORTS OFF)
+EE_TIPO_SCHEDA		EQU	42	;read only (DEFAULT = 0)
+EE_SW_VERSION		EQU	43	;read only (DEFAULT = 2)
+EE_RIT_USCITA		EQU	44	;delay activation of ports of same zone (DEFAULT = 1 = 50ms)
+EE_RIT_SCHEDA		EQU	45	;delay activation of a scheda for zone command (DEFAULT=1=1000ms)
+EE_RIT_MULTIC		EQU	46	;delay in sending multiple commands (DEFAULT = 1 = 50ms)
+EE_POLARITA		EQU	47	;polarity of the port (DEFAULT = 0 = ALL PORTS POSITIVE)
+EE_SERIAL_NBR		EQU	48	;serial number (DEFAULT = 2)
+EE_PROGRAM_TYPE		EQU	49	;program type (DEFAULT = 15 - not used)
+EE_SCHEDA		EQU	50	;ingressi (DEFAULT = 0,0,0... = NOT ASSIGNED)
+EE_USCITA_ZONA		EQU	58	;locazioni (DEFAULT = -1= NOT ASSIGNED)
+EE_USCITA_PORTA		EQU	66	;numerazione assegnata alla uscita (DEFAULT = 0,1,2... not used)
+EE_FUNZIONE		EQU	74	;funzione (DEFAULT = NON USATA)
+EE_TEMPO		EQU	82	;temporizzazione (DEFAULT = 0 * 4secs <== NEW in vers 2.0)
+EE_MULT_SCHEDA		EQU	90	;schede da comandare in multicomando (DEFAULT= 0 =NO COMMAND OR ASSIGNED TO ZONE)
+EE_MULT_USCITA		EQU	98	;USCITE/ZONA da comandare in multicomando (DEFAULT= -1 = NOT ASSIGNED)
+EE_ZONA_APPARTZA	EQU	106	;zone (DEFAULT = -1, = NO ZONE)
+EE_SGL_KEY_TIPO		EQU	114	;tipo messaggio for SINGLE KEY commands (DEFAULT = 0 = NORMALE)
+;
+

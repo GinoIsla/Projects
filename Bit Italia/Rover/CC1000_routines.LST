@@ -1,0 +1,1268 @@
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;************************************************************
+                      00002 ;       TITLE:  CC1000 assembler routines
+                      00003 ;       FILENAME:  CC1000_routines.asm
+                      00004 ;       REVISION HISTORY:  31-03-03 First try
+                      00005 ;       HARDWARE: BIT SRL. transciever
+                      00006 ;       FREQUENCY: 4MHz
+                      00007 ;       Function: Unlinked Object with Interfaces to CC1000
+                      00008 ;************************************************************
+Warning[215]: Processor superceded by command line.  Verify processor symbol.
+                      00009                         list    p=16f876A       ; "A" for test with ICE2000
+                      00010 
+                      00011 #include        <p16f876.inc>
+                      00001         LIST
+                      00002 ; P16F876.INC  Standard Header File, Version 1.00    Microchip Technology, Inc.
+                      00359         LIST
+                      00012 #include        <CC1000.h>
+                      00001 ;/* Constants defined for CC1000 */
+                      00002 
+                      00003 ;/* Register addresses */
+                      00004 
+                      00005 #define CC1000_MAIN            0x00
+                      00006 #define CC1000_FREQ_2A         0x01
+                      00007 #define CC1000_FREQ_1A         0x02
+                      00008 #define CC1000_FREQ_0A         0x03
+                      00009 #define CC1000_FREQ_2B         0x04
+                      00010 #define CC1000_FREQ_1B         0x05
+                      00011 #define CC1000_FREQ_0B         0x06
+                      00012 #define CC1000_FSEP1           0x07
+                      00013 #define CC1000_FSEP0           0x08
+                      00014 #define CC1000_CURRENT         0x09
+                      00015 #define CC1000_FRONT_END       0x0A
+                      00016 #define CC1000_PA_POW          0x0B
+                      00017 #define CC1000_PLL             0x0C
+                      00018 #define CC1000_LOCK            0x0D
+                      00019 #define CC1000_CAL             0x0E
+                      00020 #define CC1000_MODEM2          0x0F
+                      00021 #define CC1000_MODEM1          0x10
+                      00022 #define CC1000_MODEM0          0x11
+                      00023 #define CC1000_MATCH           0x12
+                      00024 #define CC1000_FSCTRL          0x13
+                      00025 #define CC1000_FSHAPE7         0x14
+                      00026 #define CC1000_FSHAPE6         0x15
+                      00027 #define CC1000_FSHAPE5         0x16
+                      00028 #define CC1000_FSHAPE4         0x17
+                      00029 #define CC1000_FSHAPE3         0x18
+                      00030 #define CC1000_FSHAPE2         0x19
+                      00031 #define CC1000_FSHAPE1         0x1A
+                      00032 #define CC1000_FSDELAY         0x1B
+                      00033 #define CC1000_PRESCALER       0x1C
+                      00034 #define CC1000_TEST6           0x40
+                      00035 #define CC1000_TEST5           0x41
+                      00036 #define CC1000_TEST4           0x42
+                      00037 #define CC1000_TEST3           0x43
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00038 #define CC1000_TEST2           0x44
+                      00039 #define CC1000_TEST1           0x45
+                      00040 #define CC1000_TEST0           0x46
+                      00041 
+                      00013 #include        <rover.h>
+                      00001 ;Pin usage definitions for the rover Master/Tranmitter
+                      00002 ;CC1000 and PIC16f76
+                      00003 ;
+                      00004 ;===========================================================
+                      00005 ;CHANGE THESE DEFINITIONS WHEN COMPILING THE ASM CODE OR THE
+                      00006 ;LIBRARY FOR MASTER OR FOR SLAVE 
+                      00007 #define         TX_MASTER
+                      00008 ;#define                RX_SLAVE
+                      00009 ;===========================================================
+                      00010 
+                      00011         ifdef   TX_MASTER
+                      00012 #define PCLK                    PORTC,1 ;
+                      00013 #define PALE                    PORTC,2 ;
+                      00014         else
+                      00015 #define PCLK                    PORTA,2 ;
+                      00016 #define PALE                    PORTA,1 ;
+                      00017         endif
+                      00018 
+                      00019 #define PDATA                   PORTC,0 ; Register interfaces
+                      00020 #define DIO                     PORTC,3 ; Data interfaces
+                      00021 #define DCLK                    PORTB,0 ;
+                      00022 #define CHP_OUT                 PORTC,5 ;not used
+                      00023 ;
+                      00024 #define PDATA_DIR               TRISC,0
+                      00025 #define DIO_DIR                 TRISC,3
+                      00026 ;
+                      00027 #define SW1                             PORTB,1 ;Switches on Trasnmitter side
+                      00028 #define SW2                             PORTB,2 ;
+                      00029 #define SW3                             PORTB,3 ;
+                      00030 #define STEERING                PORTC,1 ;
+                      00031 #define SPIN_DIR                PORTC,7 ;
+                      00032 ;
+                      00033 #define LED1                    PORTC,4 ;(IN5)LEDs on Receiver side corresponding to the 
+                      00034 #define LED2                    PORTB,2 ;(IN6) swithces above
+                      00035 #define LED3                    PORTB,1 ;(IN7)
+                      00036 ;
+                      00037 ;
+                      00038 ;ERRORS AND OTHER EVENTS
+                      00039 #define BUTTON_PRESSED  G_Events,0
+                      00040 #define REPLY_SENT              G_Events,1
+                      00041 #define NEW_COUNT               G_Events,2
+                      00042 #define TIME_0_OUT              G_Events,3
+                      00043 #define BYTE_FULL               G_Events,4
+                      00044 #define RESET_CNTRS             G_Events,5
+                      00045 #define CALIBRATION_OK  G_Events,6
+                      00046 ;
+                      00047 ;STATES
+                      00048 #define IDLE_MODE               G_State,0
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00049 #define MASTER                  G_State,1
+                      00050 #define SLAVE                   G_State,2
+                      00051 #define RXCVER                  G_State,3
+                      00052 #define TXMTER                  G_State,4
+                      00053 #define QUIET                   G_State,5
+                      00054 ;
+                      00055 ;PROTOCOL 
+                      00056 ;PROTOCOL PARTS
+                      00057 #define BOF_FOUND               G_Pr_status,0
+                      00058 #define PREAM_FINISHED  G_Pr_status,1
+                      00059 #define UI_FINISHED             G_Pr_status,2
+                      00060 #define ADDR_CMPLT              G_Pr_status,3
+                      00061 #define NBR_BYTES_RCVD  G_Pr_status,4
+                      00062 #define DATA_RECEIVED   G_Pr_status,5
+                      00063 #define SUMCHECK_DONE   G_Pr_status,6
+                      00064 #define CMMND_COMPLETE  G_Pr_status,7
+                      00065 ;
+                      00066 ;OFFSETS:
+                      00067 #define PREAMBLE                0x00
+                      00068 #define UI                              0x03
+                      00069 #define ADDRESS                 0x05
+                      00070 #define NO_BYTES                0x07
+                      00071 #define DATA_OFFS               0x08
+                      00072 #define SUM_CHECK               0x0F
+                      00073 ;
+                      00074 #define UI_CODE1                0xCD    ;unique ramdom number
+                      00075 #define UI_CODE2                0x4D    ;
+                      00076 ;
+                      00077 ;NUMBER OF BYTES
+                      00078 #define PREA_SIZE               3
+                      00079 #define UI_SIZE                 2
+                      00080 #define ADD_SIZE                2
+                      00081 #define NBR_SIZE                1
+                      00082 #define DATA_SIZE               7
+                      00083 #define CS_SIZE                 1
+                      00084 
+  00000010            00085 TOT_FRAME_SIZ                   equ     PREA_SIZE+UI_SIZE+ADD_SIZE+NBR_SIZE+DATA_SIZE+CS_SIZE
+  00000008            00086 FIXED_PART                              equ     PREA_SIZE+UI_SIZE+ADD_SIZE+NBR_SIZE
+                      00087 
+                      00088 #define RX_CURRENT              0x44 ;0100xxxx=950uA, XXXX=?????
+                      00089 #define RXPLL                   0x60
+                      00090 #define TX_CURRENT              0x81 ;1000xxxx=1450uA
+                      00091 #define TXPLL                   0x48
+                      00092 #define PA_VALUE                0xFF
+                      00093 
+                      00094 ;TIMER 1 TIMERS
+                      00095 ;;;#define      RXMIT_TIM1L             0x90    ;at 9600bps: h'3590 = 13,712uS=14ms
+                      00096 ;;;#define      RXMIT_TIM1H             0x35    ; (104uS/b*8bit/byt*16byt/frame+250uS+xx+ switch RX-TX)
+                      00097 
+                      00098 #define RXMIT_TIM1L             0xf0    ;20ms includes delays for the master switch RX -> TX
+                      00099 #define RXMIT_TIM1H             0x55    ;
+                      00100 
+                      00101 ;LOCK TIMEOUTS (this is a 16 bit integer e.g. 01FF)
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00102 #define LOCK1                   0xFF
+                      00103 #define LOCK2                   0x01
+                      00104 
+                      00105 
+                      00106 ;TOGGLES AND CONTROLS FOR LEDS
+                      00107 ;#define TOGGLE_G               L_GREEN_CTL,7
+                      00108 ;#define        GREEN_FLAG              L_GREEN_CTL,6
+                      00109 ;#define        SPEED_G                 L_GREEN_CTL,5
+                      00110 ;
+                      00111 ;#define TOGGLE_R               L_RED_CTL,7
+                      00112 ;#define        RED_FLAG                L_RED_CTL,6
+                      00113 ;#define        SPEED_R                 L_RED_CTL,5
+                      00114 ;
+                      00115 ;#define        SLOW_ON                 b'11000110'             ;1xx..=start on, x1x..=on, xx000110=6 be
+                            ats
+                      00116 ;#define        SLOW_OFF                b'01000110'             ;0xx..=start off, x1x..=on, xx000110=6 b
+                            eats
+                      00117 ;
+                      00118 ;#define        FAST_ON                 b'11000010'
+                      00119 ;#define        FAST_OFF                b'01000010'
+                      00120 ;
+                      00121 ;#define VERYSLOW               b'11010000'
+                      00122 
+                      00123 
+                      00124 
+                      00125 
+                      00126 
+                      00127 
+                      00128 
+                      00129 
+                      00130 
+                      00131 
+                      00132 
+                      00133 
+                      00014 
+                      00015 
+                      00016 ;MISCELLANEOUS DEFINITIONS      
+                      00017 #define F_Carry STATUS,0        ;Most Significant Bit gets rotated through carry flag
+                      00018 
+                      00019 ;Library support:
+                      00020 ;================
+  0000                00021         extern  DelaymS,Delay100uS,DelayuS,GET_NEXT_REGISTER,TREAT_ERROR
+  0000                00022         extern  CC1Kregs
+                      00023         
+                      00024         
+                      00025 ;MACROS
+                      00026 ;======
+                      00027 @PDATAOUT       MACRO
+                      00028                         BSF             STATUS,RP0                      ;bank 1
+                      00029                         BCF             PDATA_DIR                       ;output
+                      00030                         BCF             STATUS,RP0                      ;return to bank0
+                      00031                         ENDM
+                      00032 
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00033 @PDATAIN        MACRO
+                      00034                         BSF             STATUS,RP0                      ;bank 1
+                      00035                         BSF             PDATA_DIR                       ;input
+                      00036                         BCF             STATUS,RP0                      ;return to bank0
+                      00037                         ENDM
+                      00038 
+                      00039 @DIOOUT         MACRO   
+                      00040                         BSF             STATUS,RP0                      ;bank 1
+                      00041                         BCF             OPTION_REG,6            ;Interrupt on RB0 falling edge
+                      00042                         BCF             DIO_DIR                         ;output
+                      00043                         BCF             STATUS,RP0                      ;return to bank0
+                      00044                         ENDM
+                      00045 
+                      00046 @DIOIN          MACRO
+                      00047                         BSF             STATUS,RP0                      ;bank 1
+                      00048                         BSF             OPTION_REG,6            ;Interrupt on RB0 rising edge
+                      00049                         BSF             DIO_DIR                         ;input
+                      00050                         BCF             STATUS,RP0                      ;return to bank0
+                      00051                         ENDM
+                      00052         
+                      00053         UDATA
+                      00054 ;GLOBAL DATA
+0000                  00055 G_CC_Reg        res     1
+0001                  00056 G_CC_Data       res     1
+                      00057 
+                      00058 ;LOCAL DATA     
+0002                  00059 L_BITCOU_W      res     1       ;bit counter for writing to CC100 regs
+0003                  00060 L_BITCOU_R      res     1       ;bit counter for reading from CC1000 regs
+0004                  00061 L_BITCOU_S      res     1       ;bit counter for sending addr to CC1000 regs
+0005                  00062 L_TEMPADD       res     1       ;
+0006                  00063 L_TEMPDATA      res     1       ;
+0007                  00064 L_SUP_REG       res     1       ;register counter in setupall 
+0008                  00065 L_RX_CUR        res     1       ;RX current
+0009                  00066 L_TX_CUR        res     1       ;TX current
+                      00067 ;
+000A                  00068 L_TIMEOUT1      res     1       ;
+000B                  00069 L_TIMEOUT2      res     1       ;
+                      00070 
+                      00071 ;EXTERNAL OR GLOBAL SYMBOLS
+                      00072 ;============================
+  0000                00073         global G_CC_Reg,G_CC_Data
+  0000                00074         extern  G_Events,G_Pr_status
+                      00075 
+                      00076                 CODE    
+                      00077 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00078 ;Procedure:     WriteToCC1000register
+                      00079 ;Function:      Write data to CC1000
+                      00080 ;Inputs:        Address to write to loaded in Addr
+                      00081 ;                       Value loaded in Data_Unit (does not destroy it)
+                      00082 ;Returns:       Nothing?
+                      00083 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+0000                  00084 WriteToCC1000register
+  0000                00085                         global WriteToCC1000register
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0000   08??           00086                         MOVF    G_CC_Data,W             ;
+0001   00??           00087                         MOVWF   L_TEMPDATA              ;
+0002   2???           00088                         CALL    Send_address_to_CC1000
+0003   1487           00089                         BSF             PCLK                    ;
+0004   0000           00090                         NOP                                             ;
+0005   1407           00091                         BSF             PDATA                   ;WRITE command is bit(0) HIGH
+0006   0000           00092                         NOP
+0007   1087           00093                         BCF             PCLK                    ;(A)
+0008   0000           00094                         NOP                                             ;
+0009   1487           00095                         BSF             PCLK                    ;(B)
+000A   0000           00096                         NOP                                             ;Allow for Tha
+000B   0000           00097                         NOP                                             ;Allow for Tha
+000C   1507           00098                         BSF             PALE                    ;
+000D   0000           00099                         NOP                                             ;Allow for Tsa(2)??
+000E   0000           00100                         NOP                                             ;Allow for Tsa(2)??
+000F   0000           00101                         NOP                                             ;Allow for Tsa(2)??
+                      00102                                                                         ;
+0010   3008           00103                         MOVLW   0x08                    ;Send databyte
+0011   00??           00104                         MOVWF   L_BITCOU_W              ;BIT COUNTER
+0012   1487           00105 _WDATA_1        BSF             PCLK                    ;
+0013   0D??           00106                         RLF             L_TEMPDATA,F    ;
+0014   1C03           00107                         BTFSS   F_Carry                 ;Carry flag?
+0015   2???           00108                         GOTO    _WDATA_2                ;
+0016   1407           00109                         BSF             PDATA                   ;
+0017   2???           00110                         GOTO    $+2                             ;
+0018   1007           00111 _WDATA_2        BCF             PDATA                   ;
+0019   1087           00112                         BCF             PCLK                    ;SEND DATA
+001A   0B??           00113                         DECFSZ  L_BITCOU_W,F    ;
+001B   2???           00114                         GOTO    _WDATA_1                ;Loop 8 bits
+001C   1487           00115                         BSF             PCLK                    ;
+001D   1407           00116                         BSF             PDATA                   ;
+001E   1507           00117                         BSF             PALE                    ;
+001F   0008           00118                         RETURN                                  ;
+                      00119 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00120 ;Procedure:     ReadFromCC1000register
+                      00121 ;Function:      Reads data from CC1000
+                      00122 ;Inputs:        Address to read from loaded in G_CC_Reg
+                      00123 ;Returns:       Read byte in G_CC_Data
+                      00124 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+0020                  00125 ReadFromCC1000register
+  0000                00126                         global  ReadFromCC1000register
+0020   2???           00127                         CALL    Send_address_to_CC1000
+0021   1487           00128                         BSF             PCLK                    ;(-A)
+0022   0000           00129                         NOP                                             ;
+0023   1007           00130                         BCF             PDATA                   ;READ command is bit(0) LOW
+0024   0000           00131                         NOP                                             ;
+0025   1087           00132                         BCF             PCLK                    ;(A)
+0026   0000           00133                         NOP                                             ;
+0027   0000           00134                         NOP                                             ;
+0028   0000           00135                         NOP                                             ;
+0029   1487           00136                         BSF             PCLK                    ;(B)
+002A   0000           00137                         NOP                                             ;
+002B   1407           00138                         BSF             PDATA                   ;(C)
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+002C   1507           00139                         BSF             PALE                    ;(D)
+                      00140                                                                         ;
+                      00141                         @PDATAIN                                ;Data In
+002D   1683               M                         BSF             STATUS,RP0                      ;bank 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+002E   1407               M                         BSF             PDATA_DIR                       ;input
+002F   1283               M                         BCF             STATUS,RP0                      ;return to bank0
+0030   3008           00142                         MOVLW   0x08                    ;
+0031   00??           00143                         MOVWF   L_BITCOU_R              ;BIT COUNTER
+0032   01??           00144                         CLRF    G_CC_Data               ;
+                      00145                                                                         ;
+0033   1003           00146 _RDATA_1        CLRC                                    ;CLEAR CARRY FLAG
+0034   0D??           00147                         RLF             G_CC_Data,F             ;READ CYCLE
+0035   1087           00148                         BCF             PCLK                    ;
+                      00149 
+0036   1400           00150                         BSF             G_CC_Data,0             ;Transfer PDATA
+0037   1C07           00151                         BTFSS   PDATA                   ;
+0038   1000           00152                         BCF             G_CC_Data,0             ;
+                      00153                                                                         ;
+0039   1487           00154                         BSF             PCLK                    ;
+003A   0B??           00155                         DECFSZ  L_BITCOU_R,F    ;
+003B   2???           00156                         GOTO    _RDATA_1                ;Loop 8 bits
+                      00157                                                                         ;read finished
+                      00158                         @PDATAOUT                               ;leave it as Output, high impedance
+003C   1683               M                         BSF             STATUS,RP0                      ;bank 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+003D   1007               M                         BCF             PDATA_DIR                       ;output
+003E   1283               M                         BCF             STATUS,RP0                      ;return to bank0
+003F   1487           00159                         BSF             PCLK                    ;
+0040   1407           00160                         BSF             PDATA                   ;
+0041   1507           00161                         BSF             PALE                    ;
+0042   0008           00162                         RETURN                                  ;
+                      00163 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00164 ;Procedure:     Send_address_to_CC1000
+                      00165 ;Function:      Sends the address to CC1000 for either read or write operation
+                      00166 ;Inputs:        Address  loaded in G_CC_Reg
+                      00167 ;Returns:       Nothing - does not destroy contents of G_CC_Reg
+                      00168 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+0043                  00169 Send_address_to_CC1000
+0043   1507           00170                         BSF             PALE                    ;
+0044   08??           00171                         MOVF    G_CC_Reg,W              ;
+0045   00??           00172                         MOVWF   L_TEMPADD               ;
+0046   1107           00173                         BCF             PALE                    ;
+0047   0D??           00174                         RLF             L_TEMPADD,F             ;Allows for Tsa(1)
+0048   3007           00175                         MOVLW   7                               ;7 MSBs
+0049   00??           00176                         MOVWF   L_BITCOU_S              ;BIT COUNTER
+004A   1487           00177 _ADDR_0         BSF             PCLK                    ;SEND ADDRESS
+004B   0D??           00178                         RLF             L_TEMPADD,F             ;
+004C   1C03           00179                         BTFSS   F_Carry                 ;Carry flag?
+004D   2???           00180                         GOTO    _ADDR_1                 ;
+004E   1407           00181                         BSF             PDATA                   ;
+004F   2???           00182                         GOTO    $+2                             ;
+0050   1007           00183 _ADDR_1         BCF             PDATA                   ;
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00184                                                                         ;
+0051   0000           00185                         NOP                                             ;
+0052   1087           00186                         BCF             PCLK                    ;trigger pdata on negative edge of PCLK
+0053   0B??           00187                         DECFSZ  L_BITCOU_S,F    ;
+0054   2???           00188                         GOTO    _ADDR_0                 ;Loop 7 bits
+0055   0008           00189                         RETURN                                  ;
+                      00190 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00191 ;Procedure:     Setup_CC1000PD
+                      00192 ;Function:      Power down CC1000
+                      00193 ;               Use WakeUpCC1000RX/TX followed by SetupCC1000RX/TX to wake from power down
+                      00194 ;Inputs:        None
+                      00195 ;Returns:       Nothing
+                      00196 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+0056                  00197 Setup_CC1000PD
+  0000                00198                         global  Setup_CC1000PD;
+0056   3000           00199                         MOVLW   CC1000_MAIN             ;
+0057   00??           00200                         MOVWF   G_CC_Reg                ;
+0058   303F           00201                         MOVLW   0x3F                    ;
+0059   00??           00202                         MOVWF   G_CC_Data               ;
+005A   2???           00203                         CALL    WriteToCC1000register;Setup CC1000
+                      00204                                                                         ;
+005B   300B           00205                         MOVLW   CC1000_PA_POW   ;Clear PA_POW settings
+005C   00??           00206                         MOVWF   G_CC_Reg                ;
+005D   01??           00207                         CLRF    G_CC_Data               ;Turn off PA_POW
+005E   2???           00208                         CALL    WriteToCC1000register;
+005F   0008           00209                         RETURN                                  ;
+                      00210 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00211 ;Procedure:     Reset_CC1000
+                      00212 ;Function:      Reset CC1000
+                      00213 ;Inputs:        None
+                      00214 ;Returns:       Nothing
+                      00215 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+0060                  00216 Reset_CC1000
+  0000                00217                         global  Reset_CC1000    ;
+0060   3000           00218                         MOVLW   CC1000_MAIN             ;
+0061   00??           00219                         MOVWF   G_CC_Reg                ;
+0062   2???           00220                         CALL    ReadFromCC1000register;Save current settings from MAIN
+                      00221                                                                         ;
+0063   3000           00222                         MOVLW   CC1000_MAIN             ;
+0064   00??           00223                         MOVWF   G_CC_Reg                ;
+0065   30FE           00224                         MOVLW   b'11111110'             ;xx111110 - (1s pwr dwn everything,0 resets regs
+                            )(A)
+0066   05??           00225                         ANDWF   G_CC_Data,F             ;Reset CC1000
+0067   2???           00226                         CALL    WriteToCC1000register;
+                      00227                                                                         ;
+0068   3001           00228                         MOVLW   1                               ;
+0069   04??           00229                         IORWF   G_CC_Data,F             ;Restore MAIN and bring CC1000 out of Reset 
+006A   2???           00230                         CALL    WriteToCC1000register; (Fig 16, pg 26 --> (B))
+006B   3002           00231                         MOVLW   2                               ;Delay 2 Ms  (C)
+006C   2???           00232                         CALL    DelaymS                 ;
+006D   0008           00233                         RETURN                                  ;
+                      00234 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00235 ;Procedure:     Setup_CC1000All
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00236 ;Function:      Loops through the values of the 28 register of the CC1000, values are
+                      00237 ;           passed in W
+                      00238 ;Inputs:        (W)-> CC1000 registers
+                      00239 ;Returns:       Nothing
+                      00240 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+006E                  00241 Setup_CC1000All
+  0000                00242                         global  Setup_CC1000All
+006E   01??           00243                         CLRF    L_SUP_REG               ;(Fig 16, pg 26 --> (C))
+006F   0A??           00244 _SETUP          INCF    L_SUP_REG,F             ;
+0070   30??           00245                         MOVLW   HIGH GET_NEXT_REGISTER  ;
+0071   008A           00246                         MOVWF   PCLATH                  ;
+0072   08??           00247                         MOVF    L_SUP_REG,W             ;
+0073   2???           00248                         CALL    GET_NEXT_REGISTER;
+                      00249                                                                         ;
+0074   00??           00250                         MOVWF   G_CC_Data               ;
+0075   08??           00251                         MOVF    L_SUP_REG,W             ;
+0076   00??           00252                         MOVWF   G_CC_Reg                ;
+0077   2???           00253                         CALL    WriteToCC1000register;
+0078   301C           00254                         MOVLW   d'28'                   ;
+0079   02??           00255                         SUBWF   L_SUP_REG,W             ;                       
+007A   1D03           00256                         BTFSS   STATUS,Z                ;zero flag set when 0 (EQ)
+007B   2???           00257                         GOTO    _SETUP                  ;
+007C   0008           00258                         RETURN                                  ;
+                      00259 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00260 ;Procedure: WakeUpCC1000toRx
+                      00261 ;Function:      Turn on CC1000 from power down to Rx
+                      00262 ;Inputs:        W = RX_CURRENT
+                      00263 ;Returns:       Nothing
+                      00264 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+007D                  00265 WakeUpCC1000toRx
+  0000                00266                         global  WakeUpCC1000toRx
+007D   00??           00267                         MOVWF   L_RX_CUR                        ;save
+007E   3000           00268                         MOVLW   CC1000_MAIN                     ;Start CC1000 as receiver:
+007F   00??           00269                         MOVWF   G_CC_Reg                        ;
+0080   303B           00270                         MOVLW   b'00111011'                     ;<7>:rx,<6>:reg A,<2>:Power up xtal osc 
+                            core
+0081   00??           00271                         MOVWF   G_CC_Data                       ;
+0082   2???           00272                         CALL    WriteToCC1000register;
+                      00273                                                                                 ;
+0083   3009           00274                         MOVLW   CC1000_CURRENT          ;
+0084   00??           00275                         MOVWF   G_CC_Reg                        ;
+0085   08??           00276                         MOVF    L_RX_CUR,W                      ;
+0086   00??           00277                         MOVWF   G_CC_Data                       ;
+0087   2???           00278                         CALL    WriteToCC1000register;
+                      00279                                                                                 ;
+0088   300C           00280                         MOVLW   CC1000_PLL                      ;
+0089   00??           00281                         MOVWF   G_CC_Reg                        ;
+008A   3060           00282                         MOVLW   RXPLL                           ;
+008B   00??           00283                         MOVWF   G_CC_Data                       ;
+008C   2???           00284                         CALL    WriteToCC1000register;
+                      00285                                                                                 ;
+008D   3005           00286                         MOVLW   5                                       ;Delay 5 Ms
+008E   2???           00287                         CALL    DelaymS                         ;
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00288                                                                                 ;
+008F   3000           00289                         MOVLW   CC1000_MAIN                     ;Start CC1000 as receiver:
+0090   00??           00290                         MOVWF   G_CC_Reg                        ;
+0091   3039           00291                         MOVLW   b'00111001'                     ;Power up bias generator
+0092   00??           00292                         MOVWF   G_CC_Data                       ;
+0093   2???           00293                         CALL    WriteToCC1000register;
+                      00294                                                                                 ;
+0094   30FA           00295                         MOVLW   d'250'                          ;
+0095   2???           00296                         CALL    DelayuS                         ;
+                      00297                                                                                 ;
+0096   3000           00298                         MOVLW   CC1000_MAIN                     ;
+0097   00??           00299                         MOVWF   G_CC_Reg                        ;
+0098   3031           00300                         MOVLW   b'00110001'                     ;Power up frequency synthesiser
+0099   00??           00301                         MOVWF   G_CC_Data                       ;
+009A   2???           00302                         CALL    WriteToCC1000register;
+                      00303                                                                                 ;
+                      00304                         @DIOIN                                          ;
+009B   1683               M                         BSF             STATUS,RP0                      ;bank 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+009C   1701               M                         BSF             OPTION_REG,6            ;Interrupt on RB0 rising edge
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+009D   1587               M                         BSF             DIO_DIR                         ;input
+009E   1283               M                         BCF             STATUS,RP0                      ;return to bank0
+009F   0008           00305                         RETURN                                          ;
+                      00306 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00307 ;Procedure: WakeUpCC1000toTx
+                      00308 ;Function:      Turn on CC1000 from power down to Tx
+                      00309 ;Inputs:        W = TX_CURRENT
+                      00310 ;Returns:       Nothing
+                      00311 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+00A0                  00312 WakeUpCC1000toTx
+  0000                00313                         global  WakeUpCC1000toTx
+00A0   00??           00314                         MOVWF   L_TX_CUR                        ;save
+00A1   3000           00315                         MOVLW   CC1000_MAIN                     ;Start CC1000 as receiver:
+00A2   00??           00316                         MOVWF   G_CC_Reg                        ;
+00A3   30FB           00317                         MOVLW   b'11111011'                     ;<7>:rx,<6>:reg A,<2>:Power up xtal osc 
+                            core
+00A4   00??           00318                         MOVWF   G_CC_Data                       ;
+00A5   2???           00319                         CALL    WriteToCC1000register;
+                      00320                                                                                 ;
+00A6   3009           00321                         MOVLW   CC1000_CURRENT          ;
+00A7   00??           00322                         MOVWF   G_CC_Reg                        ;
+00A8   08??           00323                         MOVF    L_TX_CUR,W                      ;
+00A9   00??           00324                         MOVWF   G_CC_Data                       ;
+00AA   2???           00325                         CALL    WriteToCC1000register;
+                      00326                                                                                 ;
+00AB   300C           00327                         MOVLW   CC1000_PLL                      ;
+00AC   00??           00328                         MOVWF   G_CC_Reg                        ;
+00AD   3048           00329                         MOVLW   TXPLL                           ;
+00AE   00??           00330                         MOVWF   G_CC_Data                       ;
+00AF   2???           00331                         CALL    WriteToCC1000register;
+                      00332                                                                                 ;
+00B0   3005           00333                         MOVLW   d'5'                            ;
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00B1   2???           00334                         CALL    DelaymS                         ;
+                      00335                                                                                 ;
+00B2   3000           00336                         MOVLW   CC1000_MAIN                     ;
+00B3   00??           00337                         MOVWF   G_CC_Reg                        ;
+00B4   30F9           00338                         MOVLW   b'11111001'                     ;Turn on bias generator
+00B5   00??           00339                         MOVWF   G_CC_Data                       ;
+00B6   2???           00340                         CALL    WriteToCC1000register;
+                      00341                                                                                 ;
+00B7   30FA           00342                         MOVLW   d'250'                          ;
+00B8   2???           00343                         CALL    DelayuS                         ;
+                      00344                                                                                 ;
+                      00345                                                                                 ;
+00B9   300B           00346                         MOVLW   CC1000_PA_POW           ;Restore PA_POW settings
+00BA   00??           00347                         MOVWF   G_CC_Reg                        ;
+00BB   30FF           00348                         MOVLW   PA_VALUE                        ;
+00BC   00??           00349                         MOVWF   G_CC_Data                       ;
+00BD   2???           00350                         CALL    WriteToCC1000register;
+                      00351                                                                                 ;
+00BE   3000           00352                         MOVLW   CC1000_MAIN                     ;
+00BF   00??           00353                         MOVWF   G_CC_Reg                        ;
+00C0   30F1           00354                         MOVLW   b'11110001'                     ;Turn on freq synthesiser
+00C1   00??           00355                         MOVWF   G_CC_Data                       ;
+00C2   2???           00356                         CALL    WriteToCC1000register;
+00C3   0008           00357                         RETURN                                          ;
+                      00358 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00359 ;Procedure: SetupCC1000Rx
+                      00360 ;Function:      Go to Rx mode Freq A
+                      00361 ;Inputs:        W = RX_CURRENT
+                      00362 ;Returns:       Nothing
+                      00363 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+00C4                  00364 SetupCC1000Rx
+  0000                00365                         global  SetupCC1000Rx
+00C4   00??           00366                         MOVWF   L_RX_CUR                        ;save
+00C5   3000           00367                         MOVLW   CC1000_MAIN                     ;Power up RX part
+00C6   00??           00368                         MOVWF   G_CC_Reg                        ;
+00C7   3011           00369                         MOVLW   b'00010001'                     ;<7>:rx,<6>:reg A,
+00C8   00??           00370                         MOVWF   G_CC_Data                       ;  <5,4>:Power down TX
+00C9   2???           00371                         CALL    WriteToCC1000register;
+                      00372                                                                                 ;
+00CA   300C           00373                         MOVLW   CC1000_PLL                      ;
+00CB   00??           00374                         MOVWF   G_CC_Reg                        ;
+00CC   3060           00375                         MOVLW   RXPLL                           ;
+00CD   00??           00376                         MOVWF   G_CC_Data                       ;
+00CE   2???           00377                         CALL    WriteToCC1000register;
+                      00378                                                                                 ;
+00CF   3009           00379                         MOVLW   CC1000_CURRENT          ;
+00D0   00??           00380                         MOVWF   G_CC_Reg                        ;
+00D1   08??           00381                         MOVF    L_RX_CUR,W                      ;
+00D2   00??           00382                         MOVWF   G_CC_Data                       ;
+00D3   2???           00383                         CALL    WriteToCC1000register;
+                      00384                                                                                 ;
+00D4   3002           00385                         MOVLW   d'2'                            ;
+00D5   2???           00386                         CALL    Delay100uS                      ;
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00D6   3032           00387                         MOVLW   d'50'                           ;
+00D7   2???           00388                         CALL    DelayuS                         ;
+                      00389 
+00D8   30FF           00390                         MOVLW   LOCK1                           ;
+00D9   00??           00391                         MOVWF   L_TIMEOUT1                      ;
+00DA   3001           00392                         MOVLW   LOCK2                           ;
+00DB   00??           00393                         MOVWF   L_TIMEOUT2                      ;
+                      00394                                                                                 ;
+00DC   300D           00395 _WAIT_RX_LK     MOVLW   CC1000_LOCK                     ;
+00DD   00??           00396                         MOVWF   G_CC_Reg                        ;
+00DE   2???           00397                         CALL    ReadFromCC1000register;
+00DF   1800           00398                         BTFSC   G_CC_Data,0                     ; Wait till PLL lock complete
+00E0   2???           00399                         GOTO    _CONT_1R                        ;
+00E1   0B??           00400                         DECFSZ  L_TIMEOUT1,F            ;
+00E2   2???           00401                         GOTO    _WAIT_RX_LK                     ;
+00E3   0B??           00402                         DECFSZ  L_TIMEOUT2,F            ;
+00E4   2???           00403                         GOTO    _WAIT_RX_LK                     ;
+                      00404                                                                                 ;
+00E5   2???           00405                         CALL    CalibrateCC1000         ;
+00E6   1F00           00406                         BTFSS   CALIBRATION_OK          ;PLL not in lock, re-calibrate
+00E7   2???           00407                         CALL    TREAT_ERROR                     ;
+                      00408                                                                                 ;
+00E8   0000           00409 _CONT_1R        NOP                                                     ;
+                      00410                         @DIOIN                                          ;
+00E9   1683               M                         BSF             STATUS,RP0                      ;bank 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00EA   1701               M                         BSF             OPTION_REG,6            ;Interrupt on RB0 rising edge
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00EB   1587               M                         BSF             DIO_DIR                         ;input
+00EC   1283               M                         BCF             STATUS,RP0                      ;return to bank0
+00ED   0008           00411                         RETURN                                          ;
+                      00412 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00413 ;Procedure: SetupCC1000Tx
+                      00414 ;Function:      Go to Tx mode Freq B
+                      00415 ;Inputs:        (W)-> TX_CURRENT
+                      00416 ;Returns:       Nothing
+                      00417 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+00EE                  00418 SetupCC1000Tx
+  0000                00419                         global  SetupCC1000Tx
+00EE   00??           00420                         MOVWF   L_TX_CUR                        ;save
+00EF   300B           00421                         MOVLW   CC1000_PA_POW           ;Turn off PA_POW settings
+00F0   00??           00422                         MOVWF   G_CC_Reg                        ;
+00F1   01??           00423                         CLRF    G_CC_Data                       ;Turn off PA_POW to avoid spurs
+00F2   2???           00424                         CALL    WriteToCC1000register;
+                      00425 
+                      00426 
+00F3   3000           00427                         MOVLW   CC1000_MAIN                     ;Power up TX part
+00F4   00??           00428                         MOVWF   G_CC_Reg                        ;
+00F5   30E1           00429                         MOVLW   b'11100001'                     ;<7>:tx,<6>:reg B,<5>:Power down RX
+00F6   00??           00430                         MOVWF   G_CC_Data                       ;
+00F7   2???           00431                         CALL    WriteToCC1000register;
+                      00432 
+00F8   300C           00433                         MOVLW   CC1000_PLL                      ;
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00F9   00??           00434                         MOVWF   G_CC_Reg                        ;
+00FA   3048           00435                         MOVLW   TXPLL                           ;(0X48)
+00FB   00??           00436                         MOVWF   G_CC_Data                       ;
+00FC   2???           00437                         CALL    WriteToCC1000register;
+                      00438                                                                                 ;
+00FD   3009           00439                         MOVLW   CC1000_CURRENT          ;
+00FE   00??           00440                         MOVWF   G_CC_Reg                        ;
+00FF   08??           00441                         MOVF    L_TX_CUR,W                      ;
+0100   00??           00442                         MOVWF   G_CC_Data                       ;
+0101   2???           00443                         CALL    WriteToCC1000register;
+                      00444                                                                                 ;
+0102   3002           00445                         MOVLW   d'2'                            ;
+0103   2???           00446                         CALL    Delay100uS                      ;
+0104   3032           00447                         MOVLW   d'50'                           ;
+0105   2???           00448                         CALL    DelayuS                         ;
+                      00449                                                                                 ;
+0106   30FF           00450                         MOVLW   LOCK1                           ;
+0107   00??           00451                         MOVWF   L_TIMEOUT1                      ;
+0108   3001           00452                         MOVLW   LOCK2                           ;
+0109   00??           00453                         MOVWF   L_TIMEOUT2                      ;
+010A   300D           00454 _WAIT_TX_LK     MOVLW   CC1000_LOCK                     ;
+010B   00??           00455                         MOVWF   G_CC_Reg                        ;
+010C   2???           00456                         CALL    ReadFromCC1000register;
+010D   1800           00457                         BTFSC   G_CC_Data,0                     ; Wait till PLL lock complete
+010E   2???           00458                         GOTO    _CONT_1T                        ;
+010F   0B??           00459                         DECFSZ  L_TIMEOUT1,F            ;
+0110   2???           00460                         GOTO    _WAIT_TX_LK                     ;
+0111   0B??           00461                         DECFSZ  L_TIMEOUT2,F            ;
+0112   2???           00462                         GOTO    _WAIT_TX_LK                     ;
+                      00463                                                                                 ;
+0113   2???           00464                         CALL    CalibrateCC1000         ;
+0114   1F00           00465                         BTFSS   CALIBRATION_OK          ; PLL not in lock, recalibrate
+0115   2???           00466                         CALL    TREAT_ERROR                     ;
+                      00467                                                                                 ;
+0116   300B           00468 _CONT_1T        MOVLW   CC1000_PA_POW           ;Restore PA_POW settings
+0117   00??           00469                         MOVWF   G_CC_Reg                        ;
+0118   30FF           00470                         MOVLW   PA_VALUE                        ;
+0119   00??           00471                         MOVWF   G_CC_Data                       ;
+011A   2???           00472                         CALL    WriteToCC1000register;
+                      00473                                                                                 ;
+                      00474                         @DIOOUT                                         ;
+011B   1683               M                         BSF             STATUS,RP0                      ;bank 1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+011C   1301               M                         BCF             OPTION_REG,6            ;Interrupt on RB0 falling edge
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+011D   1187               M                         BCF             DIO_DIR                         ;output
+011E   1283               M                         BCF             STATUS,RP0                      ;return to bank0
+011F   0008           00475                         RETURN                                          ;
+                      00476 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00477 ;Procedure: CalibrateCC1000 
+                      00478 ;  *** This is different than the single OR dual calibrations (Fig.14,15 page 23,24)
+                      00479 ;  *** Should it be different for RX and TX - we are doing 2 calibrations...
+                      00480 ;Function:      
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00481 ;Inputs:        None
+                      00482 ;Returns:       Nothing
+                      00483 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+0120                  00484 CalibrateCC1000 
+  0000                00485                         global  CalibrateCC1000
+0120   300B           00486                         MOVLW   CC1000_PA_POW           ;Clear PA_POW settings
+0121   00??           00487                         MOVWF   G_CC_Reg                        ;
+0122   01??           00488                         CLRF    G_CC_Data                       ;Turn off PA_POW to avoid spurs
+0123   2???           00489                         CALL    WriteToCC1000register;
+                      00490                                                                                 ;
+0124   300E           00491                         MOVLW   CC1000_CAL                      ;Start calibration
+0125   00??           00492                         MOVWF   G_CC_Reg                        ;
+0126   30A6           00493                         MOVLW   b'10100110'                     ;&& WAS A5!!    
+0127   00??           00494                         MOVWF   G_CC_Data                       ;
+0128   2???           00495                         CALL    WriteToCC1000register;
+                      00496                                                                                 ;
+0129   300E           00497                         MOVLW   CC1000_CAL                      ;
+012A   00??           00498                         MOVWF   G_CC_Reg                        ;
+012B   2???           00499 _WAIT_CAL       CALL    ReadFromCC1000register;
+012C   1D80           00500                         BTFSS   G_CC_Data,3                     ; Wait till calibration complete
+012D   2???           00501                         GOTO    _WAIT_CAL                       ;
+                      00502                                                                                 ;
+012E   30FF           00503                         MOVLW   LOCK1                           ;
+012F   00??           00504                         MOVWF   L_TIMEOUT1                      ;
+0130   3001           00505                         MOVLW   LOCK2                           ;
+0131   00??           00506                         MOVWF   L_TIMEOUT2                      ;
+0132   300D           00507 _WAI_CAL_LK     MOVLW   CC1000_LOCK                     ;
+0133   00??           00508                         MOVWF   G_CC_Reg                        ;
+0134   2???           00509                         CALL    ReadFromCC1000register;
+0135   1800           00510                         BTFSC   G_CC_Data,0                     ; Wait till PLL lock complete
+0136   2???           00511                         GOTO    _CONT_CAL                       ;
+0137   0B??           00512                         DECFSZ  L_TIMEOUT1,F            ;
+0138   2???           00513                         GOTO    _WAI_CAL_LK                     ;
+0139   0B??           00514                         DECFSZ  L_TIMEOUT2,F            ;
+013A   2???           00515                         GOTO    _WAI_CAL_LK                     ;
+013B   1800           00516                         BTFSC   G_CC_Data,0                     ; Wait till PLL lock complete
+013C   2???           00517                         GOTO    _CONT_CAL                       ;
+                      00518                                                                                 ;
+013D   2???           00519                         CALL    TREAT_ERROR                     ;Calibartion failed
+013E   1300           00520                         BCF             CALIBRATION_OK          ;
+013F   2???           00521                         GOTO    _CONT_CALE                      ;
+                      00522                                                                                 ;
+0140   1700           00523 _CONT_CAL       BSF             CALIBRATION_OK          ;Indicate calibration successful
+0141   300E           00524 _CONT_CALE      MOVLW   CC1000_CAL                      ;
+0142   00??           00525                         MOVWF   G_CC_Reg                        ;
+0143   3026           00526                         MOVLW   b'00100110'                     ;End calibration
+0144   00??           00527                         MOVWF   G_CC_Data                       ;
+0145   2???           00528                         CALL    WriteToCC1000register;
+                      00529                                                                                 ;
+0146   300B           00530                         MOVLW   CC1000_PA_POW           ;Restore PA_POW settings
+0147   00??           00531                         MOVWF   G_CC_Reg                        ;
+0148   30FF           00532                         MOVLW   PA_VALUE                        ;
+0149   00??           00533                         MOVWF   G_CC_Data                       ;
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+014A   2???           00534                         CALL    WriteToCC1000register;
+014B   0008           00535                         RETURN                                          ;
+                      00536 ;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      00537                         END                                                     ; end of code
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+@DIOIN                            
+@DIOOUT                           
+@PDATAIN                          
+@PDATAOUT                         
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADDEN                             00000003
+ADDRESS                           0x05
+ADDR_CMPLT                        G_Pr_status,3
+ADD_SIZE                          2
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BOF_FOUND                         G_Pr_status,0
+BRGH                              00000002
+BUTTON_PRESSED                    G_Events,0
+BYTE_FULL                         G_Events,4
+C                                 00000000
+CALIBRATION_OK                    G_Events,6
+CC1000_CAL                        0x0E
+CC1000_CURRENT                    0x09
+CC1000_FREQ_0A                    0x03
+CC1000_FREQ_0B                    0x06
+CC1000_FREQ_1A                    0x02
+CC1000_FREQ_1B                    0x05
+CC1000_FREQ_2A                    0x01
+CC1000_FREQ_2B                    0x04
+CC1000_FRONT_END                  0x0A
+CC1000_FSCTRL                     0x13
+CC1000_FSDELAY                    0x1B
+CC1000_FSEP0                      0x08
+CC1000_FSEP1                      0x07
+CC1000_FSHAPE1                    0x1A
+CC1000_FSHAPE2                    0x19
+CC1000_FSHAPE3                    0x18
+CC1000_FSHAPE4                    0x17
+CC1000_FSHAPE5                    0x16
+CC1000_FSHAPE6                    0x15
+CC1000_FSHAPE7                    0x14
+CC1000_LOCK                       0x0D
+CC1000_MAIN                       0x00
+CC1000_MATCH                      0x12
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CC1000_MODEM0                     0x11
+CC1000_MODEM1                     0x10
+CC1000_MODEM2                     0x0F
+CC1000_PA_POW                     0x0B
+CC1000_PLL                        0x0C
+CC1000_PRESCALER                  0x1C
+CC1000_TEST0                      0x46
+CC1000_TEST1                      0x45
+CC1000_TEST2                      0x44
+CC1000_TEST3                      0x43
+CC1000_TEST4                      0x42
+CC1000_TEST5                      0x41
+CC1000_TEST6                      0x40
+CC1Kregs                          00000000
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHP_OUT                           PORTC,5
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CKE                               00000006
+CKP                               00000004
+CMMND_COMPLETE                    G_Pr_status,7
+CREN                              00000004
+CSRC                              00000007
+CS_SIZE                           1
+CalibrateCC1000                   00000120
+D                                 00000005
+DATA_ADDRESS                      00000005
+DATA_OFFS                         0x08
+DATA_RECEIVED                     G_Pr_status,5
+DATA_SIZE                         7
+DC                                00000001
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 18
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+DCLK                              PORTB,0
+DIO                               PORTC,3
+DIO_DIR                           TRISC,3
+D_A                               00000005
+Delay100uS                        00000000
+DelaymS                           00000000
+DelayuS                           00000000
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FIXED_PART                        00000008
+FSR                               00000004
+F_Carry                           STATUS,0
+GCEN                              00000007
+GET_NEXT_REGISTER                 00000000
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+G_CC_Data                         00000001
+G_CC_Reg                          00000000
+G_Events                          00000000
+G_Pr_status                       00000000
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IDLE_MODE                         G_State,0
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+LED1                              PORTC,4
+LED2                              PORTB,2
+LED3                              PORTB,1
+LOCK1                             0xFF
+LOCK2                             0x01
+L_BITCOU_R                        00000003
+L_BITCOU_S                        00000004
+L_BITCOU_W                        00000002
+L_RX_CUR                          00000008
+L_SUP_REG                         00000007
+L_TEMPADD                         00000005
+L_TEMPDATA                        00000006
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 19
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+L_TIMEOUT1                        0000000A
+L_TIMEOUT2                        0000000B
+L_TX_CUR                          00000009
+MASTER                            G_State,1
+NBR_BYTES_RCVD                    G_Pr_status,4
+NBR_SIZE                          1
+NEW_COUNT                         G_Events,2
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+NO_BYTES                          0x07
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PALE                              PORTC,2
+PA_VALUE                          0xFF
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCLK                              PORTC,1
+PCON                              0000008E
+PDATA                             PORTC,0
+PDATA_DIR                         TRISC,0
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PR2                               00000092
+PREAMBLE                          0x00
+PREAM_FINISHED                    G_Pr_status,1
+PREA_SIZE                         3
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 20
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSA                               00000003
+QUIET                             G_State,5
+R                                 00000002
+RBIE                              00000003
+RBIF                              00000000
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+READ_WRITE                        00000002
+REPLY_SENT                        G_Events,1
+RESET_CNTRS                       G_Events,5
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+RXCVER                            G_State,3
+RXMIT_TIM1H                       0x55
+RXMIT_TIM1L                       0xf0
+RXPLL                             0x60
+RX_CURRENT                        0x44
+R_W                               00000002
+ReadFromCC1000register            00000020
+Reset_CC1000                      00000060
+S                                 00000003
+SEN                               00000000
+SLAVE                             G_State,2
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SPIN_DIR                          PORTC,7
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+STEERING                          PORTC,1
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 21
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SUMCHECK_DONE                     G_Pr_status,6
+SUM_CHECK                         0x0F
+SW1                               PORTB,1
+SW2                               PORTB,2
+SW3                               PORTB,3
+SYNC                              00000004
+Send_address_to_CC1000            00000043
+SetupCC1000Rx                     000000C4
+SetupCC1000Tx                     000000EE
+Setup_CC1000All                   0000006E
+Setup_CC1000PD                    00000056
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TIME_0_OUT                        G_Events,3
+TMR0                              00000001
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOT_FRAME_SIZ                     00000010
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TREAT_ERROR                       00000000
+TRISA                             00000085
+TRISB                             00000086
+TRISC                             00000087
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 22
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TXMTER                            G_State,4
+TXPLL                             0x48
+TXREG                             00000019
+TXSTA                             00000098
+TX_CURRENT                        0x81
+TX_MASTER                         
+UA                                00000001
+UI                                0x03
+UI_CODE1                          0xCD
+UI_CODE2                          0x4D
+UI_FINISHED                       G_Pr_status,2
+UI_SIZE                           2
+W                                 00000000
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+WakeUpCC1000toRx                  0000007D
+WakeUpCC1000toTx                  000000A0
+WriteToCC1000register             00000000
+Z                                 00000002
+_.code_0017                       00000017
+_.code_004F                       0000004F
+_ADDR_0                           0000004A
+_ADDR_1                           00000050
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_CONT_1R                          000000E8
+_CONT_1T                          00000116
+_CONT_CAL                         00000140
+_CONT_CALE                        00000141
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00000FCF
+_CP_HALF                          00001FDF
+_CP_OFF                           00003FFF
+_CP_UPPER_256                     00002FEF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_HS_OSC                           00003FFE
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_RDATA_1                          00000033
+_SETUP                            0000006F
+_WAIT_CAL                         0000012B
+_WAIT_RX_LK                       000000DC
+_WAIT_TX_LK                       0000010A
+_WAI_CAL_LK                       00000132
+_WDATA_1                          00000012
+MPASM 03.60 Released                      CC1000_ROUTINES.ASM   6-21-2004  12:54:50         PAGE 23
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WDATA_2                          00000018
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_ENABLE_OFF                   00003DFF
+_WRT_ENABLE_ON                    00003FFF
+_XT_OSC                           00003FFD
+__16F876                          00000001
+
+Errors   :     0
+Warnings :     1 reported,     0 suppressed
+Messages :     8 reported,     0 suppressed
+
+

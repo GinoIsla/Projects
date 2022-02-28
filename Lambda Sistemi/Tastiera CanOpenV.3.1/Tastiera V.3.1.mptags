@@ -1,0 +1,250 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+All_Col	C:\Embedded\Tastiera CanOpenV.3.1\can.h	193;"	m	line:193	union:KEY_ROW
+B0	C:\Embedded\Tastiera CanOpenV.3.1\can.h	131;"	m	line:131	struct:TXB_BUFF::<anonymous>
+B1	C:\Embedded\Tastiera CanOpenV.3.1\can.h	130;"	m	line:130	struct:TXB_BUFF::<anonymous>
+B2	C:\Embedded\Tastiera CanOpenV.3.1\can.h	129;"	m	line:129	struct:TXB_BUFF::<anonymous>
+B3	C:\Embedded\Tastiera CanOpenV.3.1\can.h	128;"	m	line:128	struct:TXB_BUFF::<anonymous>
+BOOTUP_MSG	C:\Embedded\Tastiera CanOpenV.3.1\can.h	50;"	d	line:50
+BOOT_REPLY	C:\Embedded\Tastiera CanOpenV.3.1\can.h	51;"	d	line:51
+BlinkLEDs	C:\Embedded\Tastiera CanOpenV.3.1\main.c	49;"	v	line:49
+BlinkMask	C:\Embedded\Tastiera CanOpenV.3.1\main.c	50;"	v	line:50
+CAN_BAUD_1000K	C:\Embedded\Tastiera CanOpenV.3.1\can.h	25;"	d	line:25
+CAN_BAUD_100K	C:\Embedded\Tastiera CanOpenV.3.1\can.h	29;"	d	line:29
+CAN_BAUD_125K	C:\Embedded\Tastiera CanOpenV.3.1\can.h	28;"	d	line:28
+CAN_BAUD_20K	C:\Embedded\Tastiera CanOpenV.3.1\can.h	31;"	d	line:31
+CAN_BAUD_250K	C:\Embedded\Tastiera CanOpenV.3.1\can.h	27;"	d	line:27
+CAN_BAUD_500K	C:\Embedded\Tastiera CanOpenV.3.1\can.h	26;"	d	line:26
+CAN_BAUD_50K	C:\Embedded\Tastiera CanOpenV.3.1\can.h	30;"	d	line:30
+CAN_OPEN_IdEMCY	C:\Embedded\Tastiera CanOpenV.3.1\can.h	58;"	e	line:58	enum:CAN_OPEN_TX
+CAN_OPEN_IdErr	C:\Embedded\Tastiera CanOpenV.3.1\can.h	57;"	e	line:57	enum:CAN_OPEN_TX
+CAN_OPEN_IdErrIn	C:\Embedded\Tastiera CanOpenV.3.1\can.h	76;"	e	line:76	enum:CAN_OPEN_RX
+CAN_OPEN_IdNet	C:\Embedded\Tastiera CanOpenV.3.1\can.h	75;"	e	line:75	enum:CAN_OPEN_RX
+CAN_OPEN_IdSdoTx	C:\Embedded\Tastiera CanOpenV.3.1\can.h	59;"	e	line:59	enum:CAN_OPEN_TX
+CAN_OPEN_IdTx	C:\Embedded\Tastiera CanOpenV.3.1\can.h	56;"	e	line:56	enum:CAN_OPEN_TX
+CAN_OPEN_PDO1	C:\Embedded\Tastiera CanOpenV.3.1\can.h	73;"	e	line:73	enum:CAN_OPEN_RX
+CAN_OPEN_PDO2	C:\Embedded\Tastiera CanOpenV.3.1\can.h	74;"	e	line:74	enum:CAN_OPEN_RX
+CAN_OPEN_RX	C:\Embedded\Tastiera CanOpenV.3.1\can.h	71;"	g	line:71
+CAN_OPEN_RX_END	C:\Embedded\Tastiera CanOpenV.3.1\can.h	77;"	e	line:77	enum:CAN_OPEN_RX
+CAN_OPEN_TX	C:\Embedded\Tastiera CanOpenV.3.1\can.h	54;"	g	line:54
+CAN_OPEN_TX_END	C:\Embedded\Tastiera CanOpenV.3.1\can.h	60;"	e	line:60	enum:CAN_OPEN_TX
+CAN_REQUEST_ENTER_PREOP	C:\Embedded\Tastiera CanOpenV.3.1\can.h	45;"	d	line:45
+CAN_REQUEST_RESET	C:\Embedded\Tastiera CanOpenV.3.1\can.h	46;"	d	line:46
+CAN_REQUEST_RESET_COMMS	C:\Embedded\Tastiera CanOpenV.3.1\can.h	47;"	d	line:47
+CAN_REQUEST_START	C:\Embedded\Tastiera CanOpenV.3.1\can.h	43;"	d	line:43
+CAN_REQUEST_STOP	C:\Embedded\Tastiera CanOpenV.3.1\can.h	44;"	d	line:44
+CAN_STATE_BOOTUP	C:\Embedded\Tastiera CanOpenV.3.1\can.h	37;"	d	line:37
+CAN_STATE_INITIALISING	C:\Embedded\Tastiera CanOpenV.3.1\can.h	41;"	d	line:41
+CAN_STATE_OPERATIONAL	C:\Embedded\Tastiera CanOpenV.3.1\can.h	39;"	d	line:39
+CAN_STATE_PREOPERATIONAL	C:\Embedded\Tastiera CanOpenV.3.1\can.h	40;"	d	line:40
+CAN_STATE_STOPPED	C:\Embedded\Tastiera CanOpenV.3.1\can.h	38;"	d	line:38
+COMMAND	C:\Embedded\Tastiera CanOpenV.3.1\can.h	134;"	m	line:134	struct:TXB_BUFF::<anonymous>
+CanIn	C:\Embedded\Tastiera CanOpenV.3.1\can.h	221;"	p	line:221	signature:(void)
+CanIn	C:\Embedded\Tastiera CanOpenV.3.1\main.c	421;"	f	line:421	signature:(void)
+CanOut	C:\Embedded\Tastiera CanOpenV.3.1\can.h	220;"	p	line:220	signature:(void)
+CanOut	C:\Embedded\Tastiera CanOpenV.3.1\main.c	520;"	p	line:520	file:
+CanOut	C:\Embedded\Tastiera CanOpenV.3.1\main.c	66;"	f	line:66	signature:(void)
+CheckBusError	C:\Embedded\Tastiera CanOpenV.3.1\can.h	219;"	p	line:219	signature:(void)
+CheckBusError	C:\Embedded\Tastiera CanOpenV.3.1\init.c	595;"	f	line:595	signature:(void)
+DEBOUNCE_FLAG	C:\Embedded\Tastiera CanOpenV.3.1\main.c	44;"	v	line:44
+DEV_NET_IdMsAck	C:\Embedded\Tastiera CanOpenV.3.1\can.h	85;"	e	line:85	enum:DEV_NET_RX
+DEV_NET_IdMsPCC	C:\Embedded\Tastiera CanOpenV.3.1\can.h	84;"	e	line:84	enum:DEV_NET_RX
+DEV_NET_IdSvAck	C:\Embedded\Tastiera CanOpenV.3.1\can.h	67;"	e	line:67	enum:DEV_NET_TX
+DEV_NET_IdSvCic	C:\Embedded\Tastiera CanOpenV.3.1\can.h	66;"	e	line:66	enum:DEV_NET_TX
+DEV_NET_IdSvExp	C:\Embedded\Tastiera CanOpenV.3.1\can.h	65;"	e	line:65	enum:DEV_NET_TX
+DEV_NET_IdSvMSR	C:\Embedded\Tastiera CanOpenV.3.1\can.h	83;"	e	line:83	enum:DEV_NET_RX
+DEV_NET_IdSvUER	C:\Embedded\Tastiera CanOpenV.3.1\can.h	82;"	e	line:82	enum:DEV_NET_RX
+DEV_NET_RX	C:\Embedded\Tastiera CanOpenV.3.1\can.h	80;"	g	line:80
+DEV_NET_RX_END	C:\Embedded\Tastiera CanOpenV.3.1\can.h	86;"	e	line:86	enum:DEV_NET_RX
+DEV_NET_TX	C:\Embedded\Tastiera CanOpenV.3.1\can.h	63;"	g	line:63
+DEV_NET_TX_END	C:\Embedded\Tastiera CanOpenV.3.1\can.h	68;"	e	line:68	enum:DEV_NET_TX
+Delay1KTCYx	C:\Embedded\Tastiera CanOpenV.3.1\can.h	223;"	p	line:223	signature:( unsigned char)
+EEPROM_CAN_BAUDRATE	C:\Embedded\Tastiera CanOpenV.3.1\can.h	145;"	d	line:145
+EEPROM_DEBOUNCE_RATE	C:\Embedded\Tastiera CanOpenV.3.1\can.h	148;"	d	line:148
+EEPROM_HEART_BEAT	C:\Embedded\Tastiera CanOpenV.3.1\can.h	146;"	d	line:146
+EEPROM_ID	C:\Embedded\Tastiera CanOpenV.3.1\can.h	144;"	d	line:144
+EEPROM_SYNC_TIME	C:\Embedded\Tastiera CanOpenV.3.1\can.h	147;"	d	line:147
+ERROR_DEBOUNCE	C:\Embedded\Tastiera CanOpenV.3.1\can.h	157;"	d	line:157
+ERROR_PAD	C:\Embedded\Tastiera CanOpenV.3.1\main.c	375;"	l	line:375
+Error_found	C:\Embedded\Tastiera CanOpenV.3.1\can.h	226;"	p	line:226	signature:(void)
+FALSE	C:\Embedded\Tastiera CanOpenV.3.1\can.h	8;"	d	line:8
+Fosc	C:\Embedded\Tastiera CanOpenV.3.1\can.h	161;"	d	line:161
+GROUP0	C:\Embedded\Tastiera CanOpenV.3.1\can.h	150;"	d	line:150
+GROUP1	C:\Embedded\Tastiera CanOpenV.3.1\can.h	151;"	d	line:151
+GROUP2	C:\Embedded\Tastiera CanOpenV.3.1\can.h	152;"	d	line:152
+GROUP3	C:\Embedded\Tastiera CanOpenV.3.1\can.h	153;"	d	line:153
+GetPortBits	C:\Embedded\Tastiera CanOpenV.3.1\can.h	234;"	p	line:234	signature:(void)
+GetPortBits	C:\Embedded\Tastiera CanOpenV.3.1\main.c	281;"	f	line:281	signature:(void)
+HALF_SECOND	C:\Embedded\Tastiera CanOpenV.3.1\can.h	166;"	d	line:166
+HEARTBEAT	C:\Embedded\Tastiera CanOpenV.3.1\can.h	196;"	u	line:196
+IN	C:\Embedded\Tastiera CanOpenV.3.1\can.h	97;"	m	line:97	struct:STAT_TX_B::<anonymous>
+INDEX	C:\Embedded\Tastiera CanOpenV.3.1\can.h	133;"	m	line:133	struct:TXB_BUFF::<anonymous>
+Id	C:\Embedded\Tastiera CanOpenV.3.1\main.c	30;"	v	line:30
+Id_config	C:\Embedded\Tastiera CanOpenV.3.1\init.c	197;"	l	line:197
+Id_high	C:\Embedded\Tastiera CanOpenV.3.1\can.h	212;"	m	line:212	struct:LONGID::<anonymous>
+Id_low	C:\Embedded\Tastiera CanOpenV.3.1\can.h	211;"	m	line:211	struct:LONGID::<anonymous>
+Id_p	C:\Embedded\Tastiera CanOpenV.3.1\init.c	25;"	v	line:25
+Id_p	C:\Embedded\Tastiera CanOpenV.3.1\main.c	424;"	l	line:424
+Idword	C:\Embedded\Tastiera CanOpenV.3.1\can.h	208;"	m	line:208	union:LONGID
+InterruptHandler	C:\Embedded\Tastiera CanOpenV.3.1\init.c	69;"	f	line:69	signature:(void)
+InterruptRxCAN	C:\Embedded\Tastiera CanOpenV.3.1\can.h	218;"	p	line:218	signature:(void)
+KEY_PAD	C:\Embedded\Tastiera CanOpenV.3.1\main.c	284;"	l	line:284
+KEY_PAD_NEW	C:\Embedded\Tastiera CanOpenV.3.1\main.c	41;"	v	line:41
+KEY_PAD_PREV	C:\Embedded\Tastiera CanOpenV.3.1\main.c	42;"	v	line:42
+KEY_PAD_SENT	C:\Embedded\Tastiera CanOpenV.3.1\main.c	43;"	v	line:43
+KEY_ROW	C:\Embedded\Tastiera CanOpenV.3.1\can.h	180;"	u	line:180
+Keychange	C:\Embedded\Tastiera CanOpenV.3.1\main.c	160;"	l	line:160
+Keypad_Changed	C:\Embedded\Tastiera CanOpenV.3.1\can.h	225;"	p	line:225	signature:(void)
+Keypad_Changed	C:\Embedded\Tastiera CanOpenV.3.1\main.c	158;"	f	line:158	signature:(void)
+LED_mask	C:\Embedded\Tastiera CanOpenV.3.1\can.h	138;"	s	line:138
+LEDmask0	C:\Embedded\Tastiera CanOpenV.3.1\main.c	300;"	l	line:300
+LEDmask1	C:\Embedded\Tastiera CanOpenV.3.1\main.c	300;"	l	line:300
+LEDs	C:\Embedded\Tastiera CanOpenV.3.1\main.c	48;"	v	line:48
+LEDs_on	C:\Embedded\Tastiera CanOpenV.3.1\main.c	51;"	v	line:51
+LONGID	C:\Embedded\Tastiera CanOpenV.3.1\can.h	206;"	u	line:206
+LightLEDs	C:\Embedded\Tastiera CanOpenV.3.1\main.c	298;"	f	line:298	signature:(void)
+MAX_CAN_IN	C:\Embedded\Tastiera CanOpenV.3.1\can.h	35;"	d	line:35
+MAX_CAN_OUT	C:\Embedded\Tastiera CanOpenV.3.1\can.h	34;"	d	line:34
+MAX_LED_GROUP	C:\Embedded\Tastiera CanOpenV.3.1\can.h	154;"	d	line:154
+MAX_LED_ROWS	C:\Embedded\Tastiera CanOpenV.3.1\can.h	155;"	d	line:155
+MAX_ROWS	C:\Embedded\Tastiera CanOpenV.3.1\can.h	156;"	d	line:156
+M_HEARTBEAT	C:\Embedded\Tastiera CanOpenV.3.1\can.h	204;"	t	line:204
+M_KEY_ROW	C:\Embedded\Tastiera CanOpenV.3.1\can.h	194;"	t	line:194
+M_LED_mask	C:\Embedded\Tastiera CanOpenV.3.1\can.h	142;"	t	line:142
+M_LONGID	C:\Embedded\Tastiera CanOpenV.3.1\can.h	214;"	t	line:214
+M_STAT_TX_B	C:\Embedded\Tastiera CanOpenV.3.1\can.h	105;"	t	line:105
+M_TIMER_1_CONVERT	C:\Embedded\Tastiera CanOpenV.3.1\can.h	178;"	t	line:178
+M_TXB_BUFF	C:\Embedded\Tastiera CanOpenV.3.1\can.h	136;"	t	line:136
+Milisec	C:\Embedded\Tastiera CanOpenV.3.1\can.h	164;"	d	line:164
+NON_ERROR_COUNT	C:\Embedded\Tastiera CanOpenV.3.1\can.h	158;"	d	line:158
+NON_error_persistancy_count	C:\Embedded\Tastiera CanOpenV.3.1\main.c	59;"	v	line:59
+Next_Group	C:\Embedded\Tastiera CanOpenV.3.1\main.c	46;"	v	line:46
+Next_keypad_read	C:\Embedded\Tastiera CanOpenV.3.1\main.c	45;"	v	line:45
+OUT	C:\Embedded\Tastiera CanOpenV.3.1\can.h	98;"	m	line:98	struct:STAT_TX_B::<anonymous>
+PORTE	C:\Embedded\Tastiera CanOpenV.3.1\init.c	272;"	l	line:272
+RXB_B	C:\Embedded\Tastiera CanOpenV.3.1\main.c	27;"	v	line:27
+RXB_B_BST_BR_R	C:\Embedded\Tastiera CanOpenV.3.1\init.c	51;"	v	line:51
+RXB_B_BTXBD0	C:\Embedded\Tastiera CanOpenV.3.1\init.c	43;"	v	line:43
+RXB_B_BTXBD1	C:\Embedded\Tastiera CanOpenV.3.1\init.c	44;"	v	line:44
+RXB_B_BTXBD2	C:\Embedded\Tastiera CanOpenV.3.1\init.c	45;"	v	line:45
+RXB_B_BTXBD3	C:\Embedded\Tastiera CanOpenV.3.1\init.c	46;"	v	line:46
+RXB_B_BTXBD4	C:\Embedded\Tastiera CanOpenV.3.1\init.c	47;"	v	line:47
+RXB_B_BTXBD5	C:\Embedded\Tastiera CanOpenV.3.1\init.c	48;"	v	line:48
+RXB_B_BTXBD6	C:\Embedded\Tastiera CanOpenV.3.1\init.c	49;"	v	line:49
+RXB_B_BTXBD7	C:\Embedded\Tastiera CanOpenV.3.1\init.c	50;"	v	line:50
+RXB_B_BTXBDLC	C:\Embedded\Tastiera CanOpenV.3.1\init.c	54;"	v	line:54
+RXB_B_BTXBSIDH	C:\Embedded\Tastiera CanOpenV.3.1\init.c	53;"	v	line:53
+RXB_B_BTXBSIDL	C:\Embedded\Tastiera CanOpenV.3.1\init.c	52;"	v	line:52
+R_R	C:\Embedded\Tastiera CanOpenV.3.1\can.h	96;"	m	line:96	struct:STAT_TX_B::<anonymous>
+ReadEEprom	C:\Embedded\Tastiera CanOpenV.3.1\can.h	230;"	p	line:230	signature:(unsigned char)
+ReadEEprom	C:\Embedded\Tastiera CanOpenV.3.1\init.c	181;"	f	line:181	signature:(unsigned char EEaddress)
+ReadKeypad	C:\Embedded\Tastiera CanOpenV.3.1\can.h	224;"	p	line:224	signature:(void)
+ReadKeypad	C:\Embedded\Tastiera CanOpenV.3.1\main.c	223;"	f	line:223	signature:(void)
+STATO_TX_B	C:\Embedded\Tastiera CanOpenV.3.1\can.h	103;"	m	line:103	struct:STAT_TX_B::<anonymous>
+STAT_TX_B	C:\Embedded\Tastiera CanOpenV.3.1\can.h	91;"	u	line:91
+ST_B	C:\Embedded\Tastiera CanOpenV.3.1\can.h	124;"	m	line:124	struct:TXB_BUFF::<anonymous>
+SUB_INDEX	C:\Embedded\Tastiera CanOpenV.3.1\can.h	132;"	m	line:132	struct:TXB_BUFF::<anonymous>
+SendBoot	C:\Embedded\Tastiera CanOpenV.3.1\can.h	231;"	p	line:231	signature:(void)
+SendBoot	C:\Embedded\Tastiera CanOpenV.3.1\main.c	107;"	f	line:107	signature:(void)
+SendEmergency	C:\Embedded\Tastiera CanOpenV.3.1\can.h	232;"	p	line:232	signature:(char,char)
+SendEmergency	C:\Embedded\Tastiera CanOpenV.3.1\main.c	115;"	f	line:115	signature:( char registry, char error_data)
+SendHeartbeat	C:\Embedded\Tastiera CanOpenV.3.1\can.h	233;"	p	line:233	signature:(void)
+SendHeartbeat	C:\Embedded\Tastiera CanOpenV.3.1\main.c	132;"	f	line:132	signature:(void)
+SendKeypad	C:\Embedded\Tastiera CanOpenV.3.1\can.h	227;"	p	line:227	signature:(void)
+SendKeypad	C:\Embedded\Tastiera CanOpenV.3.1\main.c	141;"	f	line:141	signature:(void)
+StatoUnita	C:\Embedded\Tastiera CanOpenV.3.1\main.c	29;"	v	line:29
+Stop_unit	C:\Embedded\Tastiera CanOpenV.3.1\can.h	236;"	p	line:236	signature:(void)
+Stop_unit	C:\Embedded\Tastiera CanOpenV.3.1\main.c	358;"	f	line:358	signature:(void)
+T0_PreScale	C:\Embedded\Tastiera CanOpenV.3.1\can.h	162;"	d	line:162
+T1	C:\Embedded\Tastiera CanOpenV.3.1\main.c	32;"	v	line:32
+T1_PreScale	C:\Embedded\Tastiera CanOpenV.3.1\can.h	163;"	d	line:163
+T1_int	C:\Embedded\Tastiera CanOpenV.3.1\can.h	172;"	m	line:172	union:TIMER_1_CONVERT
+T1high_byte	C:\Embedded\Tastiera CanOpenV.3.1\can.h	176;"	m	line:176	struct:TIMER_1_CONVERT::<anonymous>
+T1low_byte	C:\Embedded\Tastiera CanOpenV.3.1\can.h	175;"	m	line:175	struct:TIMER_1_CONVERT::<anonymous>
+TIMER_1_CONVERT	C:\Embedded\Tastiera CanOpenV.3.1\can.h	170;"	u	line:170
+TRUE	C:\Embedded\Tastiera CanOpenV.3.1\can.h	7;"	d	line:7
+TXBD0	C:\Embedded\Tastiera CanOpenV.3.1\can.h	119;"	m	line:119	struct:TXB_BUFF::<anonymous>
+TXBD1	C:\Embedded\Tastiera CanOpenV.3.1\can.h	118;"	m	line:118	struct:TXB_BUFF::<anonymous>
+TXBD2	C:\Embedded\Tastiera CanOpenV.3.1\can.h	117;"	m	line:117	struct:TXB_BUFF::<anonymous>
+TXBD3	C:\Embedded\Tastiera CanOpenV.3.1\can.h	116;"	m	line:116	struct:TXB_BUFF::<anonymous>
+TXBD4	C:\Embedded\Tastiera CanOpenV.3.1\can.h	115;"	m	line:115	struct:TXB_BUFF::<anonymous>
+TXBD5	C:\Embedded\Tastiera CanOpenV.3.1\can.h	114;"	m	line:114	struct:TXB_BUFF::<anonymous>
+TXBD6	C:\Embedded\Tastiera CanOpenV.3.1\can.h	113;"	m	line:113	struct:TXB_BUFF::<anonymous>
+TXBD7	C:\Embedded\Tastiera CanOpenV.3.1\can.h	112;"	m	line:112	struct:TXB_BUFF::<anonymous>
+TXBDLC	C:\Embedded\Tastiera CanOpenV.3.1\can.h	120;"	m	line:120	struct:TXB_BUFF::<anonymous>
+TXBSIDH	C:\Embedded\Tastiera CanOpenV.3.1\can.h	122;"	m	line:122	struct:TXB_BUFF::<anonymous>
+TXBSIDL	C:\Embedded\Tastiera CanOpenV.3.1\can.h	121;"	m	line:121	struct:TXB_BUFF::<anonymous>
+TXB_B	C:\Embedded\Tastiera CanOpenV.3.1\main.c	26;"	v	line:26
+TXB_BUFF	C:\Embedded\Tastiera CanOpenV.3.1\can.h	108;"	u	line:108
+TempCANCON	C:\Embedded\Tastiera CanOpenV.3.1\init.c	82;"	l	line:82
+TempCANSTAT	C:\Embedded\Tastiera CanOpenV.3.1\init.c	82;"	l	line:82
+Test_for_Error	C:\Embedded\Tastiera CanOpenV.3.1\main.c	373;"	f	line:373	signature:(void)
+Timer0tick_ms	C:\Embedded\Tastiera CanOpenV.3.1\can.h	167;"	d	line:167
+Timer1tick_ms	C:\Embedded\Tastiera CanOpenV.3.1\can.h	168;"	d	line:168
+TreatBlinkMask	C:\Embedded\Tastiera CanOpenV.3.1\can.h	235;"	p	line:235	signature:(void)
+TreatBlinkMask	C:\Embedded\Tastiera CanOpenV.3.1\main.c	405;"	f	line:405	signature:(void)
+VERSIONE1	C:\Embedded\Tastiera CanOpenV.3.1\can.h	5;"	d	line:5
+VERSIONE2	C:\Embedded\Tastiera CanOpenV.3.1\can.h	4;"	d	line:4
+VERSIONE3	C:\Embedded\Tastiera CanOpenV.3.1\can.h	3;"	d	line:3
+VERSIONE4	C:\Embedded\Tastiera CanOpenV.3.1\can.h	2;"	d	line:2
+WaitConfigurationData	C:\Embedded\Tastiera CanOpenV.3.1\can.h	228;"	p	line:228	signature:(void)
+WaitConfigurationData	C:\Embedded\Tastiera CanOpenV.3.1\init.c	195;"	f	line:195	signature:(void)
+WriteEEprom	C:\Embedded\Tastiera CanOpenV.3.1\can.h	229;"	p	line:229	signature:(unsigned char,unsigned char)
+WriteEEprom	C:\Embedded\Tastiera CanOpenV.3.1\init.c	161;"	f	line:161	signature:(unsigned char EEPROM_address,unsigned char EEPROM_data)
+_OFF	C:\Embedded\Tastiera CanOpenV.3.1\can.h	10;"	d	line:10
+_ON	C:\Embedded\Tastiera CanOpenV.3.1\can.h	9;"	d	line:9
+baud_rate	C:\Embedded\Tastiera CanOpenV.3.1\init.c	341;"	l	line:341
+blink_rate	C:\Embedded\Tastiera CanOpenV.3.1\main.c	40;"	v	line:40
+bus_off_int	C:\Embedded\Tastiera CanOpenV.3.1\init.c	57;"	v	line:57
+bus_passive	C:\Embedded\Tastiera CanOpenV.3.1\init.c	56;"	v	line:56
+check_keypad_now	C:\Embedded\Tastiera CanOpenV.3.1\main.c	55;"	v	line:55
+col_0	C:\Embedded\Tastiera CanOpenV.3.1\can.h	184;"	m	line:184	struct:KEY_ROW::<anonymous>
+col_1	C:\Embedded\Tastiera CanOpenV.3.1\can.h	185;"	m	line:185	struct:KEY_ROW::<anonymous>
+col_2	C:\Embedded\Tastiera CanOpenV.3.1\can.h	186;"	m	line:186	struct:KEY_ROW::<anonymous>
+col_3	C:\Embedded\Tastiera CanOpenV.3.1\can.h	187;"	m	line:187	struct:KEY_ROW::<anonymous>
+col_4	C:\Embedded\Tastiera CanOpenV.3.1\can.h	188;"	m	line:188	struct:KEY_ROW::<anonymous>
+col_5	C:\Embedded\Tastiera CanOpenV.3.1\can.h	189;"	m	line:189	struct:KEY_ROW::<anonymous>
+col_6	C:\Embedded\Tastiera CanOpenV.3.1\can.h	190;"	m	line:190	struct:KEY_ROW::<anonymous>
+col_7	C:\Embedded\Tastiera CanOpenV.3.1\can.h	191;"	m	line:191	struct:KEY_ROW::<anonymous>
+column	C:\Embedded\Tastiera CanOpenV.3.1\main.c	225;"	l	line:225
+common_mask	C:\Embedded\Tastiera CanOpenV.3.1\can.h	141;"	m	line:141	struct:LED_mask
+count	C:\Embedded\Tastiera CanOpenV.3.1\can.h	198;"	m	line:198	union:HEARTBEAT
+counter	C:\Embedded\Tastiera CanOpenV.3.1\init.c	198;"	l	line:198
+counter	C:\Embedded\Tastiera CanOpenV.3.1\main.c	508;"	l	line:508
+debounce_count	C:\Embedded\Tastiera CanOpenV.3.1\main.c	37;"	v	line:37
+debounce_period	C:\Embedded\Tastiera CanOpenV.3.1\main.c	38;"	v	line:38
+error_persistancy_count	C:\Embedded\Tastiera CanOpenV.3.1\main.c	58;"	v	line:58
+error_register	C:\Embedded\Tastiera CanOpenV.3.1\main.c	60;"	v	line:60
+flash	C:\Embedded\Tastiera CanOpenV.3.1\init.c	197;"	l	line:197
+heartbeat_count	C:\Embedded\Tastiera CanOpenV.3.1\main.c	34;"	v	line:34
+heartbeat_rate	C:\Embedded\Tastiera CanOpenV.3.1\main.c	35;"	v	line:35
+high_byte	C:\Embedded\Tastiera CanOpenV.3.1\can.h	202;"	m	line:202	struct:HEARTBEAT::<anonymous>
+i	C:\Embedded\Tastiera CanOpenV.3.1\init.c	199;"	l	line:199
+i	C:\Embedded\Tastiera CanOpenV.3.1\init.c	341;"	l	line:341
+i	C:\Embedded\Tastiera CanOpenV.3.1\main.c	161;"	l	line:161
+i	C:\Embedded\Tastiera CanOpenV.3.1\main.c	225;"	l	line:225
+i	C:\Embedded\Tastiera CanOpenV.3.1\main.c	283;"	l	line:283
+i	C:\Embedded\Tastiera CanOpenV.3.1\main.c	300;"	l	line:300
+i	C:\Embedded\Tastiera CanOpenV.3.1\main.c	376;"	l	line:376
+i	C:\Embedded\Tastiera CanOpenV.3.1\main.c	407;"	l	line:407
+i	C:\Embedded\Tastiera CanOpenV.3.1\main.c	508;"	l	line:508
+i	C:\Embedded\Tastiera CanOpenV.3.1\main.c	68;"	l	line:68
+init_cip	C:\Embedded\Tastiera CanOpenV.3.1\can.h	222;"	p	line:222	signature:( void )
+init_cip	C:\Embedded\Tastiera CanOpenV.3.1\init.c	339;"	f	line:339	signature:( void )
+j	C:\Embedded\Tastiera CanOpenV.3.1\init.c	341;"	l	line:341
+k	C:\Embedded\Tastiera CanOpenV.3.1\main.c	423;"	l	line:423
+low_byte	C:\Embedded\Tastiera CanOpenV.3.1\can.h	201;"	m	line:201	struct:HEARTBEAT::<anonymous>
+main	C:\Embedded\Tastiera CanOpenV.3.1\main.c	506;"	f	line:506
+mask	C:\Embedded\Tastiera CanOpenV.3.1\main.c	53;"	v	line:53
+row_count	C:\Embedded\Tastiera CanOpenV.3.1\main.c	57;"	v	line:57
+ten_millisec_count	C:\Embedded\Tastiera CanOpenV.3.1\main.c	39;"	v	line:39
+test_error_now	C:\Embedded\Tastiera CanOpenV.3.1\main.c	56;"	v	line:56
+ultimo_out	C:\Embedded\Tastiera CanOpenV.3.1\main.c	52;"	v	line:52
+undefined	C:\Embedded\Tastiera CanOpenV.3.1\can.h	140;"	m	line:140	struct:LED_mask
+valid	C:\Embedded\Tastiera CanOpenV.3.1\init.c	199;"	l	line:199
+xf9c	C:\Embedded\Tastiera CanOpenV.3.1\main.c	510;"	l	line:510
+y	C:\Embedded\Tastiera CanOpenV.3.1\init.c	61;"	v	line:61

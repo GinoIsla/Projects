@@ -1,0 +1,293 @@
+;------------------------------------------------------------
+; SIMULATORE HCS 200 - 300 - 301
+;	SU PIC 16F91X 40 PIN
+;
+
+;------------------------------------------------------------
+
+;*	*	*	*	*	*	*
+#DEFINE	PIC916	1		;COMMENTARE SE IL PIC DEFINITO NON E' IN USO
+
+
+	IFDEF	PIC916
+	#INCLUDE	"P16F916.INC"
+	__CONFIG	_CP_ON & _PWRTE_ON & _WDT_ON & _MCLRE_ON & _HS_OSC
+	ENDIF
+
+
+#INCLUDE	"PARAMETR.INC"
+
+;***************************************************************************
+
+
+;*** MACROS ***
+
+	ERRORLEVEL	-302
+
+#DEFINE	BANK1	BSF	STATUS,RP0
+#DEFINE	BANK0	BCF	STATUS,RP0
+
+#DEFINE	RAM1	BSF	STATUS,RP0
+#DEFINE	RAM0	BCF	STATUS,RP0
+
+#DEFINE	RAM_1	BSF	STATUS,RP0
+#DEFINE	RAM_0	BCF	STATUS,RP0
+
+#DEFINE	SET		BSF
+#DEFINE	CANC		BCF
+
+#DEFINE	SC		BTFSC
+#DEFINE	SS		BTFSS
+
+#DEFINE	IFSET		BTFSC
+#DEFINE	IFCANC		BTFSS
+
+#DEFINE	SKPB		SKPNC
+#DEFINE	SKPNB		SKPC
+
+#DEFINE	FW		MOVFW
+#DEFINE	WF		MOVWF
+
+#DEFINE	LW		MOVLW
+
+
+;*** ORIGINI ***
+	ORG     0X00
+	B	START
+
+	ORG	0X04
+PUSH	WF	BI_WREG		;COPIA DEL WREG
+	MOVFW	STATUS		;COPIA DELLO STATUS
+	BANK0
+	MOVWF	BI_STATUS
+	B	INTERRUPT
+
+;------------------------------------------------------------
+;================ REMOTE - PINOUT ================
+;
+;					PIC16F91X
+;			 ____________________  ___________________________
+;MCLR -		MCLR	| 1 MCLR/VPP/RE3     \/	RB7/ICSPDAT/SEG13	40| GREEN LED -	OUT
+; -			| 2 RA0/AN0/SEG12	RB6/ICSPCLK/SEG14	39| BACKLIGHT -	OUT
+;SEG7 -		SEG7	| 3 RA1/AN1/SEG7		RB5/COM1	38| COM1 -		COM1
+;COM2 -		COM2	| 4 RA2/AN2/VREF-/COM2		RB4/COM0	37| COM0 - 		COM0
+;ENABLE PB -	OUT	| 5 RA3/AN3/VREF+/SEG15		RB3/SEG3	36| SEG3 -		SEG3
+;SEG4 -		SEG4	| 6 RA4/SEG4			RB2/SEG2	35| SEG2 -		SEG2
+;SEG5 -		SEG5	| 7 RA5/AN4/SEG5		RB1/SEG1	34| SEG1 -		SEG1
+;-			| 8 RE0/AN5/SEG21		RB0/INT0/SEG0	33| SEG0 -		SEG0
+;SW1 -		IN	| 9 RE1/AN6/SEG22			VDD	32|
+;LOW BATT - 	AN7	|10 RE2/AN7/SEG23			VSS	31|
+;			|11 VDD				RD7/SEG20	30| TX RF -		OUT
+;			|12 VSS				RD6/SEG19	29| 
+;T1OSI -	T1OSI	|13 OSC1/CLKI/RA7/T1OSI		RD5/SEG18	28| PB5 -			IN
+;T1OSO -	T1OSO	|14 OSC2/CLKO/RA6/T1OSO		RD4/SEG17	27| PB4 -			IN
+;VLCD1 -	VLCD1	|15 RC0/VLCD1			RC7/SEG8	26| SEG8 -		SEG8
+;VLCD2 -	VLCD2	|16 RC1/VLCD2			RC6/SEG9	25| SEG9 -		SEG9
+;VLCD3 -	VLCD3	|17 RC2/VLCD3		RC5/T1CKI/CCP1/SEG10	24| SEG10 -		SEG10
+;SEG6 -		SEG6	|18 RC3/SEG6			RC4/SEG11	23| SEG11 -		SEG11
+;COM3 -		COM3	|19 RD0/COM3			RD3/SEG16	22| PB3 -			IN
+;PB1 -		IN	|20 RD1				RD2/CCP2	21| PB2 -			IN
+;			 --------------------------------------------------
+
+
+;*** PORTD ***
+#DEFINE	TX_RF	PORTD,7	;
+
+
+;*** INTCON ***
+#DEFINE	_INTE	INTCON,INTE
+#DEFINE	_INTF	INTCON,INTF
+#DEFINE	_GIE	INTCON,GIE
+#DEFINE	_T0IE	INTCON,T0IE
+#DEFINE	_T0IF	INTCON,T0IF
+#DEFINE	_PEIE	INTCON,PEIE
+
+
+;*** PIE1 ***
+#DEFINE	_TMR1IE	PIE1,TMR1IE
+#DEFINE	_CCP1IE	PIE1,CCP1IE	
+
+
+;*** PIR1 ***
+#DEFINE	_TMR1IF	PIR1,TMR1IF
+#DEFINE	_RCIF	PIR1,RCIF
+#DEFINE	_CCP1IF	PIR1,CCP1IF	
+
+
+;*** T1CON ***
+#DEFINE	_TMR1ON	T1CON,TMR1ON
+
+
+;*** STATUS ***
+#DEFINE	_C	STATUS,C
+#DEFINE	_IRP	STATUS,IRP
+
+
+;*****************************************************************************************
+
+;----------------------------------------------------------------
+;
+; CODE COMPOSITION INTO TRASMISSION BUFFER
+;
+;BUFFER1	BIT 7÷5		0	RESERVED, FORCED TO ZERO
+;BUFFER1	BIT 4		0÷1	LEFT/RIGHT SIDE
+;BUFFER1	BIT 3÷0		0÷F	SERIAL NUMBER HIGH
+
+;BUFFER2	BIT 7÷0		00÷FF	SERIAL NUMBER
+
+;BUFFER3	BIT 7÷0		00÷FF	SERIAL NUMBER
+
+;BUFFER4	BIT 7÷0		00÷FF	SERIAL NUMBER LOW
+
+;BUFFER5	BIT 7÷3		00÷0A	LEVEL CODE
+;BUFFER5	BIT 2		0÷1	BEEPER
+;BUFFER5	BIT 1÷0		0	PADDING
+
+;BUFFER6	BIT 7÷0		00÷FF	CHECKSUM
+
+
+;*****************************************************************************************
+
+; DEFINIZIONE DELLE LOCAZIONI RAM
+BI_WREG		EQU	0x7F
+
+;*** LOCALI ***
+
+
+;*** GLOBALI ***
+	CBLOCK 020H
+; FLAG DI ABILITAZIONE E SEGNALAZIONE
+FLAGS
+;FLAGS2
+;FLAGS3
+;FLAGS4
+
+; SALVATAGGIO PARAMETRI IN INTERRUPT
+BI_STATUS
+	ENDC
+
+FINE_RAM_0	EQU	BI_STATUS
+
+
+;*** FLAGS ***
+#DEFINE	RICEVUTO_HCS	FLAGS,0		;
+#DEFINE	fineRX		FLAGS,2		;
+
+
+	IFDEF	NO_COMMENT
+#DEFINE			FLAGS,1		;
+#DEFINE			FLAGS,2		;
+#DEFINE			FLAGS,3		;
+#DEFINE			FLAGS,4		;
+#DEFINE			FLAGS,5		;
+#DEFINE			FLAGS,6		;
+#DEFINE			FLAGS,7		;
+
+;*** FLAGS2 ***
+#DEFINE			FLAGS2,0	;
+#DEFINE			FLAGS2,1	;
+#DEFINE			FLAGS2,2	;
+#DEFINE			FLAGS2,3	;
+#DEFINE			FLAGS2,4	;
+#DEFINE			FLAGS2,5	;
+#DEFINE			FLAGS2,6	;
+#DEFINE			FLAGS2,7	;
+
+;*** FLAGS3 ***
+#DEFINE			FLAGS3,0
+#DEFINE			FLAGS3,1
+#DEFINE			FLAGS3,2
+#DEFINE			FLAGS3,3
+#DEFINE			FLAGS3,4
+#DEFINE			FLAGS3,5
+#DEFINE			FLAGS3,6
+#DEFINE			FLAGS3,7
+
+;*** FLAGS4 ***
+#DEFINE			FLAGS4,0	;
+#DEFINE			FLAGS4,1	;
+#DEFINE			FLAGS4,2	;
+#DEFINE			FLAGS4,3	;
+#DEFINE			FLAGS4,4	;
+#DEFINE			FLAGS4,5	;
+#DEFINE			FLAGS4,6	;
+#DEFINE			FLAGS4,7	;
+	ENDIF
+;------------------------------------------------------------
+
+
+;------------------------------------------------------------
+; INIZIALIZZAZIONE DI TUTTE LE PORTE E DEL REGISTRO DI OPTION
+;
+INITPORTS
+	BANK1
+
+	;PORTA			;RA7	RA6	RA5	RA4	RA3	RA2	RA1	RA0
+	MOVLW	0H		;X	X	X	X	X	X	X	X
+	MOVWF	TRISA
+
+	;PORTB			;RB7	RB6	RB5	RB4	RB3	RB2	RB1	RB0
+	MOVLW	02H		;X	X	X	O	O	O	I	X
+	MOVWF	TRISB
+
+
+;MANCANO:	PORTC, PORTD, PORTE
+
+
+	MOVLW	B'10000001'	;PULL-UPS DISABLED, INTERNAL CLOCK,
+	MOVWF	OPTION_REG	;	TMR0 PRESCALE 1:4 (IF 8 MHZ)
+	BANK0
+
+	RETLW	0
+;------------------------------------------------------------
+
+
+;======================================================
+;*******************
+START
+
+;--------------------------------------------
+MAIN_LOOP
+	CLRWDT
+	CALL	INIZIO_TX_HCS	;<-- CALL FOR TX
+
+
+MAIN3	B	MAIN_LOOP
+;----------------------------------------------------------------------
+
+
+	INCLUDE	"HCS_TX.INC"
+
+
+;*********************************************
+INTERRUPT
+;Servo l'interrupt
+ISR	BTFSS	_T0IF
+	BTFSS	_T0IE
+	B	ISR_X
+
+;=======================================
+;*** BASE TEMPI OGNI 204,8 µS [(256 (CICLI) * 4 (PRESCALE) / 5 (QUARZO 20 MHZ)]
+	BCF	_T0IF
+
+	SS	TRASMISSIONE_HCS
+	B	ISR
+
+	LW	.200
+	SUBWF	TMR_HCS,F
+
+	CALL	GESTIONE_TMR_HCS
+
+;=======================================
+ISR_X
+POP	RAM0
+	MOVFW	BI_STATUS	;RIPRISTINO DELLO STATUS
+	MOVWF	STATUS
+	SWAPF	BI_WREG,F	;RIPRISTINO DEL WREG
+	SWAPF	BI_WREG,W
+	RETFIE
+;**************************************************************
+
+
+	END
+

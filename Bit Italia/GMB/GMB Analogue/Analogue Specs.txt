@@ -1,0 +1,259 @@
+
+Corrections: 
+1. If dimmer is off, do not dimm until ON arrives.
+2. Programmazione: there we're sending th reply twice!!!
+3. Wait for reply for messages:  all 85 except 85,17,...(zona)
+
+
+
+
+Messaggi per le interfaccie analogiche
+------------------------+-------+---------------+-------+---------------+---------------+------------------------
+NOME MESSAGGIO		|TIPO	|SUB-TIPO	|SERIAL	|DISCRIMINATORE	|ARGOMENTO	|COMMENTO
+------------------------+-------+---------------+-------+---------------+---------------+------------------------
+PROGRAMMAZIONE		|170	|0		|NS	|EEPROM ADDRESS |EEPROM VALUE	|Questi 3 messagi identici 
+RISPOSTA		|51	|0		|NS	|EEPROM ADDRESS |EEPROM VALUE	| versione digitale
+INTERROGAZIONE PROGR	|119	|0		|NS	|EEPROM ADDRESS |EEPROM VALUE	| (anche i parametri)
+------------------------+-------+---------------+-------+---------------+---------------+------------------------
+INVIO_STATO		|180	|FLAGS*		|NS	|INGRESSO(1|2)	|LETTURA ATTUALE|*vedi sotto
+INTERROGAZIONE STATO	|181	|USCITA (1|2)	|NS	|	0	|	0	|PORTE: INGRESSO + USCITA 
+RISPOSTA_STATO		|182	|USCITA (1|2)	|NS	|VALORE INGRESSO|VALORE USCITA	|PORTE: INGRESSO + USCITA
+IMPOSTAZIONE USCITA	|183	|USCITA (1|2)	|NS	|	0	|VALORE USCITA	|
+------------------------+-------+---------------+-------+---------------+---------------+------------------------
+
+
+*FLAGS	<0> : 0=TEMPORANEO, 1= ALLARME SOGLIA
+	<1> : 1=SOGLIA IN SALITA, 0=SOGLIA IN DISCESA - NESSUN SIGNIFICATO QUANDO FLAGS<0>=0
+	<2> : ....
+
+
+;INDIRIZZI EEPROM
+-----------------------------------------------------------------------------------------------------------
+EE_FUNZIONE_ING				0	;(X2)DEFAULT 0 
+		C_IN_NOT_USED			0
+		C_IN_STEP_WATCH			1
+		C_IN_THRHLD_WATCH		2
+-----------------------------------------------------------------------------------------------------------
+EE_FUNZIONE_USCITA			2	;(X2) (DEFAULT=0)
+		C_OUT_NOT_USED			0
+		C_OUT_LISTEN_OWN		1
+		C_OUT_LISTEN_OTHR		2
+		C_OUT_DIMMER			3
+-----------------------------------------------------------------------------------------------------------
+EE_TEMPO_INVIO				4	;(X2)DEFAULT 0 = not active
+		NUMERO SECONDI RITARDO INVIO STATO (C_IN_STEP_WATCH) O 
+		ATESSA SUPERAMENTO SOGLIA (C_IN_THRHLD_WATCH)
+-----------------------------------------------------------------------------------------------------------
+EE_STEP_FUNZ_A				6	;(X2)DEFAULT 0 = not active
+		VALORE DELLO STEP CHE CAUSO INVIO STATO (C_IN_STEP_WATCH)
+-----------------------------------------------------------------------------------------------------------
+EE_TEMPO_ATTIVAZIONE			8	;(X2) - NOT USED -
+-----------------------------------------------------------------------------------------------------------
+EE_SOGLIE_FUNZ_B0_UP			10	;(X8) PORT 0 - UP
+		8 VALORI DI SUPPERAMENTO SOGLIA PORTA 1, DIREZIONE SU
+-----------------------------------------------------------------------------------------------------------
+EE_SOGLIE_FUNZ_B0_DWN			18	;(X8) PORT 0 - DOWN
+		8 VALORI DI SUPPERAMENTO SOGLIA PORTA 1, DIREZIONE GIU
+-----------------------------------------------------------------------------------------------------------
+EE_SOGLIE_FUNZ_B1_UP			26	;(X8) PORT 1 - UP
+		8 VALORI DI SUPPERAMENTO SOGLIA PORTA 2, DIREZIONE SU
+-----------------------------------------------------------------------------------------------------------
+EE_SOGLIE_FUNZ_B1_DWN			34	;(X8) PORT 1 - DOWN
+		8 VALORI DI SUPPERAMENTO SOGLIA PORTA 2, DIREZIONE GIU
+-----------------------------------------------------------------------------------------------------------
+EE_TIPO_SCHEDA				42	;*** DONT MOVE DEFAULT = 3 = ANALOGUE 
+		NON SPOSTARE!
+-----------------------------------------------------------------------------------------------------------
+EE_SW_VERSION				43	;*** DONT MOVE DEFAULT = 1
+		NON SPOSTARE!
+-----------------------------------------------------------------------------------------------------------
+EE_SERIAL_ASCOLTO			44	;DEFAULT 0
+		NUMERO DI SERIALE CHE LA USCITA DEVE ASCOLTARE IN FUNZIONE B (C_OUT_LISTEN_OTHR)
+-----------------------------------------------------------------------------------------------------------
+EE_PORT_ASCOLTO				46	;(X2)
+		NUMERO DI PORTA CHE LA USCITA DEVE ASCOLTARE IN FUNZIONE B (C_OUT_LISTEN_OTHR)
+-----------------------------------------------------------------------------------------------------------
+EE_SERIAL_NBR				48	;*** DONT MOVE DEFAULT = 254 (-2) PER LA VERSIONE ANALOGICA
+		NON SPOSTARE!
+-----------------------------------------------------------------------------------------------------------
+EE_STEP_BACK				49	;(X1) 
+		NUMERO DI STEPS DA TORNARE IN DIETRO QUANDO LA AZIONE DIMMER FINISCE 
+-----------------------------------------------------------------------------------------------------------
+EE_SAMPLE_TIMER				50	;(X2) 2 MULTIPLICATORI PER 10ms PER CAMPEONARE 
+						;UN INGRESSO.
+						;NOTA:  UN MESSAGIO DI STEP O SUPERMANETO SOGLIA VIENE INVIATO
+INVIO SOGLIA=					;DOPO IL CALCOLO DELLA MEDIA DOPO 4 CAMPIONI.
+	10ms*SAMPLE_TIMER_1*SAMPLE_TIMER_2*4	;ES. POPOLATI COME 2,10, OCCORRONO
+						;10ms*2*10*4=200ms PER INVIARE UN MESSAGIO DI SOGLIA
+-----------------------------------------------------------------------------------------------------------
+EE_SAMPLE_TIMER		50	;(X2)  multiplicatori tempo di campionamento
+EE_MESSAGE_0_UP		52	;(X40) 5 byte message (S/N, DISC, ARGOM)
+EE_MESSAGE_0_DWN	92	;(X40) 5 byte message (S/N, DISC, ARGOM)
+EE_MESSAGE_1_UP		132	;(X40) 5 byte message (S/N, DISC, ARGOM)
+EE_MESSAGE_1_DWN	172	;(X40) 5 byte message (S/N, DISC, ARGOM)
+;
+;USO INTERNO - NON PROGRAMMARE
+EE_SAVED_SAMPLE		212	;(X2)
+EE_SAVED_OUTPUT		214	;(X2)
+EE_SAVED_CURSOR		216	;(X2)
+EE_DIMM_TOGGLE		218	;(X2) 
+EE_DIMM_DIRECTN		220	;(X2) 
+
+
+Timers:
+C_RX_TIMER		 5		;RX queus emptied every 5ms
+C_TEN_MS		10		;
+C_TX_TIMER		15		;TX queus emptied every 15ms
+C_TWENTYFIVEMS		25		;not used
+C_FIFTYMS		50		;ALL SCHEDULED JOBS DELAY
+C_HUNDRED_MS		100		;KEY SCAN TIMER
+C_SAMPLE_SCAN		250		;4 samples of analogue data each second (based on 1ms)
+C_ONESECOND		10		;based on 100ms tmr
+C_ONEMINUTE		60		;scan time based on 1 seconds timer
+C_RXTIME		0xF0		;(=15 in high nibble) message retranmission counter  
+C_ON_OFF_WAIT		20		;based on C_DIM_STP_TIM, wait 240ms for ON/OFF msg 
+C_DIM_STP_TIM		12		;one step / 12ms
+C_SFTY_DIM_STOP		12		;Turn off dimming autonomously if no OFF (*1sec) 
+
+
+ESSEMPI DI SETTAGIO:
+_____________________________________________________________________________________________________________
+		EE_FUNZIONE_ING=1 (C_IN_STEP_WATCH) 		;Risultato: La uscita copia il valore della
+		EE_FUNZIONE_USCITA=1 (C_OUT_LISTEN_OWN)		; media nel ingresso ogni 10 secondi o al 
+		EE_TEMPO_INVIO=10 (SECONDI)			; superamento (in salita o discesa) di uno 
+		EE_STEP_FUNZ_A=20 (VALORI DI USCITA)		; step di 20.
+		EE_SERIAL_ASCOLTO=XX				; 
+		EE_PORT_ASCOLTO=1=XX				;
+_____________________________________________________________________________________________________________
+		EE_FUNZIONE_ING=1 (C_IN_STEP_WATCH) 		;Risultato: L'ingresso manda il valore della
+		EE_FUNZIONE_USCITA=2 (C_OUT_LISTEN_OWN)		; media ogni 10 secondi o al superamento
+		EE_TEMPO_INVIO=10 (SECONDI)			; (in salita o discesa) di uno step di
+		EE_STEP_FUNZ_A=20 (VALORI DI USCITA)		; 20. La uscita sente e copia il valore della
+		EE_SERIAL_ASCOLTO=33				; scheda 33, porta 1
+		EE_PORT_ASCOLTO=1				;
+_____________________________________________________________________________________________________________
+		EE_FUNZIONE_ING=2 (C_IN_THRHLD_WATCH) 		;Risultato: L'uscita e messa in supervisione,
+		EE_FUNZIONE_USCITA=XX				; al superamento del valore della soglia in
+		EE_TEMPO_INVIO=10 (SECONDI)			; salita, 
+		EE_STEP_FUNZ_A=XX				;
+		EE_SERIAL_ASCOLTO=XX				; ess. EE_SOGLIE_FUNZ_B0_UP(1), invia il
+		EE_PORT_ASCOLTO=1=XX				; messagio 1 in EE_MESSAGE_0_UP
+		EE_SOGLIE_FUNZ_B0_UP=20,40,60,....		;
+		EE_SOGLIE_FUNZ_B0_DWN=20,40,60,....		;
+		EE_SOGLIE_FUNZ_B1_UP=20,40,60,....		;
+		EE_SOGLIE_FUNZ_B1_DWN=20,40,60,....		;
+		EE_MESSAGE_0_UP	= 85,16,33,6,6,ecc...		;
+		EE_MESSAGE_0_DWN=ecc...				;
+		EE_MESSAGE_1_UP	=ec....				;
+		EE_MESSAGE_1_DWN=ecc...				;
+_____________________________________________________________________________________________________________
+
+		EE_FUNZIONE_ING=X 		 		;Risultato: Funzione DIMMER. 
+		EE_FUNZIONE_USCITA=3 (C_OUT_DIMMER)		; Atessa OFF = 240ms poi toggle
+		EE_TEMPO_INVIO=XX				; 
+		EE_STEP_FUNZ_A=XX				; 
+		EE_SERIAL_ASCOLTO=XX				; 
+		EE_PORT_ASCOLTO=1=XX				;
+_____________________________________________________________________________________________________________
+
+(0x2100+EE_FUNZIONE_ING)
+			DE		0,0
+
+(0x2100+EE_FUNZIONE_USCITA)
+			DE		0,0
+
+(0x2100+EE_TEMPO_INVIO)
+			DE		0,0
+
+(0x2100+EE_STEP_FUNZ_A)
+			DE		0,0
+			
+(0x2100+EE_TEMPO_ATTIVAZIONE)
+			DE		0,0
+
+(0x2100+EE_SOGLIE_FUNZ_B0_UP)
+			DE		0x10,0x20,0x30,0x40,0x50,0x60,0x70,0x80
+
+(0x2100+EE_SOGLIE_FUNZ_B0_DWN)
+			DE		0x10,0x20,0x30,0x40,0x50,0x60,0x70,0x80
+
+(0x2100+EE_SOGLIE_FUNZ_B1_UP)
+			DE		0x20,0x40,0x60,0x80,0xA0,0xC0,0xE0,0xF0
+
+(0x2100+EE_SOGLIE_FUNZ_B1_DWN)
+			DE		0x18,0x38,0x58,0x78,0x98,0xB8,0xD8,0xE8
+(0x2100+EE_TIPO_SCHEDA)
+			DE		3
+
+(0x2100+EE_SW_VERSION)
+			DE		1
+
+(0x2100+EE_SERIAL_ASCOLTO)
+			DE		0,0
+
+(0x2100+EE_PORT_ASCOLTO)		;DEFAULT = LISTEN TO OWN INGRESSO
+			DE		1,2
+
+(0x2100+EE_SERIAL_NBR)
+			DE		254
+
+(0x2100+EE_SAMPLE_TIMER)
+			DE		1,10		;(based on 10ms = 400 ms per AVERAGE
+
+(0x2100+EE_MESSAGE_0_UP)
+			DE		85,34,2,1,1
+			DE		85,34,2,2,2
+			DE		85,34,2,4,4
+			DE		85,34,2,8,8
+			DE		85,34,2,16,16
+			DE		85,34,2,32,32
+			DE		85,34,2,64,64
+			DE		85,34,2,128,128
+;
+(0x2100+EE_MESSAGE_0_DOWN)
+			DE		85,34,2,1,0
+			DE		85,34,2,2,0
+			DE		85,34,2,4,0
+			DE		85,34,2,8,0
+			DE		85,34,2,16,0
+			DE		85,34,2,32,0
+			DE		85,34,2,64,0
+			DE		85,34,2,128,0
+;
+(0x2100+EE_MESSAGE_1_UP)
+			DE		85,34,3,1,1
+			DE		85,34,3,2,2
+			DE		85,34,3,4,4
+			DE		85,34,3,8,8
+			DE		85,34,3,16,16
+			DE		85,34,3,32,32
+			DE		85,34,3,64,64
+			DE		85,34,3,128,128
+;
+(0x2100+EE_MESSAGE_1_DOWN)
+			DE		85,34,3,1,0
+			DE		85,34,3,2,0
+			DE		85,34,3,4,0
+			DE		85,34,3,8,0
+			DE		85,34,3,16,0
+			DE		85,34,3,32,0
+			DE		85,34,3,64,0
+			DE		85,34,3,128,0
+
+(0x2100+EE_SAVED_SAMPLE)
+			DE		0,0
+
+(0x2100+EE_SAVED_OUTPUT)
+			DE		0,0
+
+(0x2100+EE_SAVED_CURSOR)
+			DE		0,0
+
+(0x2100+EE_DIMM_TOGGLE)
+			DE		0,0
+
+(0x2100+EE_DIM_DRCTN_STAT)
+			DE		3,3	;default <0>,DIRECTION=UP,<1>STATE=ON
+
+
+

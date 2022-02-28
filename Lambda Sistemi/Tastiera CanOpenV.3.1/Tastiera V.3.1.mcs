@@ -1,0 +1,83 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=C:\Embedded\Tastiera CanOpenV.3.1\init.o
+Folder=Intermediary
+DeviceName=PIC18F4580
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\mcc18\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\mcc18\mpasm||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)|C:\mcc18\lkr||
+SOLK=<src>|init.c|main.c||<obj>||<lib>||<lkr>|C:\mcc18\lkr\18f4580.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+[File001]
+Location=C:\Embedded\Tastiera CanOpenV.3.1\main.o
+Folder=Intermediary
+DeviceName=PIC18F4580
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\mcc18\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\mcc18\mpasm||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)|C:\mcc18\lkr||
+SOLK=<src>|init.c|main.c||<obj>||<lib>||<lkr>|C:\mcc18\lkr\18f4580.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+[File002]
+Location=Tastiera V.3.1.cof
+Folder=Output
+DeviceName=PIC18F4580
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\mcc18\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\mcc18\mpasm||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)|C:\mcc18\lkr||
+SOLK=<src>|init.c|main.c||<obj>||<lib>||<lkr>|C:\mcc18\lkr\18f4580.lkr||
+SuiteArgsString=
+ToolArgsString=/m"$(BINDIR_)$(TARGETBASE).map" /o"$(TARGETBASE).cof"
+[File003]
+Location=Tastiera V.3.1.cod
+Folder=Output
+DeviceName=PIC18F4580
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\mcc18\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\mcc18\mpasm||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)|C:\mcc18\lkr||
+SOLK=<src>|init.c|main.c||<obj>||<lib>||<lkr>|C:\mcc18\lkr\18f4580.lkr||
+SuiteArgsString=
+ToolArgsString=/m"$(BINDIR_)$(TARGETBASE).map" /o"$(TARGETBASE).cof"
+[File004]
+Location=Tastiera V.3.1.hex
+Folder=Output
+DeviceName=PIC18F4580
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\mcc18\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\mcc18\mpasm||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)|C:\mcc18\lkr||
+SOLK=<src>|init.c|main.c||<obj>||<lib>||<lkr>|C:\mcc18\lkr\18f4580.lkr||
+SuiteArgsString=
+ToolArgsString=/m"$(BINDIR_)$(TARGETBASE).map" /o"$(TARGETBASE).cof"
+[File005]
+Location=Tastiera V.3.1.lst
+Folder=Output
+DeviceName=PIC18F4580
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\mcc18\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\mcc18\mpasm||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)|C:\mcc18\lkr||
+SOLK=<src>|init.c|main.c||<obj>||<lib>||<lkr>|C:\mcc18\lkr\18f4580.lkr||
+SuiteArgsString=
+ToolArgsString=/m"$(BINDIR_)$(TARGETBASE).map" /o"$(TARGETBASE).cof"
+[File006]
+Location=Tastiera V.3.1.map
+Folder=Output
+DeviceName=PIC18F4580
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\mcc18\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\mcc18\mpasm||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)|C:\mcc18\lkr||
+SOLK=<src>|init.c|main.c||<obj>||<lib>||<lkr>|C:\mcc18\lkr\18f4580.lkr||
+SuiteArgsString=
+ToolArgsString=/m"$(BINDIR_)$(TARGETBASE).map" /o"$(TARGETBASE).cof"
+[TOOL_LOC_STAMPS]
+tool_loc{96C98149-AA1B-4CF9-B967-FAE79CAB663C}=C:\mcc18\bin\mplink.exe
+tool_loc{E56A1C86-9D32-4DF6-8C34-FE0388B1B644}=C:\mcc18\bin\mcc18.exe

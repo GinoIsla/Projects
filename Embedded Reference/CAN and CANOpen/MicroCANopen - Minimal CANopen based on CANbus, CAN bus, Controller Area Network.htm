@@ -1,0 +1,355 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0028)http://www.microcanopen.com/ -->
+<HTML><HEAD><TITLE>MicroCANopen - Minimal CANopen based on CANbus, CAN bus, Controller Area Network</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META 
+content="MicroCANopen, CANopen, embedded, controller&#10;area network, CANbus, CAN bus" 
+name=keywords>
+<STYLE type=text/css>.buybox {
+	BORDER-RIGHT: #ffb700 2px solid; PADDING-RIGHT: 12px; BORDER-TOP: #ffb700 2px solid; PADDING-LEFT: 12px; PADDING-BOTTOM: 6px; MARGIN: 6px 0px; VERTICAL-ALIGN: middle; BORDER-LEFT: #ffb700 2px solid; WIDTH: 100%; PADDING-TOP: 6px; BORDER-BOTTOM: #ffb700 2px solid; FONT-FAMILY: arial, san-serif; BACKGROUND-COLOR: #ffff80; TEXT-ALIGN: left
+}
+.toolsbox {
+	BORDER-RIGHT: #ffb700 2px solid; PADDING-RIGHT: 6px; BORDER-TOP: #ffb700 2px solid; PADDING-LEFT: 6px; FONT-SIZE: 15px; FLOAT: right; PADDING-BOTTOM: 6px; MARGIN-LEFT: 6px; BORDER-LEFT: #ffb700 2px solid; WIDTH: 180px; PADDING-TOP: 6px; BORDER-BOTTOM: #ffb700 2px solid; FONT-FAMILY: arial, san-serif; POSITION: relative; BACKGROUND-COLOR: #ffff80
+}
+</STYLE>
+
+<META content="MSHTML 6.00.2900.2802" name=GENERATOR></HEAD>
+<BODY text=#000000 bgColor=#ffffff>
+<TABLE cellSpacing=0 cellPadding=10 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD width=125>
+      <P align=center><A href="http://www.esacademy.com/index.htm"><IMG 
+      height=210 alt="Back to ESAcademy Home Page" 
+      src="MicroCANopen - Minimal CANopen based on CANbus, CAN bus, Controller Area Network_files/esalogoweb.gif" 
+      width=125 border=0></A></P></TD>
+    <TD vAlign=top align=right>
+      <TABLE align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle height=60>
+            <SCRIPT language=javascript 
+            src="MicroCANopen - Minimal CANopen based on CANbus, CAN bus, Controller Area Network_files/2banner.htm">
+        </SCRIPT>
+          </TD></TR></TBODY></TABLE>
+      <HR>
+
+      <TABLE width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD><IMG height=95 alt=MicroCANopen 
+            src="MicroCANopen - Minimal CANopen based on CANbus, CAN bus, Controller Area Network_files/mcopnlogo.gif" 
+            width=323> </TD>
+          <TD align=right>
+            <H1><FONT face=Arial>MicroCANopen</FONT></H1>
+            <H2><FONT face=Arial>Minimal CANopen Implementations</FONT><!--
+    <h1 ALIGN="right"><font face="Arial">MicroCANopen</font></h1>
+    <h2 ALIGN="right"><font face="Arial">Minimal CANopen Implementations</font></h2>
+//--></H2></TD></TR></TBODY></TABLE></TD>
+    <TD vAlign=top align=right width=155 bgColor=#ffb700>&nbsp; 
+      <TABLE width=150 border=0>
+        <SCRIPT language=javascript 
+        src="MicroCANopen - Minimal CANopen based on CANbus, CAN bus, Controller Area Network_files/menuidx.htm"></SCRIPT>
+
+        <TBODY></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD vAlign=top align=left width=125>
+      <TABLE cellPadding=4 bgColor=#990000 border=1>
+        <TBODY>
+        <TR>
+          <TD vAlign=top align=middle bgColor=#ffb700><SMALL><STRONG><FONT 
+            face=Arial><A href="http://www.canbus.us/">CANbus 
+            USA</A></FONT></STRONG></SMALL> <A 
+            href="http://www.canbus.us/"><STRONG><FONT 
+            style="FONT-SIZE: smaller" face=Arial>(Controller Area 
+            Network)</FONT></A></STRONG></TD></TR>
+        <TR>
+          <TD vAlign=top align=middle bgColor=#ffb700><SMALL><STRONG><FONT 
+            face=Arial><A href="http://www.canopen.us/">CANopen 
+            USA</A></FONT></STRONG></SMALL></TD></TR>
+        <TR>
+          <TD vAlign=top align=middle bgColor=#ffb700><STRONG><FONT 
+            face=Arial><SMALL><A href="http://www.canopen.us/applications.htm" 
+            target=_blank>CANopen Applications 
+            Examples</A></SMALL></FONT></STRONG></TD></TR>
+        <TR>
+          <TD vAlign=top align=middle bgColor=#ffb700>
+            <P align=center><STRONG><FONT face=Arial><SMALL><A 
+            href="http://www.canopenia.com/" target=_blank>CANopenIA Instant 
+            Access to CANopen</A></SMALL></FONT></STRONG></P></TD></TR>
+        <TR>
+          <TD vAlign=top align=middle bgColor=#ffb700><STRONG><FONT 
+            style="FONT-SIZE: smaller" face=Arial><A 
+            href="http://www.canopenmagic.com/">CANopen Magic</A> Monitoring, 
+            Configuration and Test Tool for 
+      CANopen</FONT></STRONG></TD></TR></TBODY></TABLE></TD>
+    <TD>
+      <H3 align=center><FONT face=Arial><A 
+      href="http://www.esacademy.com/software/microcanopen/v2.htm">News About 
+      the Current Release: V2.0</A></FONT></H3>
+      <DIV class=toolsbox>
+      <DIV align=center><B>Need Development Tools?</B></DIV>
+      <P><A href="http://www.canopenstore.com/pip/pcanopenmagic/">PCANopen 
+      Magic</A><BR><SMALL>Low cost CANopen network monitoring and control. Also 
+      available with a <A 
+      href="http://www.canopenstore.com/pip/pcanopenmagicusb/">PEAK CAN 
+      interface</A>.</SMALL> </P>
+      <P><A href="http://www.canopenstore.com/pip/canopenarchitecteds/">CANopen 
+      Architect EDS</A><BR><SMALL>Affordable Electronic Datasheet creation and 
+      editing.</SMALL> </P>
+      <P align=center>Many more tools, source code and services available 
+      from<BR><A href="http://www.canopenstore.com/">The CANopen 
+      Store!</A></P></DIV>
+      <P align=left><FONT face="Arial, Helvetica, sans-serif">For many embedded 
+      networking applications CAN, the Controller Area Network, is a preferred 
+      choice as CAN interfaces are present on microcontrollers from more than 22 
+      different chip manufacturers. However, CAN itself is not sufficient to 
+      implement a communication network - a higher-layer protocol is needed to 
+      provide pre-defined communication functions. For applications that just 
+      use a few nodes and messages, many engineers still tend to develop their 
+      own higher-layer protocol, as full protocol stacks like CANopen seem to be 
+      an overkill for their application.</FONT></P>
+      <H3><A href="http://www.canopen.us/" target=_blank><IMG height=60 
+      alt="Click here to learn more about CANopen" 
+      src="MicroCANopen - Minimal CANopen based on CANbus, CAN bus, Controller Area Network_files/canopenus225.jpg" 
+      width=225 align=right border=0></A><FONT face=Arial>What is 
+      MicroCANopen?</FONT></H3>
+      <P><FONT face="Arial, Helvetica, sans-serif">MicroCANopen is a minimal 
+      CANopen implementation targeted at embedded networking applications. To 
+      learn more about CANopen, go to <A 
+      href="http://www.canopen.us/">CANopen.us</A>. The tutors of ESAcademy 
+      implemented MicroCANopen with several goals in mind:</FONT>
+      <OL>
+        <LI><FONT face="Arial, Helvetica, sans-serif"><STRONG>Adapt the 
+        basics<BR></STRONG>MicroCANopen does not aim at 100% CANopen 
+        conformance. While it can be made 100% conformant (since V2.00), the 
+        primary idea behind MicroCANopen is to simply adapt the minimal set of 
+        features that is required to cover standard communication methods and 
+        that allow making use of exiting CANopen tools like configurators and 
+        analyzers. If the system growths in the future, an upgrade path is 
+        already laid out - upgrading to "true" CANopen does not require any 
+        changes in the communication channels.</FONT> 
+        <LI><FONT face="Arial, Helvetica, sans-serif"><STRONG>Minimal resource 
+        requirements<BR></STRONG>Full-size CANopen implementations require more 
+        resources than some of the latest 8-bit microcontrollers with CAN 
+        interface have. On 8051 derivatives, MicroCANopen can fit in as little 
+        as 4k of code and about 170 bytes of RAM. Full-featured CANopen 
+        implementations are more in the range of 40k-60k of code and 600 or more 
+        bytes of RAM.</FONT> 
+        <LI><FONT face="Arial, Helvetica, sans-serif"><STRONG>Minimal learning 
+        curve<BR></STRONG>MicroCANopen reduces the learning curve for newcomers 
+        to CANopen. As advanced features are not implemented, engineers do not 
+        need to learn about them immediately. For example, MicroCANopen allows 
+        the transmitting and receiving of CAN messages with process data, 
+        without needing the process of "mapping variables from an Object 
+        Dictionary into PDOs - Process Data Objects". </FONT></LI></OL>
+      <H3><FONT face="Arial, Helvetica, sans-serif">Implementation</FONT></H3>
+      <P><FONT face="Arial, Helvetica, sans-serif">MicroCANopen requires two 
+      interfaces. </FONT></P>
+      <P><FONT face="Arial, Helvetica, sans-serif">There is a CAN hardware 
+      interface between the CAN controller and the CANopen stack. To keep 
+      MicroCANopen simple and portable, this driver has to take care of all 
+      microcontroller specific and real-time issues that occur in embedded 
+      applications. This includes both timer and CAN interrupt service 
+      routines.</FONT></P>
+      <P><FONT face="Arial, Helvetica, sans-serif">The application interface 
+      towards the user program provides the functions to initialize the 
+      communication and pass on process data back and forth.</FONT></P>
+      <P><FONT face="Arial, Helvetica, sans-serif">Learn more about the 
+      interfaces:</FONT>
+      <UL>
+        <LI><A 
+        href="http://www.esacademy.com/software/microcanopen/hardware.htm"><FONT 
+        face="Arial, Helvetica, sans-serif">MicroCANopen Hardware 
+        Interface</FONT></A> 
+        <LI><A 
+        href="http://www.esacademy.com/software/microcanopen/application.htm"><FONT 
+        face="Arial, Helvetica, sans-serif">MicroCANopen Application 
+        Interface</FONT></A> </LI></UL>
+      <P><FONT face="Arial, Helvetica, sans-serif">Learn more about the 
+      implementation</FONT>
+      <UL>
+        <LI><A 
+        href="http://www.esacademy.com/software/microcanopen/implementation.htm"><FONT 
+        face="Arial, Helvetica, sans-serif">MicroCANopen 
+        Implementation</FONT></A> 
+        <LI><FONT face="Arial, Helvetica, sans-serif"><A 
+        href="http://www.esacademy.com/software/microcanopen/examples.htm">MicroCANopen 
+        Implementation Examples</A></FONT> 
+        <LI><FONT face="Arial, Helvetica, sans-serif"><A 
+        href="http://www.esacademy.com/software/microcanopen/atmeldemo.htm">MicroCANopen 
+        Atmel 89C51CC01 Application Examples</A></FONT> </LI></UL>
+      <H3><FONT face="Arial, Helvetica, sans-serif">Comparison of CANopen with 
+      MicroCANopen</FONT></H3>
+      <TABLE cellSpacing=2 cellPadding=2 width="100%" border=1>
+        <TBODY>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0>&nbsp;</TD>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><B>CANopen</B></TD>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><B>MicroCANopen</B></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><STRONG>CAN baud 
+            rates</STRONG></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>10k, 20k, 50k, 125k, 
+            250k, 500k, 800k, 1M</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>10k, 20k, 50k, 125k, 
+            250k, 500k, 800k, 1M</FONT></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><STRONG>Max. nodes per 
+            segment</STRONG></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>127</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>127</FONT></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><STRONG>Network 
+            Management</STRONG></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Typically using a NMT 
+            Master</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>NMT Master optional 
+            (autostart supported)</FONT></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0>
+            <P class=MsoNormal><STRONG>Node guarding / heartbeat</STRONG></P></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Node guarding done by 
+            master or heartbeat monitoring by any node</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>All nodes produce 
+            heartbeat, can be monitored by communication partners</FONT></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><STRONG>Configuration of 
+            nodes</STRONG></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Nodes can typically be 
+            configured via the network</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Nodes are 
+            pre-configured, configuration is hard-coded and cannot change during 
+            operation</FONT></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><STRONG>Object 
+            Dictionary: <BR>Entries</STRONG></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Many data types, 
+            including ASCII string</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Only data types up to 
+            32-bit</FONT></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><STRONG>Object 
+            Dictionary: <BR>Access</STRONG></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Entries can be 
+            read-only, write-only or read/write</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Most entries are 
+            read-only, only a limited number can be read-write</FONT></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><STRONG>Object 
+            Dictionary: <BR>Process data variables</STRONG></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Available, often with 
+            multiple access (8/16 bit)</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Only available in 
+            CANopen conformant mode</FONT></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><STRONG>Object 
+            Dictionary:<BR>Process data configuration</STRONG></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Available</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Only available in 
+            CANopen conformant mode</FONT></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><STRONG>PDO Mapping 
+            (mapping of multiple variables into one CAN message)</STRONG></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Supports dynamic 
+            re-mapping of variables</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>One fixed, 
+            pre-configured, hard-coded mapping</FONT></TD></TR>
+        <TR>
+          <TD vAlign=top width="33%" bgColor=#c0c0c0><STRONG>Triggering 
+            methods of CAN messages with process data</STRONG></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Any combination of 
+            time-based, polled, change-of-state, synchronized or manufacturer 
+            specific. Inhibit time supported.</FONT></TD>
+          <TD vAlign=top width="33%"><FONT face=Arial>Time-based and/or 
+            change-of-state only. Inhibit time 
+      supported.</FONT></TD></TR></TBODY></TABLE>
+      <H3><FONT face=Arial>Trace window showing the boot-up-sequence of a 
+      MicroCANopen Node</FONT></H3>
+      <P><IMG height=264 alt="Trace recording" 
+      src="MicroCANopen - Minimal CANopen based on CANbus, CAN bus, Controller Area Network_files/scrn_trace.gif" 
+      width=576></P>
+      <P><FONT face=Arial>Node ID is 3, the heartbeat time is 2.5 seconds and 
+      the node has two transmit PDOs using their default (pre-defined) CAN 
+      identifiers.</FONT> </P>
+      <H3><FONT face=Arial>Request MicroCANopen Source Code</FONT></H3>
+      <P><FONT face=Arial><A 
+      href="http://www.esacademy.com/myacademy/requestsoftware.php?swid=7">Request 
+      the <B>free</B> MicroCANopen source code</A> with examples for the Philips 
+      P8xC591, Philips LPC2119 and the Atmel T89C51CC01. Once you registered, 
+      the distribution file will be emailed to you.</FONT> </P>
+      <P><FONT face=Arial>Also you can request the <A 
+      href="http://www.esacademy.com/myacademy/requestsoftware.php?swid=4">free 
+      Atmel MicroCANopen Demo Implementations</A>. </P>
+      <H3><FONT face=Arial>Online Class</FONT></H3>
+      <P><FONT face=Arial>We have an online class explaining MicroCANopen V1.xx 
+      and walking through an implementation example. <A 
+      href="http://www.esacademy.com/myacademy/classdescription.php?classid=40">View 
+      it now</A>.</FONT></P></FONT></TD>
+    <TD vAlign=top align=right width=155 bgColor=#ffb700>
+      <TABLE cellPadding=4 width=150 bgColor=#ffff80 border=1>
+        <TBODY>
+        <TR>
+          <TD align=middle width="100%" bgColor=#c0c0c0><STRONG><FONT 
+            face=Arial><SMALL>Upcoming Classes</SMALL></FONT></STRONG>
+            <SCRIPT language=javascript 
+            src="MicroCANopen - Minimal CANopen based on CANbus, CAN bus, Controller Area Network_files/upcoming.htm"></SCRIPT>
+             </TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD vAlign=bottom align=middle width=125></TD>
+    <TD>
+      <H3><FONT face=Arial>Commercial Usage</FONT></H3>
+      <P><FONT face=Arial>Although we allow the free download of MicroCANopen 
+      the license included is purely an educational license and not for usage in 
+      commercial projects. </FONT></P>
+      <TABLE class=buybox cellSpacing=0 cellPadding=0 border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <CENTER>To use MicroCANopen commercially, buy the $495 license from 
+            the <BR><A href="http://www.canopenstore.com/pip/microcanopen/">The 
+            CANopen Store</A>! 
+            <P>For applications where full CANopen conformance and minimum 
+            configuration through the network is required we recommend 
+            MicroCANopen Plus.</P></CENTER></TD></TR></TBODY></TABLE>
+      <H3><FONT face=Arial>Support and Feedback</FONT></H3>
+      <P><FONT face=Arial>Your feedback is gratefully appreciated. We will 
+      consider all suggestions for improving MicroCANopen. For bugs and feedback 
+      please send Email to:</FONT></P>
+      <P align=center><IMG height=20 
+      src="MicroCANopen - Minimal CANopen based on CANbus, CAN bus, Controller Area Network_files/ucanopn_contact.gif" 
+      width=222 border=0></P>
+      <P><FONT face=Arial>Note that due to a high amount of spam email received 
+      the link above is not an active link anymore. Please use your email 
+      program and hand-type the address into the TO: field to send us an email. 
+      We apologize for the inconvenience.</FONT></P>
+      <P><FONT face=Arial><B>MicroCANopen related publications:</B></FONT></P>
+      <UL>
+        <LI><FONT face=Arial><A 
+        href="http://www.manufacturing.net/ctl/index.asp?layout=article&amp;articleid=CA252847">Entry-level 
+        CANopen implementation by ESAcademy</A>, <BR>Control Engineering, 
+        October 2002</FONT> 
+        <LI><FONT face=Arial><A 
+        href="http://www.embedded.com/showArticle.jhtml?articleID=13000313">Approximating 
+        CANopen</A>, <BR>Embedded Systems Programming, August 2003</FONT> 
+        <LI><FONT face=Arial><A 
+        href="http://www.circuitcellar.com/library/print/1003/Pfeiffer-159/">Embedded 
+        Networking with MicroMessaging</A>, <BR>Circuit Cellar, October 
+        2003</FONT> 
+        <LI><FONT face=Arial><A 
+        href="http://www.circuitcellar.com/">Implementing CANopen: The Options 
+        (subscription)</A>,<BR>Circuit Cellar, December 2003</FONT> 
+        <LI><FONT face=Arial><A href="http://www.canopenbook.com/">Embedded 
+        Networking with CAN and CANopen</A>,<BR>Book about the CANbus 
+        (Controller Area Network) and CANopen<BR>RTC Books, December 2003</FONT> 
+        </LI></UL>
+      <P><FONT face="Arial, Helvetica, sans-serif" size=-1>© Embedded Systems 
+      Academy, Inc. All Rights Reserved.</FONT></P></TD>
+    <TD vAlign=bottom align=middle width=155 bgColor=#ffb700><FONT 
+      face=Arial><SMALL><SMALL>San Jose, CA<BR>Tel. (877) 812-6393<BR>Fax. (877) 
+      812-6382</SMALL></SMALL></FONT> 
+      <P align=center><FONT face=Arial><A 
+      href="http://www.esacademy.com/index.htm" 
+      target=_top><SMALL><SMALL>www.esacademy.com</SMALL></SMALL></A><BR><A 
+      href="mailto:info@esacademy.com" 
+      target=_top><SMALL><SMALL>info@esacademy.com</SMALL></SMALL></A></FONT></P></TD></TR></TBODY></TABLE></BODY></HTML>

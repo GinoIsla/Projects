@@ -1,0 +1,14 @@
+//Constant definitions for initializing external EEPROM when needed
+
+//Defining 50 points of RAMP gain values
+//object 2000,0
+rom unsigned char RAMP_UP_VALUES[] =   {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5};
+//object 2001,0
+rom unsigned char RAMP_DOWN_VALUES[] = {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5};
+//object 2002,0
+rom unsigned char RAMP_LEFT_VALUES[] = {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5};
+//object 2003,0
+rom unsigned char RAMP_RIGHT_VALUES[] ={5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5};
+rom unsigned char rCO_DEVDESCRIPTION[]= {"CAN Open Hydraulic Valve"};
+//rom unsigned char rCO_DEVSERIALNUMBER[] = {"001A2345"};
+

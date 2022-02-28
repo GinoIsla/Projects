@@ -1,0 +1,36 @@
+MicroCANopen source code distribution
+=====================================
+
+COPYRIGHT: Embedded Systems Academy, Inc. 2002-2005.
+           All rights reserved. www.microcanopen.com
+
+DISCLAIM:  Read and understand our disclaimer before using this code!
+           www.esacademy.com/disclaim.htm
+
+LICENSE:   THIS IS THE EDUCATIONAL VERSION OF MICROCANOPEN
+           See file license_educational.txt or
+           www.microcanopen.com/license_educational.txt
+
+VERSION:   2.10, ESA 12-JAN-05
+
+
+Directories in this release
+===========================
+
+\MCO
+Source c file "mco.c" with the entire MicroCANopen implementation.
+Definition file "mco.h" - contains configurable #define parameters.
+Definition file "mcohw.h" - defines HW driver interface.
+NOTE: The hardware drivers are implemented within the examples.
+
+\Utils
+Contains several files suitable for testing and debugging the examples.
+MicroCANopenExample.eds - Electronic Data Sheet for the nodes
+  implemented in the examples.
+.dbc and .cfg files for Vector CANalyzer
+
+\MCO_ExampleXXXX
+Example implementation for a specific Microcontroller or hardware
+Refer to read_me.txt for more details.
+
+--------------- END --- OF --- FILE ---------------

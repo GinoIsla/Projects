@@ -1,0 +1,9 @@
+Warning[215] C:\EMBEDDED\ROVER\CC1000_ROUTINES.ASM 9 : Processor superceded by command line.  Verify processor symbol.
+Message[302] C:\EMBEDDED\ROVER\CC1000_ROUTINES.ASM 35 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\EMBEDDED\ROVER\CC1000_ROUTINES.ASM 29 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\EMBEDDED\ROVER\CC1000_ROUTINES.ASM 48 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\EMBEDDED\ROVER\CC1000_ROUTINES.ASM 49 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\EMBEDDED\ROVER\CC1000_ROUTINES.ASM 48 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\EMBEDDED\ROVER\CC1000_ROUTINES.ASM 49 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\EMBEDDED\ROVER\CC1000_ROUTINES.ASM 41 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\EMBEDDED\ROVER\CC1000_ROUTINES.ASM 42 : Register in operand not in bank 0.  Ensure that bank bits are correct.

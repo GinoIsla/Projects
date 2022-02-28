@@ -1,0 +1,118 @@
+
+/*********************************************************************
+ * Be sure to include all headers here that relate to the symbols
+ * below.
+ ********************************************************************/
+
+#include	"jProfile_data.h"		//RO and RW device parmeters
+
+//structure of the object dictionary
+//			<index_l>,<index_h>,<sub index>,<type>,<count>,<ptr>
+
+/*********************************************************************
+* All dictionary data is contained in this file. The list is ordered, new 
+* objects have to be placed in the correct position and with the exact 
+* syntax.
+********************************************************************/
+#define		DICTIONARY_DATA_TYPES															\\
+			{0x0001,0x00,WO | ROM_BIT | MAP_BIT,1,{(rom unsigned char *)&__dummy[0]}},		\\
+			{0x0002,0x00,WO | ROM_BIT | MAP_BIT,1,{(rom unsigned char *)&__dummy[0]}},		\\
+			{0x0003,0x00,WO | ROM_BIT | MAP_BIT,2,{(rom unsigned char *)&__dummy[0]}},		\\
+			{0x0004,0x00,WO | ROM_BIT | MAP_BIT,4,{(rom unsigned char *)&__dummy[0]}},		\\
+			{0x0005,0x00,WO | ROM_BIT | MAP_BIT,1,{(rom unsigned char *)&__dummy[0]}},		\\
+			{0x0006,0x00,WO | ROM_BIT | MAP_BIT,2,{(rom unsigned char *)&__dummy[0]}},		\\
+			{0x0007,0x00,WO | ROM_BIT | MAP_BIT,4,{(rom unsigned char *)&__dummy[0]}},		\\
+			{0x1000,0x00,CONST,4,{(rom unsigned char *)&rCO_DevType}},						\\
+			{0x1001,0x00,RO,1,{(rom unsigned char *)&uCO_DevErrReg}},							\\
+			{0x1002,0x00,RO,4,{(rom unsigned char *)&uCO_DevManufacturerStatReg}},			\\
+			{0x1005,0x00,FUNC | RW,4,{(rom unsigned char *)&uCO_COMM_SYNC_COBID}},			\\
+			{0x1008,0x00,CONST,24,{(rom unsigned char *)&rCO_DevName}},						\\
+			{0x1009,0x00,CONST,4,{(rom unsigned char *)&rCO_DevHardwareVer}},				\\
+			{0x100A,0x00,CONST,4,{(rom unsigned char *)&rCO_DevSoftwareVer}},				\\
+			{0x100B,0x00,RW_EE,1,{(unsigned char *)&Id}},									\\
+			{0x100C,0x00,FUNC | RW,2,{(unsigned char *)&uCO_COMM_NMTE_GuardTime}},			\\
+			{0x100D,0x00,FUNC | RW,1,{(unsigned char *)&uCO_COMM_NMTE_LifeTimeFactor}},		\\
+			{0x1017,0x00,RW_EE,2,{(unsigned char *)&uCO_COMM_NMTE_HeartBeat}},				\\
+			{0x1018,0x00,RO,1,{(rom unsigned char *)&rCO_DevIdentityIndx}},					\\
+			{0x1018,0x01,RW_EE,4,{(unsigned char *)&rCO_DevVendorID}},						\\
+			{0x1018,0x02,RW_EE,4,{(unsigned char *)&rCO_DevProductCode}},					\\
+			{0x1018,0x03,RW_EE,4,{(unsigned char *)&rCO_DevRevNo}},							\\
+			{0x1018,0x04,RW_EE,4,{(unsigned char *)&rCO_DevSerialNo}},						\\
+			{0x1200,0x00,CONST,1,{(rom unsigned char *)&_uSDO1COMMIndx}},					\\
+			{0x1200,0x01,FUNC | RO,4,{(rom unsigned char *)&uCO_COMM_SDO1_CLIENT_COBID}},	\\
+			{0x1200,0x02,FUNC | RO,4,{(rom unsigned char *)&uCO_COMM_SDO1_SERVER_COBID}},	\\
+			{0x1400,0x00,CONST,1,{(rom unsigned char *)&rMaxIndex1}},						\\
+			{0x1400,0x01,RO,4,{(rom unsigned char *)&uCO_COMM_RPDO1_COBID}},				\\
+			{0x1401,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1402,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1403,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1600,0x00,CONST,1,{(rom unsigned char *)&rMaxIndex2}},						\\
+			{0x1600,0x01,CONST,4,{(rom unsigned char *)&uRPDO1Map}},						\\
+			{0x1600,0x02,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1600,0x03,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1600,0x04,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1600,0x05,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1600,0x06,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1600,0x07,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1600,0x08,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1601,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1602,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1603,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1800,0x00,CONST,1,{(rom unsigned char *)&uDemoTPDO1Len}},					\\
+			{0x1800,0x01,RO | FUNC,4,{(rom unsigned char *)&uCO_COMM_TPDO1_COBID}},			\\
+			{0x1800,0x02,RO | FUNC,1,{(rom unsigned char *)&uCO_COMM_TPDO1_Type}},			\\
+			{0x1801,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1802,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1803,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1A00,0x00,CONST,1,{(rom unsigned char *)&rMaxIndex2}},						\\
+			{0x1A00,0x01,CONST,4,{(rom unsigned char *)&uTPDO1Map}},						\\
+			{0x1A00,0x02,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1A00,0x03,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1A00,0x04,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1A00,0x05,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1A00,0x06,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1A00,0x07,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1A00,0x08,CONST,4,{(rom unsigned char *)&uPDO1Dummy}},						\\
+			{0x1A01,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1A02,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x1A03,0x00,RO,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x2000,0x00,RW_EE,1,{(rom unsigned char *)&z_number_of_nodes}},				\\
+			{0x2000,0x01,RW_EE,1,{(rom unsigned char *)&z_sw_node}},						\\
+			{0x2000,0x02,RW_EE,1,{(rom unsigned char *)&z_node_1}},							\\
+			{0x2000,0x03,RW_EE,1,{(rom unsigned char *)&z_node_2}},							\\
+			{0x2000,0x04,RW_EE,1,{(rom unsigned char *)&z_node_3}},							\\
+			{0x2000,0x05,RW_EE,1,{(rom unsigned char *)&z_node_4}},							\\
+			{0x3000,0x00,0,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x4000,0x00,0,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x4000,0x00,0,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x5000,0x00,0,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x5000,0x00,0,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x6000,0x00,RO,1,{(rom unsigned char *)&rMaxIndex1}},							\\
+ 			{0x6000,0x01,RO,1,{(rom unsigned char *)&jIO_switch1_value}},					\\
+			{0x6002,0x00,CONST,1,{(rom unsigned char *)&rMaxIndex1}}, 						\\
+			{0x6002,0x01,RW,1,{(unsigned char *)&uIOin1Polarity}}, 							\\
+			{0x6003,0x00,CONST,1,{(rom unsigned char *)&rMaxIndex1}}, 						\\
+			{0x6003,0x01,RO,1,{(unsigned char *)&uIOin1Filter}}, 							\\
+			{0x6005,0x00,CONST,1,{(rom unsigned char *)&rMaxIndex1}}, 						\\
+			{0x6005,0x01,RO,1,{(unsigned char *)&uIOin1IntEnable}},							\\
+			{0x6006,0x00,CONST,1,{(rom unsigned char *)&rMaxIndex1}}, 						\\
+			{0x6006,0x01,RO,1,{(unsigned char *)&uIOin1IntChange}},							\\
+			{0x6007,0x00,CONST,1,{(rom unsigned char *)&rMaxIndex1}}, 						\\
+			{0x6007,0x01,RO,1,{(unsigned char *)&uIOin1IntRise}},							\\
+			{0x6008,0x00,CONST,1,{(rom unsigned char *)&rMaxIndex1}}, 						\\
+			{0x6008,0x01,RO,1,{(unsigned char *)&uIOin1IntFall}},							\\
+			{0x6401,0x00,RO,1,{(unsigned char *)&rMaxIndex4}},								\\
+			{0x6401,0x01,RO,2,{(unsigned char *)&jIO_Potentiometer_1}},						\\
+			{0x6401,0x02,RO,2,{(unsigned char *)&jIO_Potentiometer_2}},						\\
+			{0x6401,0x03,RO,2,{(unsigned char *)&jIO_Potentiometer_3}},						\\
+			{0x6401,0x04,RO,2,{(unsigned char *)&jIO_Potentiometer_4}},						\\
+			{0x6411,0x00,RO,1,{(unsigned char *)&rMaxIndex4}},								\\
+			{0x6411,0x01,RO,2,{(unsigned char *)&jIO_Potentiometer_1}},						\\
+			{0x6411,0x02,RO,2,{(unsigned char *)&jIO_Potentiometer_2}},						\\
+			{0x6411,0x03,RO,2,{(unsigned char *)&jIO_Potentiometer_3}},						\\
+			{0x6411,0x04,RO,2,{(unsigned char *)&jIO_Potentiometer_4}},						\\
+			{0x7000,0x00,0,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x8000,0x00,0,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x8000,0x00,0,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x9000,0x00,0,1,{(rom unsigned char *)&__dummy}},								\\
+			{0x0000,0x00,0,1,{(rom unsigned char *)&__dummy}}

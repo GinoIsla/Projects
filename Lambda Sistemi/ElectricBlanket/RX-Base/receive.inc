@@ -1,0 +1,368 @@
+;===========================================================================
+;
+; FUNCTION     	: RECEIVE()	      			
+;
+; DESCRIPTION  	: RECEPTION ROUTINE FOR PWM TRANSMISSIONS
+;
+; NOTE		: THIS ROUTINE MUST RUN AT 4 MHZ
+;
+;===========================================================================
+;INPUT:
+;	NBITS		-	CONSTANT:	NUMBER OF DATABITS TO CATCH (48)
+;	RF		-	PIN:		RF RX
+
+
+;OUTPUT:
+;	RECEIVED	-	FLAG:		VALID RECEPTION IF HIGH
+;	BUFFER1÷6	-	VARIABLES:	RF TRASMISSION CAUGHT
+
+;NOTE: RECEIVE FROM BUFFER1 (LSB FIRST) TO BUFFER 6
+
+
+;BUFFER1	BIT 7÷5		0	RESERVED, FORCED TO ZERO
+;BUFFER1	BIT 4		0÷1	LEFT/RIGHT SIDE
+;BUFFER1	BIT 3÷0		0÷F	SERIAL NUMBER HIGH
+
+;BUFFER2	BIT 7÷0		00÷FF	SERIAL NUMBER
+
+;BUFFER3	BIT 7÷0		00÷FF	SERIAL NUMBER
+
+;BUFFER4	BIT 7÷0		00÷FF	SERIAL NUMBER LOW
+
+;BUFFER5	BIT 7÷3		00÷0A	LEVEL CODE
+;BUFFER5	BIT 2		0÷1	BEEPER
+;BUFFER5	BIT 1		0-1	LEARN MODE ON/OFF
+;BUFFER5	BIT 0		0	PADDING
+
+;BUFFER6	BIT 7÷0		00÷FF	CHECKSUM
+
+
+;	;cONSTANT
+;NBITS	EQU	.48	(IN HEADER FILE)
+
+
+	;RE-DEFINE
+;#DEFINE	_GIE	INTCON,GIE
+
+
+	;PINOUT
+;#DEFINE	RF	RF_RX
+
+
+	;CBLOCK
+;CNT0
+;CNT1
+;CNT2
+
+;TMP_CNT
+
+;BUFFER1
+;BUFFER2
+;BUFFER3
+;BUFFER4
+;BUFFER5
+;BUFFER6
+
+;FLAGS_RX
+;	ENDC
+
+
+	;FLAGS_RX
+;#DEFINE	BITIN	FLAGS_RX,0
+;#DEFINE	LOWBATT	FLAGS_RX,1
+
+
+;******** WAIT FOR HEADER AND CALIBRATE *******************
+RECEIVE
+	BANK1
+;	CANC	_GIE			;DISABLE  INTERRUPT
+	BANK0
+
+	BTFSS   RF			; INPUT LOW?
+	GOTO	RMT_0			; YES, RECEIVE ERROR
+
+	MOVLW   010H			; 10 MS TIMER
+	MOVWF   CNT1
+
+
+RCV0	MOVLW	.200
+	MOVWF	CNT0
+
+
+RCV1	BTFSS	RF			; [2] INPUT HIGH?
+	GOTO	RCV2			; [0] NO, JUMP OUT OF LOOP
+
+	DECFSZ	CNT0,F			; [1] YES, CONTINUE WITH TIMING LOOP
+	GOTO	RCV1			; [2] 5 US X CNT0
+
+	CLRWDT
+	DECFSZ	CNT1,F			; [0] DO 1 MS LOOP CNT1 TIMES
+	GOTO	RCV0			; [0]
+
+
+RCV2	CLRF	CNT0			; [1] CLEAR CALIB COUNTER LOW BYTE
+	CLRF	CNT1			; [1] CLEAR CALIB COUNTER HIGH
+					; BYTE
+;*************************************************************************
+;  2.5 IS AVERAGE FOR DETECTING FALLING EDGE IN RCV1
+;  2   INSTRUCTIONS FOR JUMP OUT RCV1 TO RCV2
+;  2   INSTRUCTIONS FOR RCV2 - CLEAR CALIBRATION COUNTER
+;  TOTAL 6.5 INSTRUCTIONS < 1 CALIBRATION LOOP SO DISCARD
+;*************************************************************************
+
+RCV3	BTFSC	RF			; [2][2] INPUT HIGH?
+	GOTO    RCV6			; [0][0] YES--END CALIBRATION
+
+	INCF	CNT0,F			; [1] INCREMENT 16BIT COUNTER	
+	SKPNZ	      			; [2]
+	INCF	CNT1,F			; [0]
+
+	CLRWDT				; [1] RESET WATCH DOG TIMER
+	NOP				; [1]
+	BTFSS	CNT1,3			; [1]
+	GOTO	RCV3  			; [2]
+
+	GOTO	RMT_0 			; [0]
+		      			; TOTAL = 10
+
+RCV6	CLRC				; [1] DIVIDE CNT1:CNT0 BY 8 (600/8=75)
+	RRF     CNT1,F			; [1]
+	RRF	CNT0,F			; [1]
+	RRF	CNT1,F			; [1]
+	RRF	CNT0,F			; [1]
+	RRF	CNT1,F			; [1]
+	RRF	CNT0,F                  ; [1] 
+					
+	MOVLW	MIN/050H		; [1]DIVIDO LA COSTANTE PER 80 DEC - 50 HEX
+	SUBWF	CNT0,W			; [1]
+	BTFSS	STATUS,C		; [2] NEGATIVE?
+	GOTO	RMT_0                   ; [0] YES--HEADER SHORTER THAN MIN. 
+					; TOTAL = 11
+; ************* VALID HEADER RECEIVED *********************
+
+RCV7	;CANC	_T0IE			;DISABLE  INTERRUPT
+
+	MOVLW   NBITS                   ; [1] VALID START MARKER WAS RECEIVED
+	MOVWF   CNT1			; [1]
+	MOVFW	CNT0			; [1]
+	MOVWF   CNT2                    ; [1] CNT2 = CNT0
+	MOVLW   6			; [1] SEE NOTE BELOW
+	SUBWF   CNT2,F			; [1]
+	GOTO    DL1                   	; [2] COMPENSATE FOR FIRST BIT TOTAL = 8	
+;**********************************************************************************
+;  2.5 IS AVERAGE PLAY BETWEEN RISING EDGE AND JUMP OUT OF CALIBRATION LOOP.
+;  2   FOR JUMP OUT OF RCV3 TO RCV6
+; 11   INSTRUCTIONS FOR RVC6 - CAIBRATION COUNTER DIVIDE
+;  8   INSTRUCTIONS FOR RCV7 - COMPENSATE FOR POST CALIBRATION CALCUATIONS
+; TOTAL 22.5 INSTRUCTIONS BETWEEN RISING EDGE AND ENTERING DL1
+;  THEREFORE SUBTRACT 22.5/4 = 5.625 TO COMPENSATE FOR POST CALCULATION
+; ON 1ST BIT
+;  
+;**********************************************************************************
+
+RCV8	MOVLW	4			; [1] WAIT A MAXIMUM OF 4 TE
+	MOVWF	TMP_CNT			; [1] SET TEMP LOOP COUNTER
+
+
+RCV10A	MOVFW	CNT0                  	; [1] AND CSR PROCESSING
+	MOVWF   CNT2			; [1] REFER TO EXPLANATION ABOVE
+
+
+RCV10B	BTFSC   RF			; [2] WAIT FOR RISING EDGE
+	GOTO    RCV11                   ; [0] EDGE FOUND--PROCESS
+
+	CLRWDT                          ; [1] CLEAR WATCHDOG TIMER
+	BTFSC   RF			; [2] WAIT FOR NEXT RISING EDGE
+	GOTO    RCV11                   ; [0] EDGE FOUND--PROCESS
+
+	DECFSZ  CNT2,F                  ; [1] DECREMENT TIMEOUT COUNTER	
+	GOTO    RCV10B                  ; [2] LOOP BACK
+					; TOTAL = 8, RFIN CHECKED
+					; EVERY 4US ON AVERAGE
+	DECFSZ	TMP_CNT,F		; [1] ALL TE PERIODS
+	GOTO	RCV10A			; [2] ... NO, THEN WAIT FOR NEXT ONE	
+
+	GOTO    RMT01                   ; [0] ... YES,
+					; [0] TIMEOUT--NO EDGE FOUND
+
+RCV11	MOVLW	3			; [1]  SEE NOTE BELOW
+	SUBWF	CNT0,W			; [1]
+	MOVWF	CNT2			; [1]
+
+;*************************************************************************
+; 2   SETUP OF TEMP LOOP COUNTER  ( ONLY ONCE )
+; 2   SETUP TE LOOP COUNTER       ( MAX 4 )
+; 3   DECREMENT TEMP LOOP COUNTER ( MAX 4 )
+; 4   IS THE AVERAGE PLAY BETWEEN EDGE AND EDJE BEING DETECTED IN RCV9
+; 2   JUMP OUT OF RCV10B TO RCV11
+; 3   FOR RCV11
+; TOTAL 10 INSTRUCTIONS BETWEEN EDGE AND ENTERING DL1
+; THEREFORE SUBTRACT 10/4 = 2.5 => 3 DL1 LOOPS TO COMPENSATE FOR 
+;*************************************************************************
+
+DL1	CLRWDT                          ; [1] RESET WATCHDOG TIMER
+	DECFSZ  CNT2,F                  ; [1] [2, IF SKIP]
+	GOTO    DL1                     ; [2] CNT0 X 4 US
+
+
+SAMPLE1	BTFSS   RF			; [2] INPUT HIGH?  FIRST SAMPLE	
+	GOTO    RMT01                   ; [0] NO--ERROR
+
+	MOVF    CNT0,W                  ; [1] CALIBRATION COUNTER
+	MOVWF   CNT2                    ; [1] (NOMINALLY 75 FOR 300 US PULSE)
+	DECF    CNT2,F			; [1] SUBTRACT 2 FROM FINALCALIB COUNTER TO
+						;	COMPENATE FOR THIS
+	NOP				; [1]
+	NOP				; [1]
+	NOP				; [1]
+					; TOTAL = 8 => 1 LOOP COUNTER
+
+DL2	CLRWDT                          ; [1] RESET WATCHDOG TIMER
+	NOP				; [1]
+	NOP				; [1]
+	NOP				; [1]
+	NOP				; [1]
+	DECFSZ  CNT2,F			; [1]
+	GOTO    DL2                     ; [2] CNT0 X 8 US [CNT0 X TE]
+
+
+SAMPLE2	BCF     BITIN             	; [1]   CLEAR BIT POSITION
+	BTFSS   RF			; [1.5] LEAVE 0 IF LINE HIGH
+	BSF     BITIN			; [0.5] MAKE 1 IF LINE LOW
+					; SUB TOTAL = 3 CYCLES
+	;DECFSZ	CNT1, W			; SE RICEVUTO ULTIMO (65ESIMO) BIT
+	;GOTO	SAMPLE2_A		
+	;
+	;CLRF	LOWBATT			; ESSO E' IL BATTERY BIT
+	;BTFSC	BITIN
+	;BSF	LOWBATT,0
+	;
+	;GOTO	SAMPLE2_B
+
+
+SAMPLE2_A
+	CALL    ROT_SHIFT               ; [11]+[2] CSR SHIFT + CALL
+	BCF	BUFFER6,7		; [1]
+	BTFSC   BITIN			; [1.5]
+	BSF     BUFFER6,7		; [0.5]
+					; SUB TOTAL = 16 CYCLES
+
+SAMPLE2_B
+	MOVFW	CNT0			; [1] CALIBRATION COUNTER
+	MOVWF   CNT2                    ; [1] (NOMINALLY 75 FOR	300 US PULSE) 						; 
+	MOVLW	3			; [1] SEE CALCULATION BELOW
+	SUBWF	CNT2,F			; [1]
+	NOP				; [1]
+					; SUB TOTAL = 5 CYCLE
+					; TOTAL = 24 => 24/8 = 3 LOOP COUNTERS
+
+;*************************************************************************
+; TOTAL = 24 INSTRUCTIONS
+; SUBTRACT 24/8 = 3 TO COMPESATE FOR UPDATEING CSR AND OTHER PROCESSING 
+; AFTER DATA SAMPLE IS TAKEN.
+;*************************************************************************
+
+DL3	NOP				; [1]
+	NOP				; [1]
+	NOP				; [1]
+	NOP				; [1]
+	CLRWDT                          ; [1] RESET WATCHDOG TIMER
+	DECFSZ  CNT2,F                  ; [1]
+	GOTO    DL3                     ; [2] CNT0 X 8 US [CNT0 X TE]
+
+
+SAMPLE3	BTFSC   RF			; [2] INPUT LOW? THIRD SAMPLE
+	GOTO    RMT0                    ; [0] NO--RECEIVE ERROR
+
+	;BTFSC	TMR0,7			; TEST FOR 32MS TIMEOUT	ON TMR0 MSB
+	;BCF	TMR0,7			; CLEAR MSB OF TMR0
+
+	DECFSZ  CNT1,F                  ; [1] LAST BIT?
+	GOTO	RCV8                    ; [2] ... NO, GET NEXT BIT
+
+	GOTO	RMT1		     	; TOTAL = 14 CYCLES
+
+
+RMT_0
+RMT0
+RMT01	CANC	RECEIVED		;INVALID TRANSMISSION9
+	B	REC_X			;RETURN WITH 1 IN WREG
+
+
+RMT1	SET	RECEIVED		;VALID SERIAL NUMBER => VALID TX
+	;CALL	BUFFER_COPY
+	;B	REC_X			;RETURN WITH 0 IN WREG
+
+
+REC_X	BANK1
+;	SET	_GIE			;RE-ENABLE INTERRUPT
+	BANK0
+
+	RETURN
+;====================================
+
+
+;=======================================
+ROT_SHIFT
+	;RRF	BUFFER8,F
+	;RRF	BUFFER7,F
+	RRF	BUFFER6,F
+	RRF     BUFFER5,F
+	RRF     BUFFER4,F
+	RRF     BUFFER3,F
+	RRF     BUFFER2,F
+	RRF     BUFFER1,F
+	RETLW	0
+;=========================================
+
+
+	IFDEF	NO_COMMENT
+;=======================================
+ROT_SHIFT
+	;RRF	BUFFER8,F
+	;RRF	BUFFER7,F
+	RRF	LOCAL_BUFFER6,F
+	RRF     LOCAL_BUFFER5,F
+	RRF     LOCAL_BUFFER4,F
+	RRF     LOCAL_BUFFER3,F
+	RRF     LOCAL_BUFFER2,F
+	RRF     LOCAL_BUFFER1,F
+	RETLW	0
+;=========================================
+
+;====================================
+BUFFER_COPY
+	FW	LOCAL_BUFFER1
+	XORLW	0FFH
+	SKPNZ
+	NOP
+
+	FW	LOCAL_BUFFER1
+	WF	BUFFER1
+
+	FW	LOCAL_BUFFER2
+	WF	BUFFER2
+
+	FW	LOCAL_BUFFER3
+	WF	BUFFER3
+
+	FW	LOCAL_BUFFER4
+	WF	BUFFER4
+
+	FW	LOCAL_BUFFER5
+	WF	BUFFER5
+
+	FW	LOCAL_BUFFER6
+	WF	BUFFER6
+
+	RETURN
+;=======================================
+
+
+LOCAL_BUFFER1
+LOCAL_BUFFER2
+LOCAL_BUFFER3
+LOCAL_BUFFER4
+LOCAL_BUFFER5
+LOCAL_BUFFER6
+	ENDIF

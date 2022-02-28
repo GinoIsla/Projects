@@ -1,0 +1,19 @@
+MP2COD 3.80, COFF to COD File Converter
+Copyright (c) 2004 Microchip Technology Inc.
+Listing File Generated: Thu Nov 11 17:31:55 2004
+
+
+Address  Value    Disassembly              Source                                                                           File
+-------  -------  -----------------------  -------------------------------------------------------------------------------  -----
+                                           ;************************************************************                    C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                                           ;	TITLE:	ECHO BUS multinodal control ----- Analogue Sensor Version (2 ports IN)  C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                                           ;	Programmer: GINO ISLA for of BIT Srl.                                          C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                                           ;	REVISION HISTORY:	14-October-2004                                              C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                                           ;	LAST UPDATE:		                                                                 C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                                           ;	FREQUENCY: 8MHz                                                                C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                                           ;************************************************************                    C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                                           			list	p=16f688                                                                 C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                                                                                                                            C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                                           #include	<p16f688.inc>                                                           C:\Embedded\GMB\GMB Analogue Sensor\GMB_sensor.asm
+                                                   LIST                                                                     C:\Embedded\GMB\GMB Analogue Sensor\p16f688.inc
+                                           ; P16F688.INC  Standard Header File, Version 1.00    Microchip Technology, Inc.  C:\Embedded\GMB\GMB Analogue Sensor\p16f688.inc

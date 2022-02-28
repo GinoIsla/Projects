@@ -1,0 +1,18 @@
+
+
+    
+
+  
+
+
+function setCookie(name, value, expires, domain, secure)
+{
+    document.cookie= name + "=" + escape(value) +
+        "; expires=Wed, 01-Jan-25 00:00:01 GMT" +
+        "; path=/" +
+        ((domain) ? "; domain=" + domain : "") +
+        ((secure) ? "; secure" : "");
+}
+setCookie ("trkval", "238224923", "", "");
+
+

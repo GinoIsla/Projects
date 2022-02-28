@@ -1,0 +1,1 @@
+#define dummy	0

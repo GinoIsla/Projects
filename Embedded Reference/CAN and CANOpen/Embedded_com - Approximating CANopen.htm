@@ -1,0 +1,2327 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0060)http://www.embedded.com/showArticle.jhtml?articleID=13000313 -->
+<HTML><HEAD><TITLE>Embedded.com - Approximating CANopen</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8"><!--SiteCatalyst code version: G.7. Copyright 1997-2004 Omniture, Inc.
+More info available at http://www.omniture.com
+-->
+<SCRIPT language=JavaScript>
+<!--
+var s_pageName="";
+var s_server="";
+var s_channel="";
+var s_pageType="";
+var s_prop1="";
+var s_prop2="";
+var s_prop3="Embedded Systems Design | 13000313 | Approximating CANopen";
+var s_prop4="Approximating CANopen";
+var s_prop5="Columns | Software & Web Development | Electronics | Network Processing | Technical Insights | Communications Design | 1) Design Library";
+var s_prop6="";
+var s_prop7="Olaf Pfeiffer";
+var s_prop8="200.106.118.164 | Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+var s_prop9="";
+var s_prop10="";
+var s_prop11="";
+var s_prop12="";
+var s_prop13="http://www.embedded.com/showArticle.jhtml?articleID=13000313";
+var s_prop14="";
+var s_prop15="";
+var s_prop16="";
+
+/* E-commerce Variables */
+var s_campaign="";
+var s_state="";
+var s_zip="";
+var s_events="event5";
+var s_products="";
+var s_purchaseID="";
+var s_eVar1="";
+var s_eVar2="";
+var s_eVar3="";
+var s_eVar4="";
+var s_eVar5="";
+//-->
+</SCRIPT>
+<!-- <script src="http://targetlink.embedded.com/targetlink.js" language="javascript"></script> -->
+<META 
+content="The CAN standard, popular in automotive applications, defines a simple broadcast serial network that works well for real-time short range communications. But there are few rules at the upper layers. Here's an easy way to keep proprietary application-layer CAN  protocols compatible with an open standard." 
+name=description>
+<META 
+content="embedded systems,conference,development,real-time,programming,emulators,multitasking,debugging,software,optimization,engineer,RTOS,chips,tools,microcontrollers,DSP,operating systems,kernel,microprocessors,object-oriented,single board,ada,C++,visual basic, forth,RISC,compilers,specialty libraries, configuration management,ICE,ROM emulators,logic analyzers,device programmers,oscilloscopes,8-bit,eprom,flash,OEM,boards,CMP Media LLC,vendor,magazine,custom publishing,esp,esc,directories,mwmedia,Windows CE, Win CE, CE, Windows, Microsoft, developer,  software, operating system, hand held, wallet, PC, OS, mobile, wireless, portable, driver, ETK, OAL, OAK, Pentium, 486, MIPS, Smartcards, Cellular Phone, Small-Form-Factor, H/PC, Palm, CE, RFA, PDA, PIC" 
+name=keywords>
+<META content="2 days" name=revisit-after>
+<META content=index,follow name=ROBOTS>
+<META content="Approximating CANopen" name=headline>
+<META content="Olaf Pfeiffer" name=author>
+<META content=20030806 name=created>
+<META content=embeddedsystemsprogramming name=source>
+<META content=http://www.embedded.com name=lineage>
+<STYLE type=text/css>.poll {
+	FONT-SIZE: 10px; FONT-FAMILY: verdana,arial
+}
+.pollArchives {
+	FONT-SIZE: 12px; FONT-FAMILY: verdana,arial
+}
+A.nnLink:link {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+A.nnLink:visited {
+	COLOR: #666666; TEXT-DECORATION: none
+}
+A.nnLink:hover {
+	COLOR: #0000ff; TEXT-DECORATION: underline
+}
+A.nnLink:active {
+	COLOR: #0000ff; TEXT-DECORATION: none
+}
+.nnLink {
+	FONT-WEIGHT: normal; FONT-SIZE: 8pt; FONT-FAMILY: tahoma
+}
+.nnType {
+	FONT-WEIGHT: bold; FONT-SIZE: 8pt; COLOR: #000000; FONT-FAMILY: tahoma
+}
+.tdHeader {
+	FONT-WEIGHT: bold; FONT-SIZE: 7pt; VERTICAL-ALIGN: top; COLOR: #ffffff; FONT-FAMILY: tahoma; BACKGROUND-COLOR: #333b61; TEXT-ALIGN: center
+}
+.eetnsearchform {
+	FONT-SIZE: 11px; WIDTH: 110px; COLOR: #000063; FONT-FAMILY: verdana,arial; BACKGROUND-COLOR: #fefdd8
+}
+.eetnsearchsites {
+	FONT-WEIGHT: bold; FONT-SIZE: 10px; WIDTH: 125px; COLOR: #000063; FONT-FAMILY: verdana,arial; BACKGROUND-COLOR: #fefdd8
+}
+.feedbackform {
+	FONT: 10px verdana,arial; WIDTH: 250px; COLOR: #000063; BACKGROUND-COLOR: #efefff
+}
+.feedbackform2 {
+	FONT: 10px verdana,arial; WIDTH: 150px; COLOR: #000063; BACKGROUND-COLOR: #efefff
+}
+.feedbacksubmit {
+	FONT: bold 10px verdana,arial; WIDTH: 100px; COLOR: #000063; BACKGROUND-COLOR: #efefff
+}
+.feedbackcategories {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: #000000; FONT-STYLE: normal; FONT-FAMILY: Arial,verdana; TEXT-DECORATION: none; font-stretch: normal
+}
+.feedbackcomments {
+	FONT: 12px verdana,arial; WIDTH: 350px; COLOR: #000063; BACKGROUND-COLOR: #efefff
+}
+</STYLE>
+<!-- menu.js -->
+<SCRIPT language=javascript1.2 type=text/javascript>
+
+
+
+
+
+
+
+
+
+
+    
+  
+
+
+    
+  
+
+
+    
+  
+
+
+    
+  
+
+
+
+    
+
+        /*
+Dr. Clue's drop-down menu system for 4th generation browsers
+        copyright @ 1998,1999 drclue , www.drclue.net
+license is granted for use of this software by individuals
+in support of personal web-sites. All other rights reserved.
+*/
+//*** Global Variables
+var LIBLOADEDJSmenu=false;
+var     systemLibCnt    =0;
+var     systemIsNS      =(document.layers!=null);       // Is it a Netscape browser
+var     systemMouseDn   =false; // mousemove dragging
+if(document.layers)document.all=document.layers;
+var     systemMaxZ      =0; 
+var     systemNullChk   =((systemIsNS)?((navigator.appVersion.substring(0,4)=="4.05")?"null":"undefined"):"null")
+var menuTimeOut         =null;  // mouseout Cancel menu timer
+var     menuCurrentItem =null;  // currently highlighted object.
+var     menuCurrentPath ="";    // The open menu list.
+var     menuScreenWidth =0;
+//*** General Menu  configuration variables
+var     menuSubAuto     =false;
+var     menuSubSymbol   ="&raquo;";     // html to indicate sub menu
+var     menuRoll        =true;  // Show menu items as built
+var     menuCharHeight  =11;    // Avg Char Height.
+var     menuCharWidth   =5;     // Avg Char Width.
+var     menuYpopoff     =0;
+var     menuXpopoff     =178;
+var     menuBcolor      ="#ABABAB";     // background
+var     menuTcolor      ="#FFFFFF";     // Text
+var     menuHBcolor     ="#FFFFFF";
+var     menuHTcolor     ="#ABABAB";
+var     menuFont        ="verdana,arial";// menu label font
+var     menuFontSize    =1;     // menu font size
+var     menuBold        =false; // Use bold
+var     menuAtimeout    =4500;
+var     Firstpass       =true;
+var     lastEVENT       =null;
+
+var szDuds="Mozilla/4.0 (compatible; MSIE 4.5; Mac_PowerPC)";
+
+esconfoff = new Image;
+esconfoff.src = "http://i.cmpnet.com/embedded/redesign/sv_conf_off.gif";
+esconfon = new Image;
+esconfon.src = "http://i.cmpnet.com/embedded/redesign/sv_conf_on.gif";
+
+bostonoff = new Image;
+bostonoff.src = "http://i.cmpnet.com/embedded/redesign/es_confboston_off.gif";
+bostonon = new Image;
+bostonon.src = "http://i.cmpnet.com/embedded/redesign/es_confboston_on.gif";
+
+connectoff = new Image;
+connectoff.src = "http://i.cmpnet.com/embedded/redesign/connect_off.gif";
+connecton = new Image;
+connecton.src = "http://i.cmpnet.com/embedded/redesign/connect_on.gif";
+
+magoff = new Image;
+magoff.src = "http://i.cmpnet.com/embedded/redesign/esd_mag.gif";
+magon = new Image;
+magon.src = "http://i.cmpnet.com/embedded/redesign/esd_mag_on.gif";
+
+eurooff = new Image;
+eurooff.src = "http://i.cmpnet.com/embedded/redesign/esp_euro.gif";
+euroon = new Image;
+euroon.src = "http://i.cmpnet.com/embedded/redesign/esp_euro_on.gif";
+
+iaoff = new Image;
+iaoff.src = "http://i.cmpnet.com/embedded/redesign/ia.gif";
+iaon = new Image;
+iaon.src = "http://i.cmpnet.com/embedded/redesign/ia_on.gif";
+
+downoff = new Image;
+downoff.src = "http://i.cmpnet.com/embedded/redesign/code.gif";
+downon = new Image;
+downon.src = "http://i.cmpnet.com/embedded/redesign/code_on.gif";
+
+demooff = new Image;
+demooff.src = "http://i.cmpnet.com/embedded/redesign/prod_demos.gif";
+demoon = new Image;
+demoon.src = "http://i.cmpnet.com/embedded/redesign/prod_demos_on.gif";
+
+resoff = new Image;
+resoff.src = "http://i.cmpnet.com/embedded/redesign/resources.gif";
+reson = new Image;
+reson.src = "http://i.cmpnet.com/embedded/redesign/resources_on.gif";
+
+ieoff = new Image;
+ieoff.src = "http://i.cmpnet.com/embedded/redesign/ind_ev.gif";
+ieon = new Image;
+ieon.src = "http://i.cmpnet.com/embedded/redesign/ind_ev_on.gif";
+
+guideoff = new Image;
+guideoff.src = "http://i.cmpnet.com/embedded/redesign/buyers.gif";
+guideon = new Image;
+guideon.src = "http://i.cmpnet.com/embedded/redesign/buyers_on.gif";
+
+siteoff = new Image;
+siteoff.src = "http://i.cmpnet.com/embedded/redesign/sitemap.gif";
+siteon = new Image;
+siteon.src = "http://i.cmpnet.com/embedded/redesign/sitemap_on.gif";
+
+productsoff = new Image;
+productsoff.src = "http://i.cmpnet.com/embedded/redesign/new_prod.gif";
+productson = new Image;
+productson.src = "http://i.cmpnet.com/embedded/redesign/new_prod_on.gif";
+
+directoff = new Image;
+directoff.src = "http://i.cmpnet.com/embedded/redesign/catalogs.gif";
+directon = new Image;
+directon.src = "http://i.cmpnet.com/embedded/redesign/catalogs_on.gif";
+
+cdromoff = new Image;
+cdromoff.src = "http://i.cmpnet.com/embedded/redesign/cdrom.gif";
+cdromon = new Image;
+cdromon.src = "http://i.cmpnet.com/embedded/redesign/cdrom_on.gif";
+
+embeddedbooksoff = new Image;
+embeddedbooksoff.src = "http://i.cmpnet.com/embedded/redesign/embeddedbooks.gif";
+embeddedbookson = new Image;
+embeddedbookson.src = "http://i.cmpnet.com/embedded/redesign/embeddedbooks_on.gif";
+
+researchoff = new Image;
+researchoff.src = "http://i.cmpnet.com/embedded/redesign/market.gif";
+researchon = new Image;
+researchon.src = "http://i.cmpnet.com/embedded/redesign/market_on.gif";
+
+jobsoff = new Image;
+jobsoff.src = "http://i.cmpnet.com/embedded/redesign/job.gif";
+jobson = new Image;
+jobson.src = "http://i.cmpnet.com/embedded/redesign/job_on.gif";
+
+marketoff = new Image;
+marketoff.src = "http://i.cmpnet.com/embedded/redesign/marketplace.gif";
+marketon = new Image;
+marketon.src = "http://i.cmpnet.com/embedded/redesign/marketplace_on.gif";
+
+welcomeoff = new Image;
+welcomeoff.src = "http://i.cmpnet.com/embedded/redesign/welcometo.gif";
+welcomeon = new Image;
+welcomeon.src = "http://i.cmpnet.com/embedded/redesign/welcometo_on.gif";
+
+function imgSwap(imgId,imgSrc,restat) {
+   document.images[imgId].src=eval(imgSrc+'.src');
+   if (restat)window.status='';
+}
+
+function PreLoads(treeList)
+        {
+        window.status="["+systemLibCnt+"] menu.js["+LIBLOADEDJSmenu + "] items ["+""+" Loading ...";
+        if(!LIBLOADEDJSmenu)
+          {  setTimeout("PreLoads('"+treeList+"')",500);return;   }
+        window.onResize="document.location.href=document.location.href";        
+        if(!document.links.length)
+          {  setTimeout("PreLoads('"+treeList+"')",500);return;   }
+        window.status="initializing";
+        while(treeList.length>1)
+             {          
+             killboy =treeList.substring(1);
+             killboy =killboy.substring(0,killboy.indexOf(":"));
+             treeList=treeList.substring(killboy.length+1);
+             window.status="Loading "+killboy;
+             menuCREATE(killboy,0,0);
+             }
+        window.status="";
+        }
+
+
+/* Called by the jsLAYERclass to create
+a layer if the layer does not already exist.*/
+function jsLAYERcreateLayer(Homeboy,x,y,w,h,bColor)
+        {
+        if(systemIsNS)
+          {
+          var lyr= document.layers[Homeboy.lyrName] = new Layer(w)
+          lyr.left=x;lyr.top=y; lyr.clip.height=h+1;lyr.clip.width=w+1;
+          lyr.bgColor=((jsLAYERcreateLayer.arguments.length>5)?bColor:menuBcolor);
+          lyr.visibility='hidden';lyr.zIndex=1;
+          lyr.isHighlight=false;
+          lyr.border=1;
+          document.layers[Homeboy.lyrName].style=document.layers[Homeboy.lyrName];
+          }else{
+          var str = '\n<DIV id='+Homeboy.lyrName+' style="visibility: hidden; position:absolute; left:'+x+'; top:'+y+'; width:'+w
+          str += '; height:'+(h+1)+'px; clip:rect(0px '+(w+1)+'px '+(h+1)+'px 0px)'
+          str += '; background-color:'+((jsLAYERcreateLayer.arguments.length>5)?bColor:menuBcolor)+';z-Index:5;"> </DIV>';
+          document.body.insertAdjacentHTML("BeforeEnd",str);
+          }
+        Homeboy.jsLAYERobject=document.all[Homeboy.lyrName];
+        if(systemIsNS)
+          {
+          Homeboy.jsLAYERdocument  =document.layers[Homeboy.lyrName].document;
+          Homeboy.style            =document.layers[Homeboy.lyrName];
+          }else{
+          Homeboy.jsLAYERdocument  =document.all[Homeboy.lyrName];
+          Homeboy.style            =document.all[Homeboy.lyrName].style;
+          Homeboy.style.zIndex     =systemMaxZ++;
+          }
+        Homeboy.jsLAYERobject.HomeBoy=Homeboy;
+        Homeboy.jsLAYERobject.W =w;
+        Homeboy.jsLAYERobject.X =x;
+        Homeboy.jsLAYERobject.Y =y;
+        Homeboy.jsLAYERobject.H =h;
+        Homeboy.jsLAYERobject.MOUSEHANDLER="MOUSEVECTOR";
+        return Homeboy;
+        }
+function jsLAYERsetHandler(Homeboy,szHANDLER) // named function for events
+        {
+        Homeboy.jsLAYERobject.MOUSEHANDLER=szHANDLER;
+        MOUSECAPTURE(Homeboy,Homeboy.lyrName);
+        }
+function jsLAYERhomeboy(layername){return document.all[layername].HomeBoy;}
+function jsLAYERopen(Homeboy){if(systemIsNS){Homeboy.jsLAYERobject.document.open();  }else{  Homeboy.jsLAYERobject.innerHTML="";}}
+function jsLAYERwrite(Homeboy,Text){if(systemIsNS){Homeboy.jsLAYERdocument.write(Text);}else{Homeboy.jsLAYERobject.innerHTML+=Text;}}
+function jsLAYERclose(Homeboy)
+        {
+        if(systemIsNS)
+          {
+          Homeboy.jsLAYERdocument.close();
+          MOUSECAPTURE(Homeboy,Homeboy.lyrName);
+          }
+        }
+function jsLAYERsetContent(Homeboy,text)
+        {
+        jsLAYERopen(Homeboy);
+        jsLAYERwrite(Homeboy,text);
+        jsLAYERclose(Homeboy);return;
+        }
+function jsLAYERshow(Homeboy,vis){Homeboy.style.visibility=((vis)?"visible":"hidden");}
+function jsLAYERgetX(Homeboy){return parseInt(Homeboy.style.left);}
+function jsLAYERgetY(Homeboy){return parseInt(Homeboy.style.top);}
+function jsLAYERxy(Homeboy,x,y,InLayer)
+        {
+        this.InX=x;this.InY=y;
+        if(document.layers)
+          {
+          if(InLayer)
+            {
+            InX+=InLayer.style.left;
+            InY+=InLayer.style.top;
+            }
+          Homeboy.jsLAYERobject.x=this.InX;
+          Homeboy.jsLAYERobject.y=this.InY;
+          }else{
+          if(InLayer)
+            {
+            this.InX+=parseInt(document.all[Homeboy.lyrName].style.left);
+            this.InY+=parseInt(document.all[Homeboy.lyrName].style.top);
+            }
+//alert(document.all[Homeboy.lyrName].style.left+"[]"+this.InX+"[]"+x)
+          document.all[Homeboy.lyrName].style.left=this.InX
+          document.all[Homeboy.lyrName].style.top=this.InY
+
+          }
+
+
+        }
+/*Function      :MEVENT
+**Parameters    :Homeboy        - Layer Class Pointer
+**               Evt            - javascript Browser Event
+**Description   :Noramalizes Netscape/MSIE evnts to 
+**a class containing variables for both, with Netscape names
+**superceding MSIE names. It is this psudeo event class that
+**is passed to all MOUSE... event handler functions.
+*/
+function MEVENT(Homeboy,Evt) //normalizes the differences in NS and MSIE events
+        {
+        this.type=Evt.type;
+        this.screenX=Evt.screenX;
+        this.screenY=Evt.screenY;
+        if(systemIsNS)
+          {
+        this.pageX=Evt.pageX;
+        this.pageY=Evt.pageY;
+        this.locationX=Homeboy.jsLAYERobject.x;
+        this.locationY=Homeboy.jsLAYERobject.y;
+        this.layerX=Evt.layerX;
+        this.layerY=Evt.layerY;
+        this.which=Evt.which;
+        this.target=Evt.target;
+        this.modifiers=Evt.modifiers;
+          }else{
+        this.pageX=Evt.x;
+        this.pageY=Evt.y;
+        if(document.body.scrollTop)this.pageY+=document.body.scrollTop;
+        this.locationX=parseInt(Homeboy.jsLAYERobject.style.left);
+        this.locationY=parseInt(Homeboy.jsLAYERobject.style.top);
+        this.layerX=this.pageX-this.locationX;
+        this.layerY=this.pageY-this.locationY;
+        this.which=Evt.button+1;
+        this.target=Evt.srcElement;
+        this.modifiers=(((Evt.altKey)?1:0)+((Evt.ctrlKey)?2:0)+((Evt.AltKey)?4:0));
+          }
+        }
+function MOUSEVECTOR(layername,Evt)// handles the actuall prep and call of mouse events
+        {
+        Homeboy=document.all[layername].HomeBoy;return false;
+        }
+// Sets up mouse event NOTE: Use of "new Function" is important
+function MOUSECAPTURE(Homeboy,layername)
+        {
+
+var NFD="return "+Homeboy.jsLAYERobject.MOUSEHANDLER+"('"+layername+"',"+((systemIsNS)?"arguments[0]":"window.event")+")"
+Homeboy.jsLAYERobject.onmouseover=new Function(NFD)
+Homeboy.jsLAYERobject.onmouseout=new Function(NFD)
+Homeboy.jsLAYERdocument.onmousemove=new Function(NFD)
+Homeboy.jsLAYERdocument.onmousedown=new Function(NFD)
+Homeboy.jsLAYERdocument.onmouseup=new Function(NFD)
+if(systemIsNS)Homeboy.jsLAYERdocument.captureEvents(  Event.MOUSEUP |   Event.MOUSEDOWN   | Event.MOUSEMOVE);
+        }
+function NSResizePatch(){document.location.href=document.location.href;}
+function jsNULLvector(layername,Evt){return true;}
+var MPTYPE ="",MSTYPE ="";
+function jsMPANELvector(panelName,Evt)  // Vectors mouse messages for the panel
+        {
+        Homeboy=jsLAYERhomeboy(panelName);
+        if(menuTimeOut)clearTimeout(menuTimeOut);
+        if(Evt.type=="mouseout" || Evt.type=="mouseover") 
+          {
+          MPTYPE=Evt.type;
+          if(MPTYPE==MSTYPE&&MPTYPE=="mouseout")menuTimeOut=setTimeout("menuPOPDN()",100);
+          }
+        if(Evt.type!="mousemove" )return false;
+        EVENT=new MEVENT(Homeboy,Evt);
+
+        EntryNum=0;
+        EntryNotch=EVENT.layerY;
+        if(EntryNotch)
+          {
+          EntryNotch-=(EntryNotch%(menuCharHeight+1));
+          EntryNum=(EntryNotch/(menuCharHeight+1))
+          }
+        if(Homeboy.mParent.Items.length<=EntryNum)return true;
+        lastEVENT=EVENT;
+        if(Homeboy.mParent.EntryNum==EntryNum)return false;
+
+//if(!systemIsNS)
+//{
+//alert(EntryNum+"[]"+EntryNotch+"[]"+EVENT.layerY)
+//Homeboy.mParent.Items[EntryNum].RENDER)
+//}
+        jsLAYERsetContent(Homeboy.mParent.mSELECT,Homeboy.mParent.Items[EntryNum].RENDER);
+
+        jsLAYERxy(Homeboy.mParent.mSELECT,jsLAYERgetX(Homeboy),jsLAYERgetY(Homeboy)+(EntryNum*(menuCharHeight+1)));
+        Homeboy.mParent.EntryNum=EntryNum;
+        if(!menuSubAuto)return false;
+        if(Homeboy.mParent.Items[EntryNum].ACTION.substring(0,1)=="@")
+          {
+          fakeEvt = new Object();
+          fakeEvt.type="mouseup";
+          jsMSELECTvector(Homeboy.mParent.mSELECT.lyrName,fakeEvt);
+          }
+        return false;
+        }
+/*
+** Vectors mouse messages for the menu selector
+*/
+function jsMSELECTvector(panelName,Evt)
+        {
+        if(menuTimeOut)clearTimeout(menuTimeOut);
+        if(Evt.type=="mouseout" || Evt.type=="mouseover") 
+          {
+          MSTYPE=Evt.type;
+          if(MPTYPE==MSTYPE&&MPTYPE=="mouseout")menuTimeOut=setTimeout("menuPOPDN()",100);
+          Homeboy=jsLAYERhomeboy(panelName);
+          return false;
+          }
+        if(Evt.type!="mouseup")return false;
+        Homeboy=jsLAYERhomeboy(panelName);
+        var action = Homeboy.mParent.Items[Homeboy.mParent.EntryNum].ACTION;
+
+        if(menuCurrentPath.indexOf(Homeboy.jsLAYERobject.GROUP)>0)
+          {
+          var FindGroup = ":"+Homeboy.jsLAYERobject.GROUP+":";
+          var killList = menuCurrentPath.substring(menuCurrentPath.indexOf(FindGroup)+FindGroup.length-1);
+          menuPOPDN(killList);
+          }
+        if(action.length<1){window.status="[Not Available]";return false;}
+        var isMenu = action.substring(0,1)=="@";
+        var isJavascript = action.substring(0,1)=="!";
+        if(isJavascript)
+          {
+          eval(action.substring(1))
+          return false;
+          }
+        if(isMenu)
+          {
+          menuPOPUP(jsLAYERgetX(Homeboy)+Homeboy.jsLAYERobject.W+2,jsLAYERgetY(Homeboy),action.substring(1));
+          }else{
+          document.location.href=action;
+          }
+        return false;
+        }
+/*
+** This is the menu panel
+*/
+function jsMPANELclass(group,entry,label,action,x,y,w,h)
+        {
+        this.lyrName            =group+entry;
+        if(!document.all[this.lyrName])jsLAYERcreateLayer(this,x,y,w,h,"#000000");
+        jsLAYERsetHandler(this,"jsMPANELvector");
+        this.jsLAYERobject.GROUP=group;this.jsLAYERobject.ENTRY=entry;
+        this.jsLAYERobject.rtWidth=10;
+        this.jsLAYERobject.rtSymbol="&raquo;";
+        }
+/*
+** This is the highlite bar
+*/
+function jsMSELECTclass(group,entry,label,action,x,y,w,h)
+        {
+        this.lyrName            =group+entry;
+        if(!document.all[this.lyrName])jsLAYERcreateLayer(this,x,y,w,h);
+        jsLAYERsetHandler(this,"jsMSELECTvector");
+        this.jsLAYERobject.GROUP=group;
+        this.jsLAYERobject.ENTRY=entry;
+        this.jsLAYERobject.rtWidth=10;
+        this.jsLAYERobject.rtSymbol="&raquo;";
+        }
+/*
+** Create the menu label obeject string for display
+*/
+function menuLABEL(Homeboy,text,isHighlight,isSub)
+        {
+        var fontstart="<FONT FACE='"+menuFont+"' SIZE="+menuFontSize+" COLOR='"+((isHighlight)?menuHTcolor:menuTcolor)+"'>"+((menuBold)?"<B>":"");
+        var CONTENT="&nbsp;";
+        if(text)CONTENT=text.length?"&nbsp;"+text:"&nbsp;";
+        var lyrtxt="<TABLE BORDER=0 CELLPADDING=0 STYLE='cursor:hand' CELLSPACING='0' BGCOLOR='";
+        lyrtxt+=((isHighlight)?menuHBcolor:menuBcolor);
+        lyrtxt+="' WIDTH='"+Homeboy.jsLAYERobject.W+"' HEIGHT='"+menuCharHeight+"'><TR VALIGN=MIDDLE>";
+        twidth=parseInt(Homeboy.jsLAYERobject.W)-parseInt(Homeboy.jsLAYERobject.rtWidth);
+        lyrtxt+="<TD WIDTH='"+twidth.toString();
+        lyrtxt+="'>"+fontstart+CONTENT+((menuBold)?"</B>":"")+"</FONT></TD>";
+        lyrtxt+="<TD WIDTH='10'>"+fontstart+((isSub)?menuSubSymbol:"&nbsp;")+((menuBold)?"</B>":"")+"</FONT></TD></TR></TABLE>";
+        return lyrtxt;
+        }
+function MenuItem(label,action)
+        {
+        this.LABEL      =label  ;
+        this.ACTION     =action ;
+        this.SUB        =this.ACTION.substring(0,1)=="@";
+        this.RENDER     =""     ;
+        }
+function MenuListAPPEND(label,action)   //Appends an item to the menuobject
+        {
+        this.Items[this.Items.length]=new MenuItem(label,action);
+        if(label.length>this.greatestCharWidth)this.greatestCharWidth=label.length;
+        }
+function menuPop(tobj,imgId,imgSrc) //Pops up menu relative to <A> tag location on screen.
+        {
+        if ((imgId)&&(imgSrc))imgSwap(imgId,imgSrc);
+        objectName=tobj.href.substring(tobj.href.lastIndexOf("/")+1);
+        if(objectName.indexOf(".html")>-1)objectName=objectName.substring(0,objectName.indexOf("."))
+//      if(!menuCurrentPath)return;
+        if(menuCurrentPath.indexOf(":"+objectName+":")==0)return false;
+        if(menuCurrentPath.length>0)menuPOPDN();
+if(szDuds.indexOf(navigator.userAgent)>-1)
+{
+if(tobj.href.indexOf(".html")==-1)tobj.href+=".html";
+return true;
+}
+
+        if(navigator.appVersion.indexOf("MSIE")>-1&&navigator.appVersion.indexOf("Mac")>-1)
+          {// compatible mac
+          if(tobj.href.indexOf(".html")==-1)tobj.href+=".html";
+          return true;
+          }
+
+        this.MX=((systemIsNS)?(tobj.x):window.event.clientX-window.event.offsetX+tobj.offsetLeft);
+        this.MY=((systemIsNS)?(tobj.y):window.event.clientY-window.event.offsetY+tobj.offsetTop);
+        if(!systemIsNS)MSIEmeasure(tobj,this);    
+        this.MY+=menuYpopoff;
+        this.MX+=menuXpopoff;
+        menuPOPUP(this.MX,this.MY,objectName);
+        menuTimeOut=setTimeout("menuPOPDN()",menuAtimeout);
+        return false;
+        }
+function menuPOPUP(x,y,menulist)        //*** Opens named menu at given location
+        {
+        var DL=eval(menulist);
+        if(!DL){alert("menuPOPUP NULL "+menulist);return;}
+        menuSHOW(menulist,x,y);
+        if(!menuScreenWidth)
+          menuScreenWidth=(systemIsNS)?document.width:document.body.offsetWidth;
+        mkw=(DL.greatestCharWidth*menuCharWidth)+10;
+        var atX = ((x+mkw+20)>=menuScreenWidth)?x-mkw:x;
+        if(jsLAYERgetX(DL.mPANEL)!=atX)menuXY(DL,atX,y);
+        }
+function menuCREATE(szMlist,iLeft,iTop)
+        {
+        Left= 20;Top = 40;
+        if(menuCREATE.arguments.length>1)Left=iLeft;
+        if(menuCREATE.arguments.length>2)Top=iTop;
+        Mlist=eval(szMlist);
+        if(Mlist.mPANEL ==null)
+          {
+          Mlist.mPANEL=new jsMPANELclass(szMlist,0,"Hello","alert('hi')",Left,Top,((Mlist.greatestCharWidth+10)*menuCharWidth)+1,((menuCharHeight+1)*Mlist.Items.length)+1);
+          Mlist.mPANEL.mParent=Mlist;
+          var menuContent='';
+          menuContent='<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0><TR><TD>';
+          for(x=0;x<Mlist.Items.length;x++)
+           {
+           menuContent+=menuLABEL(Mlist.mPANEL,Mlist.Items[x].LABEL,false,Mlist.Items[x].SUB);
+           Mlist.Items[x].RENDER=menuLABEL(Mlist.mPANEL,Mlist.Items[x].LABEL,true,Mlist.Items[x].SUB);
+           }
+        menuContent+='</TD><TD BGCOLOR="#000000">&nbsp;</TD>';
+        menuContent+="</TR><TR><TD COLSPAN=2>&nbsp;</TD></TR></TABLE>";
+//alert(menuContent);
+          jsLAYERsetContent(Mlist.mPANEL,menuContent);
+          }
+        if(Mlist.mSELECT==null)
+          {
+          Mlist.mSELECT=new jsMSELECTclass(szMlist,1,"Hello","alert('hi')",Left,Top,(Mlist.greatestCharWidth+10)*menuCharWidth,menuCharHeight);
+          Mlist.mSELECT.mParent=Mlist;
+          jsLAYERsetContent(Mlist.mSELECT,Mlist.Items[0].RENDER);
+          }
+        }
+
+function menuSHOW(szMlist,iLeft,iTop)   // SHOW the menu
+        {
+        Left= 20;Top = 40;
+        if(menuSHOW.arguments.length>1)Left=iLeft;
+        if(menuSHOW.arguments.length>2)Top=iTop;
+        Mlist=eval(szMlist);
+        if(Mlist.mPANEL==null)menuCREATE(szMlist,iLeft,iTop);
+        if(jsLAYERgetX(Mlist.mPANEL)!=Left || jsLAYERgetY(Mlist.mPANEL)!=Top)
+            {
+            jsLAYERxy(Mlist.mPANEL,Left,Top)   
+            jsLAYERxy(Mlist.mSELECT,Left,Top+(Mlist.EntryNum*(menuCharHeight+1)));
+            }; 
+        if(menuCurrentPath.indexOf(":"+szMlist+":")<0)menuCurrentPath+=((menuCurrentPath.length)?"":":")+szMlist+":";
+
+        if(Mlist.mPANEL.style.clip&&!systemIsNS)
+          {
+          Clips= Mlist.mPANEL.style.clip.split("rect(")[1].split(")")[0].split("px")
+          Clips[2]=Mlist.Items.length * (menuCharHeight+1);
+          Mlist.mPANEL.style.clip = "rect("+Array(0,Clips[1],Clips[2],0).join("px ")+"px)";
+          Mlist.mPANEL.style.zIndex=5;
+          Mlist.mSELECT.style.zIndex=6;
+          }
+        Mlist.mPANEL.style.visiblity='visible';
+//alert(Mlist.Items.length +" Item(s) "+ Mlist.mPANEL.style.clip);
+        jsLAYERshow(Mlist.mPANEL,true);
+        jsLAYERshow(Mlist.mSELECT,true);
+        }
+function menuHIDE(szMlist)      //  Hides the named menu
+        {
+        Mlist=eval(szMlist);
+        jsLAYERshow(Mlist.mSELECT,false);
+        jsLAYERshow(Mlist.mPANEL,false);
+        }
+function menuXY(Mlist,x,y)      // Moves the referenced menu
+        {
+        jsLAYERxy(Mlist.mPANEL,x,y)
+        jsLAYERxy(Mlist.mSELECT,x,y+(Mlist.EntryNum*(menuCharHeight+1)));
+        }
+function menuPOPDN(treeList)    // closes a list of menus
+        {
+        if(menuTimeOut)clearTimeout(menuTimeOut);
+        if(menuPOPDN.arguments.length<1)treeList=menuCurrentPath;
+        while(treeList.length>1)
+             {          
+             killboy =treeList.substring(1);
+             killboy =killboy.substring(0,killboy.indexOf(":"));
+             treeList=treeList.substring(killboy.length+1);
+             menuHIDE(killboy);
+             }
+        if(menuPOPDN.arguments.length<1)menuCurrentPath="";
+        };
+/*
+** MAIN MENU OBJECT
+*/
+var mSELECT=null;
+function MenuList(Mlist)
+        {
+        this.mPANEL=null;this.mSELECT=null;
+        this.Items=new Array();this.EntryNum=0;
+        this.APPEND=MenuListAPPEND;
+        this.greatestCharWidth=0;
+        }
+
+/*      Function        :MSIEmeasure
+**      Since I have found no straight forward method of obtaining IE x,y
+**      coords for the clicked link, this function recurses up the object tree
+**      to measure the screen location of the <A> involved
+*/
+function MSIEmeasure(btobj,HB)
+        {
+        var tobj=btobj;
+        HB.MX=tobj.offsetLeft;
+        HB.MY=tobj.offsetTop;
+        while(tobj.parentElement)
+          {
+          if(!tobj.parentElement)break;
+          tobj = tobj.parentElement;
+//        if(tobj.tagName=="TABLE")
+          if(String(":TABLE:TD:DIV:").indexOf(":"+tobj.tagName+":")>-1)
+            {
+            HB.MX+=tobj.offsetLeft;
+            HB.MY+=tobj.offsetTop;
+            }
+          if(!tobj.parentElement)break;
+          if(tobj.parentElement.tagName=="BODY")break;
+          }
+        return ;
+        }
+/****************************************
+** A message window                     *
+*****************************************/
+var StatusMsgWin=null;
+function jsMESSAGEclass(group,entry,x,y,w,h)
+        {
+        this.lyrName            =group+entry;
+        if(!document.all[this.lyrName])jsLAYERcreateLayer(this,x,y,w,h,"#FFFFCC");
+        jsLAYERsetHandler(this,"jsNULLvector");
+        jsLAYERshow(this,true);
+        this.jsLAYERobject.GROUP=group;this.jsLAYERobject.ENTRY=entry;
+        }
+/*
+** Set the contents of the message window;
+*/
+function jsStatusMsg(txtMESSAGE)
+        {
+        if(!StatusMsgWin)
+          {
+          StatusMsgWin= new jsMESSAGEclass("E",1,1,1,355,100);
+          jsLAYERshow(StatusMsgWin,true);
+          }
+        jsLAYERsetContent(StatusMsgWin,txtMESSAGE);
+        }
+var LIBLOADEDJSmenu=true;
+//systemLibCnt++; 
+
+
+      
+
+  
+
+</SCRIPT>
+<!-- /menu.js --><!-- Inquisite Popup --><!-- <droplet src="/surveys/popup.jhtml"></droplet> --><!-- <body bgcolor="#ffffff" link="#0000ff" vlink="#63399"> -->
+<META content="MSHTML 6.00.2900.2963" name=GENERATOR></HEAD>
+<BODY text=#000000 vLink=#999999 aLink=#6699cc link=#336699 bgColor=white 
+leftMargin=0 topMargin=0 rightMargin=0 marginheight="0" marginwidth="0"><FONT 
+face=verdana,georgia,arial,sans-serif size=2>
+<TABLE cellSpacing=0 cellPadding=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <SCRIPT language=JavaScript 
+      src="Embedded_com - Approximating CANopen_files/s_code_remote.js"></SCRIPT>
+    </TD></TR></TBODY></TABLE><!-- End SiteCatalyst code version: G.7. -->
+<SCRIPT language=JavaScript 
+src="Embedded_com - Approximating CANopen_files/beacon.html"></SCRIPT>
+<!-- main table open -->
+<CENTER>
+<TABLE cellSpacing=1 cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top>
+      <TABLE cellSpacing=0 cellPadding=0 width=780 border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle colSpan=3><IMG height=3 
+            src="Embedded_com - Approximating CANopen_files/spacer.gif" 
+            width=720 border=0><BR><!-- http://as.cmpnet.com/html.ng/affiliate=embedded&pagepos=top&site=electronics&country=peru&server=atg&target=/showArticle.jhtml -->
+            <SCRIPT 
+            src="Embedded_com - Approximating CANopen_files/DartRichMedia_1_03.js"></SCRIPT>
+<!-- Sniffer Code for Flash version=80 -->
+            <SCRIPT language=JavaScript>
+<!--
+var swf_click = "http://as.cmpnet.com/event.ng/Type=click&FlightID=72215&AdID=120675&TargetID=683&Segments=862,885,1411,3108,3448&Targets=683,786,2625,2878&Values=34,46,51,63,77,85,91,100,140,203,304,309,442,451,646,659,1184,1255,1311,1716,1767,1785,1925,1970,2142,2299,2310,2329,2352,2678,2727,2767,2862,2942,3890,3904,4080&RawValues=&Redirect=http://www.coverity.com/forms/register.php";
+var dcswf_click = escape(swf_click);
+var ShockMode = 0;
+var plugin = (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]) ? navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin : 0;
+
+if (plugin && parseInt(plugin.description.substring(plugin.description.indexOf(".")-1)) >= 8) 
+{
+ShockMode = 1;
+}
+else if (navigator.userAgent && navigator.userAgent.indexOf("MSIE")>=0 
+&& (navigator.userAgent.indexOf("Windows 95")>=0 || navigator.userAgent.indexOf("Windows 98")>=0 || navigator.userAgent.indexOf("Windows NT")>=0)) {
+document.write('<SCRIPT LANGUAGE=VBScript\> \n');
+document.write('on error resume next \n');
+document.write('ShockMode = (IsObject(CreateObject("ShockwaveFlash.ShockwaveFlash.8")))\n');
+document.write('<\/SCRIPT\> \n');
+}
+if ( ShockMode ) {
+document.write('<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"');
+document.write(' codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"');
+document.write(' ID=flashad WIDTH=728 HEIGHT=90>');
+document.write(' <PARAM NAME=movie VALUE="http://i.cmpnet.com/ads/graphics/as5/ac/Coverity/coverity_flash_728x90_101906.swf?clickTag='+dcswf_click+'"> '); 
+document.write(' <PARAM NAME=quality VALUE=autohigh> ');
+document.write(' <PARAM NAME=wmode VALUE=opaque> ');
+document.write(' <EMBED SRC="http://i.cmpnet.com/ads/graphics/as5/ac/Coverity/coverity_flash_728x90_101906.swf?clickTag='+dcswf_click+'" QUALITY=autohigh WMODE=opaque '); 
+document.write(' NAME=flashad swLiveConnect=TRUE WIDTH=728 HEIGHT=90');
+document.write(' TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">');
+document.write('</EMBED>');
+document.write('</OBJECT>');
+} else if (!(navigator.appName && navigator.appName.indexOf("Netscape")>=0 && navigator.appVersion.indexOf("2.")>=0)){
+document.write('<A HREF="http://as.cmpnet.com/event.ng/Type=click&FlightID=72215&AdID=120675&TargetID=683&Segments=862,885,1411,3108,3448&Targets=683,786,2625,2878&Values=34,46,51,63,77,85,91,100,140,203,304,309,442,451,646,659,1184,1255,1311,1716,1767,1785,1925,1970,2142,2299,2310,2329,2352,2678,2727,2767,2862,2942,3890,3904,4080&RawValues=&Redirect=http://www.coverity.com/forms/register.php" target="_top"><IMG SRC="http://i.cmpnet.com/ads/graphics/as5/ac/Coverity/728x90_coverity_101906.jpg" WIDTH=728 HEIGHT=90 BORDER=0></A>');
+}
+//-->
+</SCRIPT>
+            <NOEMBED><A 
+            href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=72215&amp;AdID=120675&amp;TargetID=683&amp;Segments=862,885,1411,3108,3448&amp;Targets=683,786,2625,2878&amp;Values=34,46,51,63,77,85,91,100,140,203,304,309,442,451,646,659,1184,1255,1311,1716,1767,1785,1925,1970,2142,2299,2310,2329,2352,2678,2727,2767,2862,2942,3890,3904,4080&amp;RawValues=&amp;Redirect=http://www.coverity.com/forms/register.php" 
+            target=_top><IMG height=90 
+            src="Embedded_com - Approximating CANopen_files/728x90_coverity_101906.jpg" 
+            width=728 border=0></A> </NOEMBED><NOSCRIPT><A 
+            href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=72215&amp;AdID=120675&amp;TargetID=683&amp;Segments=862,885,1411,3108,3448&amp;Targets=683,786,2625,2878&amp;Values=34,46,51,63,77,85,91,100,140,203,304,309,442,451,646,659,1184,1255,1311,1716,1767,1785,1925,1970,2142,2299,2310,2329,2352,2678,2727,2767,2862,2942,3890,3904,4080&amp;RawValues=&amp;Redirect=http://www.coverity.com/forms/register.php" 
+            target=_top><IMG height=90 
+            src="Embedded_com - Approximating CANopen_files/728x90_coverity_101906.jpg" 
+            width=728 border=0></A> </NOSCRIPT><IMG height=1 
+            src="Embedded_com - Approximating CANopen_files/dcfc.gif" width=1 
+            border=0> <IMG height=3 
+            src="Embedded_com - Approximating CANopen_files/spacer.gif" 
+            width=780 border=0> 
+            <TABLE cellSpacing=0 cellPadding=0 width=780 border=0>
+              <TBODY>
+              <TR vAlign=top>
+                <TD><IMG height=24 
+                  src="Embedded_com - Approximating CANopen_files/top_color3.jpg" 
+                  width=437 border=0></TD>
+                <TD><A href="http://www.eetimescareers.com/"><IMG height=24 
+                  alt=Careers 
+                  src="Embedded_com - Approximating CANopen_files/top_careers.jpg" 
+                  width=61 border=0></A> </TD>
+                <TD><A href="http://www.embedded.com/rss"><IMG height=24 
+                  alt=RSS 
+                  src="Embedded_com - Approximating CANopen_files/top_rss.jpg" 
+                  width=69 border=0></A> </TD>
+                <TD><A 
+                  href="http://www.eetimes.com/newsletter;jsessionid=LVHVK2HOFA2SYQSNDLRCKHSCJUNN2JVN"><IMG 
+                  height=24 alt=NEWSLETTERS 
+                  src="Embedded_com - Approximating CANopen_files/top_newsletters.jpg" 
+                  width=84 border=0></A> </TD>
+                <TD><A 
+                  href="https://www.embeddedsystemsdesignsubscribe.com/New"><IMG 
+                  height=24 alt="PRINT SUBSCRIPTION" 
+                  src="Embedded_com - Approximating CANopen_files/top_printsub.jpg" 
+                  width=129 border=0></A> </TD></TR></TBODY></TABLE><IMG height=1 
+            src="Embedded_com - Approximating CANopen_files/pixel.gif" width=780 
+            border=0> 
+            <TABLE cellSpacing=0 cellPadding=0 width=780 border=0>
+              <TBODY>
+              <TR>
+                <TD><A href="http://www.cmp.com/"><IMG height=87 
+                  alt="CMP MEDIA" 
+                  src="Embedded_com - Approximating CANopen_files/cmp.jpg" 
+                  width=89 border=0></A></TD>
+                <TD><A href="http://www.embedded.com/"><IMG height=87 
+                  alt=EMBEDDED.COM 
+                  src="Embedded_com - Approximating CANopen_files/embedd_logo.jpg" 
+                  width=234 border=0></A></TD>
+                <TD><IMG height=87 
+                  src="Embedded_com - Approximating CANopen_files/middle_color.jpg" 
+                  width=86 border=0></TD>
+                <TD width=371 
+                background="Embedded_com - Approximating CANopen_files/bg_fill.jpg" 
+                height=87><!--Droplet was removed because the banner was obscuring the dog ear-->
+                  <TABLE height=86 cellSpacing=0 cellPadding=0 width=370 
+                  border=0>
+                    <FORM action=/TechSearch/Search.jhtml method=get><INPUT 
+                    type=hidden value=Embedded.com name=site_id> <INPUT 
+                    type=hidden value=Embedded.com name="Site ID"> 
+                    <TBODY>
+                    <TR>
+                      <TD align=top><IMG height=1 hspace=0 
+                        src="Embedded_com - Approximating CANopen_files/spacer.gif" 
+                        width=190 border=0></TD>
+                      <TD align=top>
+                        <DIV class=searchBOXguts><IMG height=3 hspace=0 
+                        src="C:\Documents and Settings\Gino Isla\My Documents\Embedded Reference\CAN and CANOpen\Embedded_com - Approximating CANopen_files\spacer(1).gif" 
+                        width=1 border=0><BR><INPUT class=black11 
+                        style="WIDTH: 100px" size=16 name=queryText><INPUT 
+                        type=image hspace=2 
+                        src="Embedded_com - Approximating CANopen_files/go_button.gif" 
+                        border=0 name=Re-sort><BR></DIV></TD>
+                      <TD align=top><IMG height=1 hspace=0 
+                        src="C:\Documents and Settings\Gino Isla\My Documents\Embedded Reference\CAN and CANOpen\Embedded_com - Approximating CANopen_files\spacer(1).gif" 
+                        width=5 
+              border=0></TD></TR></FORM></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD><!-- 5th column -->
+    <TD vAlign=top bgColor=#ffffff rowSpan=3><!-- <droplet src="/GLOBAL/electronics/dac/dac_fifth_column.jhtml"/><img src="http://i.cmpnet.com/eetimes/v3/spacer.gif" width="180" height="198" border="0"> --></TD></TR>
+  <TR>
+    <TD vAlign=top>
+      <TABLE cellSpacing=1 cellPadding=0 width=780 border=0>
+        <TBODY>
+        <TR bgColor=#333366><!-- TopNav.html -->
+          <TD align=middle width=130><A 
+            href="http://www.eeproductcenter.com/"><IMG height=16 
+            alt=eeProductCenter 
+            src="Embedded_com - Approximating CANopen_files/eepc.gif" width=111 
+            border=0></A></TD>
+          <TD align=middle width=130><A href="http://www.embedded.com/"><IMG 
+            height=16 alt=Home 
+            src="Embedded_com - Approximating CANopen_files/home.gif" width=42 
+            border=0></A></TD>
+          <TD align=middle width=130><A 
+            href="http://www.eetimes.com/newsletter/"><IMG height=16 
+            alt="Sign up for newletters" 
+            src="Embedded_com - Approximating CANopen_files/register.gif" 
+            width=100 border=0></A></TD>
+          <TD align=middle width=130><A 
+            href="http://www.embedded.com/contact"><IMG height=16 alt=Contact 
+            src="Embedded_com - Approximating CANopen_files/contact.gif" 
+            width=97 border=0></A></TD>
+          <TD align=middle width=130><A 
+            href="http://www.embedded.com/advert"><IMG height=16 alt=Advertising 
+            src="Embedded_com - Approximating CANopen_files/advert.gif" width=97 
+            border=0></A></TD>
+          <TD align=middle width=130><A 
+            href="http://www.embedded.com/feedback"><IMG height=16 alt=Feedback 
+            src="Embedded_com - Approximating CANopen_files/feeback.gif" 
+            width=68 border=0></A></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD vAlign=top>
+      <TABLE cellSpacing=0 cellPadding=0 width=780 border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><!-- LEFT NAV -->
+            <TABLE cellSpacing=0 cellPadding=0 width=205 border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=top align=left width=205 rowSpan=2><!--<droplet src="/surveys/popup.jhtml"/></droplet>-->
+                  <TABLE cellSpacing=0 cellPadding=0 width=205 border=0><!--  <tr>
+    <td bgcolor="#666699" width="21" valign="top" align="left">&nbsp;</td>
+    <td bgcolor="ffffcc" width="18" valign="top" align="left">
+      <img src="http://i.cmpnet.com/embedded/redesign/curve_lav.gif" border="0" width="18" height="18"><br>
+    </td>
+    <td bgcolor="#ffffcc" width="166" valign="top" align="left">&nbsp;</td>
+  </tr>--><!-- LEFTTOC -->
+                    <TBODY>
+                    <TR>
+                      <TD bgColor=#666699>&nbsp;</TD>
+                      <TD vAlign=top align=left width=184 bgColor=#ffffcc 
+                      colSpan=2><!-- begin scroll script 
+<table width="125" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr bgcolor="#ffffff"><td valign="top"><a href="http://www.embedded.com/esc/boston"><img src="http://i.cmpnet.com/embedded/esc/boston/escboston_125.gif" border="0"></a></td></tr>
+
+<tr bgcolor="#ffffff"><td valign="top">
+<script language="JavaScript1.2">
+
+/*
+Scrolling Text script-
+Distributed by http://www.hypergurl.com
+*/
+
+
+//Change script's width (in pixels)
+var marqueewidth=125
+//Change script's height (in pixels, pertains only to NS)
+var marqueeheight=25
+//Change script's scroll speed (larger is faster)
+var speed=4
+//Change script's contents
+var marqueecontents='<a href="http://www.embedded.com/esc/boston/freepass"><font face="verdana,Arial" font color="#000000" size="2"><strong>Register now for your FREE Exhibits Pass!</strong></font></a><background color="#00080">'
+
+if (document.all)
+document.write('<marquee scrollAmount='+speed+' style="width:'+marqueewidth+'">'+marqueecontents+'</marquee>')
+
+function regenerate(){
+window.location.reload()
+}
+function regenerate2(){
+if (document.layers){
+setTimeout("window.onresize=regenerate",450)
+intializemarquee()
+}
+}
+
+function intializemarquee(){
+document.cmarquee01.document.cmarquee02.document.write('<nobr>'+marqueecontents+'</nobr>')
+document.cmarquee01.document.cmarquee02.document.close()
+thelength=document.cmarquee01.document.cmarquee02.document.width
+scrollit()
+}
+
+function scrollit(){
+if (document.cmarquee01.document.cmarquee02.left>=thelength*(-1)){
+document.cmarquee01.document.cmarquee02.left-=speed
+setTimeout("scrollit()",100)
+}
+else{
+document.cmarquee01.document.cmarquee02.left=marqueewidth
+scrollit()
+}
+}
+
+window.onload=regenerate2
+</script>
+
+</td></tr>
+
+<tr bgcolor="#ffffff"><td valign="top"><a href="http://www.embedded.com/esc/boston"><img src="http://i.cmpnet.com/embedded/esc/boston/escboston2_125.gif" border="0"></a></td></tr>
+
+</table>
+
+
+ end scroll script --><!-- custom ad position -->
+                        <CENTER><!-- Ad --><!-- http://as.cmpnet.com/html.ng/affiliate=embedded&pagepos=tile4&site=electronics&country=peru&server=atg&target=/showArticle.jhtml --><A 
+                        href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=17681&amp;AdID=27494&amp;TargetID=2878&amp;Segments=1411,3108,3448,4358&amp;Targets=2625,2878&amp;Values=34,46,51,63,77,85,91,100,140,304,309,442,451,646,659,832,1184,1255,1311,1716,1767,1785,1925,1970,2142,2299,2310,2329,2352,2678,2727,2767,2862,2942,3890,3904,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+                        target=_parent><IMG alt="" 
+                        src="Embedded_com - Approximating CANopen_files/iopsblank.gif" 
+                        border=0></A><IMG height=1 
+                        src="C:\Documents and Settings\Gino Isla\My Documents\Embedded Reference\CAN and CANOpen\Embedded_com - Approximating CANopen_files\dcfc(1).gif" 
+                        width=1 border=0> <!-- /Ad --></CENTER><!-- end custom ad position --><!-- product news -->
+                        <CENTER><A href="http://www.embedded.com/esc/sv/"><IMG 
+                        src="Embedded_com - Approximating CANopen_files/ESCSVbrains.gif" 
+                        border=0></A></CENTER><BR><A 
+                        href="http://www.embedded.com/products"><IMG height=19 
+                        alt="PRODUCT NEWS" 
+                        src="Embedded_com - Approximating CANopen_files/new_prodheader.gif" 
+                        width=184 vspace=1 border=0> </A>
+                        <TABLE table_name="product_news">
+                          <TBODY>
+                          <TR>
+                            <TD align=left><FONT face=verdana size=1><B><A 
+                              href="http://www.embedded.com/showArticle.jhtml?articleID=193501507">Motor 
+                              driver IC optimizes dual full-bridge designs 
+                              </A></B><BR>Allegro MicroSystems' A3969, a dual 
+                              full-bridge pulse-width modulated (PWM) motor IC 
+                              for driving both windings of a two-phase bipolar 
+                              stepper motor, features the company's Satlington 
+                              output structure, which combines the low voltage 
+                              drop of a saturated transistor and the high peak 
+                              current capability of a Darlington stage. 
+                            </FONT></TD></TR>
+                          <TR>
+                            <TD align=left><FONT face=verdana size=1><B><A 
+                              href="http://www.embedded.com/showArticle.jhtml?articleID=193501491">Ecliptek 
+                              samples MEMS oscillators </A></B><BR>Available in 
+                              a variety of package sizes, Ecliptek has started 
+                              to sample its EMO family of MEMS oscillators. 
+                              </FONT></TD></TR></TBODY></TABLE>
+                        <P align=right><FONT face=verdana size=1><A 
+                        href="http://www.embedded.com/products"><B>More Product 
+                        News</B></A> <IMG 
+                        src="Embedded_com - Approximating CANopen_files/blackarrow.gif"><BR></FONT><!-- dateline europe --><A 
+                        href="http://www.embedded.com/columns/de/"><IMG 
+                        height=19 alt="DATELINE: EUROPE" 
+                        src="Embedded_com - Approximating CANopen_files/new_datelineheader.gif" 
+                        width=184 vspace=1 border=0> </A>
+                        <TABLE table_name="dateline">
+                          <TBODY>
+                          <TR>
+                            <TD align=left><FONT face=verdana size=1><B><A 
+                              href="http://www.embedded.com/showArticle.jhtml?articleID=193100987">Imagination 
+                              extends Intel license, takes cash infusion 
+                              </A></B><BR>Imagination Technologies Group plc, a 
+                              struggling licensor of intellectual property 
+                              related to graphics processors, has extended its 
+                              licensing agreement with Intel Corp. and announced 
+                              that Intel Capital, the venture capital arm of 
+                              Intel, would invest about $10 million. 
+                          </FONT></TD></TR>
+                          <TR>
+                            <TD align=left><FONT face=verdana size=1><B><A 
+                              href="http://www.embedded.com/showArticle.jhtml?articleID=193100581">Startup 
+                              raises $15 million to embed sensors, processors 
+                              </A></B><BR>Embedded sensor company attracts about 
+                              $15 million in series 'B' funding from investors 
+                              3i and Doughty Hanson Technology Ventures. 
+                            </FONT></TD></TR></TBODY></TABLE>
+                        <P align=right><FONT face=verdana size=1><A 
+                        href="http://www.embedded.com/columns/de"><B>More News 
+                        From Europe</B></A> <IMG 
+                        src="Embedded_com - Approximating CANopen_files/blackarrow.gif"><BR></FONT><!-- leftToc1.html -->
+                        <TABLE cellSpacing=0 cellPadding=0 width=184 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD vAlign=top align=left bgColor=#ffffcc><!-- EMBEDDED.COM LINKS --><IMG 
+                              height=19 alt="Embedded.com Links" 
+                              src="Embedded_com - Approximating CANopen_files/embedd_links.gif" 
+                              width=184 vspace=1><BR><A 
+                              onmouseover="imgSwap('esconf','esconfon',1)" 
+                              onmouseout="imgSwap('esconf','esconfoff',1)" 
+                              href="http://www.esconline.com/sv"><IMG height=49 
+                              src="Embedded_com - Approximating CANopen_files/sv_conf_off.gif" 
+                              width=184 border=0 name=esconf></A><BR><A 
+                              onmouseover="imgSwap('boston','bostonon',1)" 
+                              onmouseout="imgSwap('boston','bostonoff',1)" 
+                              href="http://www.esconline.com/boston"><IMG 
+                              height=35 
+                              src="Embedded_com - Approximating CANopen_files/es_confboston_off.gif" 
+                              width=184 border=0 name=boston></A><BR><!-- <A HREF="http://www.esconline.com/connect" onMouseOver="imgSwap('connect','connecton',1)" onMouseOut="imgSwap('connect','connectoff',1)"><IMG SRC="http://i.cmpnet.com/embedded/redesign/connect_off.gif" WIDTH="184" HEIGHT="35" BORDER="0" NAME="connect"></A><BR> --><A 
+                              onmouseover="imgSwap('mag','magon',1)" 
+                              onmouseout="imgSwap('mag','magoff',1)" 
+                              href="http://www.embedded.com/mag.htm"><IMG 
+                              height=35 
+                              src="Embedded_com - Approximating CANopen_files/esd_mag.gif" 
+                              width=184 border=0 name=mag></A><BR><A 
+                              onmouseover="imgSwap('euro','euroon',1)" 
+                              onmouseout="imgSwap('euro','eurooff',1)" 
+                              href="http://www.embedded.com/europe/"><IMG 
+                              height=34 
+                              src="Embedded_com - Approximating CANopen_files/esp_euro.gif" 
+                              width=184 border=0 name=euro></A><BR><!--<A HREF="/internet/" onMouseOver="imgSwap('ia','iaon',1)" onMouseOut="imgSwap('ia','iaoff',1)"><IMG SRC="http://i.cmpnet.com/embedded/redesign/ia.gif" WIDTH="184" HEIGHT="20" BORDER="0" NAME="ia"></a><BR>--><A 
+                              onmouseover="imgSwap('down','downon',1)" 
+                              onmouseout="imgSwap('down','downoff',1)" 
+                              href="http://www.embedded.com/code"><IMG height=21 
+                              src="Embedded_com - Approximating CANopen_files/code.gif" 
+                              width=184 border=0 name=down></A><BR><A 
+                              onmouseover="imgSwap('demo','demoon',1)" 
+                              onmouseout="imgSwap('demo','demooff',1)" 
+                              href="http://www.embedded.com/demos"><IMG 
+                              height=19 
+                              src="Embedded_com - Approximating CANopen_files/prod_demos.gif" 
+                              width=184 border=0 name=demo></A><BR><A 
+                              onmouseover="imgSwap('res','reson',1)" 
+                              onmouseout="imgSwap('res','resoff',1)" 
+                              href="http://www.embedded.com/links.htm"><IMG 
+                              height=21 
+                              src="Embedded_com - Approximating CANopen_files/resources.gif" 
+                              width=184 border=0 name=res></A><BR><A 
+                              onmouseover="imgSwap('ie','ieon',1)" 
+                              onmouseout="imgSwap('ie','ieoff',1)" 
+                              href="http://www.embedded.com/events"><IMG 
+                              height=19 
+                              src="Embedded_com - Approximating CANopen_files/ind_ev.gif" 
+                              width=184 border=0 name=ie></A><BR><A 
+                              onmouseover="imgSwap('jobs','jobson',1)" 
+                              onmouseout="imgSwap('jobs','jobsoff',1)" 
+                              href="http://www.eetimescareers.com/"><IMG 
+                              height=20 
+                              src="Embedded_com - Approximating CANopen_files/job.gif" 
+                              width=184 border=0 name=jobs></A><BR><A 
+                              onmouseover="imgSwap('market','marketon',1)" 
+                              onmouseout="imgSwap('market','marketoff',1)" 
+                              href="http://www.embedded.com/marketplace"><IMG 
+                              height=20 
+                              src="Embedded_com - Approximating CANopen_files/marketplace.gif" 
+                              width=184 border=0 name=market></A><BR><!--<A HREF="/bg/" onMouseOver="imgSwap('guide','guideon',1)" onMouseOut="imgSwap('guide','guideoff',1)"><IMG SRC="http://i.cmpnet.com/embedded/redesign/buyers.gif" WIDTH="184" HEIGHT="20" BORDER="0" NAME="guide"></A><BR>--><A 
+                              onmouseover="imgSwap('site','siteon',1)" 
+                              onmouseout="imgSwap('site','siteoff',1)" 
+                              href="http://www.embedded.com/sitemap.htm"><IMG 
+                              height=21 
+                              src="Embedded_com - Approximating CANopen_files/sitemap.gif" 
+                              width=184 border=0 name=site></A><BR><!-- leftToc2.html --><!-- COMPANY STORE PRODUCTS --><IMG 
+                              height=19 alt="Company Store" 
+                              src="Embedded_com - Approximating CANopen_files/companystore_header.gif" 
+                              width=184><BR><!--<A HREF="/directories/" onMouseOver="imgSwap('direct','directon',1)" onMouseOut="imgSwap('direct','directoff',1)"><IMG SRC="http://i.cmpnet.com/embedded/redesign/catalogs.gif" WIDTH="184" HEIGHT="22" BORDER="0" NAME="direct"></A><BR>--><A 
+                              onmouseover="imgSwap('cdrom','cdromon',1)" 
+                              onmouseout="imgSwap('cdrom','cdromoff',1)" 
+                              href="http://www.embedded.com/cdrom"><IMG 
+                              height=22 
+                              src="Embedded_com - Approximating CANopen_files/cdrom.gif" 
+                              width=184 border=0 name=cdrom></A><BR><A 
+                              onmouseover="imgSwap('embeddedbooks','embeddedbookson',1)" 
+                              onmouseout="imgSwap('embeddedbooks','embeddedbooksoff',1)" 
+                              href="http://www.embedded.com/books"><IMG 
+                              height=22 
+                              src="Embedded_com - Approximating CANopen_files/embeddedbooks.gif" 
+                              width=184 border=0 name=embeddedbooks></A> <!-- SPONSORED MICROSITES --><!--<IMG SRC="http://i.cmpnet.com/embedded/redesign/microsites.gif" ALT="Sponsored Microsites" WIDTH="184" HEIGHT="19">
+
+
+<A HREF="http://embeddeddsp.embedded.com" 
+onMouseOver="imgSwap('welcome','welcomeon',1)" onMouseOut="imgSwap('welcome','welcomeoff',1)"><IMG SRC="http://i.cmpnet.com/embedded/redesign/welcometo.gif" ALT="Welcome to Embedded DSP by TI" WIDTH="184" HEIGHT="33" BORDER="0" NAME="welcome"></A>--></TD></TR></TBODY></TABLE><BR 
+                        clear=all><!-- INTELLITXT BUTTON --><!-- <center><a href="/whatisIntelliTXT.htm"><img src="http://i.cmpnet.com/eetnetwork/green_links.gif" width="125" height="51" border="0" alt="Intellitxt Button"></a></center><br> --><!-- NetSeminarsBox.html --><!-- NetSeminar Box --><!-- <table cellpadding="0" cellspacing="0" bordercolor="#000099" border="1" width="100%">
+ <tr>
+  <td>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FFFFFF">
+ <tr>
+  <td colspan="3" bgcolor="#000099" align="center">
+<img src="http://img.cmpnet.com/eet/v2/netsem.gif" border="0" alt="NeSeminar Services"><br>
+  </td>
+ </tr>
+
+<tr>
+  <td colspan="3" bgcolor="#FFFFFF" align="center">
+<font face="verdana" size="1" color="#OOOOOO">
+A list of upcoming NetSeminars, plus a link to the <a href="http://www.techonline.com/learning/webinar/">archive</a>.
+</font><br><br>
+  </td>
+ </tr>
+
+ <tr>
+  <td width=5 valign="top" align="left"><IMG SRC="http://img.cmpnet.com/theworkcircuit/pixel.gif" WIDTH="5" HEIGHT="1">
+  </td>
+  <td valign="top" align="left">
+<font face="verdana,arial" size="1">
+
+<droplet src="/GLOBAL/electronics/NetSeminarListing.jhtml"></droplet>
+
+</font>
+  </td>
+  <td width=5 valign="top" align="left"><IMG SRC="http://img.cmpnet.com/theworkcircuit/pixel.gif" WIDTH="5" HEIGHT="1">
+  </td>
+ </tr>
+</table>
+
+  </td>
+ </tr>
+</table> --><BR><!-- top left tile ad -->
+                        <CENTER><!-- http://as.cmpnet.com/html.ng/affiliate=embedded&pagepos=tilelefttop&site=electronics&country=peru&server=atg&target=/showArticle.jhtml --><A 
+                        href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=73259&amp;AdID=122299&amp;TargetID=894&amp;Segments=863,887,1411,3108,3448&amp;Targets=680,894,2625,2878&amp;Values=34,46,51,63,77,85,91,100,140,297,304,309,442,451,646,659,1184,1255,1311,1716,1767,1785,1925,1970,2142,2299,2310,2329,2352,2678,2727,2767,2862,2942,3890,3904,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://cmpnetseminars.com/TSG/?K=3EZ6&amp;Q=464" 
+                        target=_parent><IMG height=125 alt="" 
+                        src="Embedded_com - Approximating CANopen_files/ESM_SAP_125x125_110106.gif" 
+                        width=125 border=0></A><IMG height=1 
+                        src="C:\Documents and Settings\Gino Isla\My Documents\Embedded Reference\CAN and CANOpen\Embedded_com - Approximating CANopen_files\dcfc(2).gif" 
+                        width=1 border=0> </CENTER><BR><!-- Network Navigation -->
+                        <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0 
+                        table_name="network_nav">
+                          <TBODY>
+                          <TR>
+                            <TD class=tdHeader>EE TIMES NETWORK</TD></TR>
+                          <TR>
+                            <TD vAlign=top align=left>&nbsp;<SPAN 
+                              class=nnType>Online Editions</SPAN><BR><SPAN 
+                              class=nnLink>&nbsp;<A 
+                              href="http://www.eet.com/">EE 
+                              TIMES</A><BR>&nbsp;<A 
+                              href="http://www.eetasia.com/">EE TIMES 
+                              ASIA</A><BR>&nbsp;<A 
+                              href="http://www.eetchina.com/">EE TIMES 
+                              CHINA</A><BR>&nbsp;<A 
+                              href="http://www.eetimes.fr/">EE TIMES 
+                              FRANCE</A><BR>&nbsp;<A 
+                              href="http://www.eetimes.de/">EE TIMES 
+                              GERMANY</A><BR>&nbsp;<A 
+                              href="http://www.eetindia.com/">EE TIMES 
+                              INDIA</A><BR>&nbsp;<A 
+                              href="http://www.eetimes.jp/">EE TIMES 
+                              JAPAN</A><BR>&nbsp;<A 
+                              href="http://www.eetkorea.com/">EE TIMES 
+                              KOREA</A><BR>&nbsp;<A 
+                              href="http://www.eettaiwan.com/">EE TIMES 
+                              TAIWAN</A><BR>&nbsp;<A 
+                              href="http://www.eetuk.com/">EE TIMES 
+                              UK</A><BR><BR></SPAN>&nbsp;<SPAN class=nnType>Web 
+                              Sites</SPAN><BR><SPAN class=nnLink>&nbsp;• <A 
+                              href="http://www.audiodesignline.com/">Audio 
+                              DesignLine</A><BR>&nbsp;• <A 
+                              href="http://www.automotivedesignline.com/">Automotive 
+                              DesignLine</A><BR>&nbsp;• <A 
+                              href="http://www.eetimescareers.com/">Career 
+                              Center</A><BR>&nbsp;• <A 
+                              href="http://www.commsdesign.com/;jsessionid=LVHVK2HOFA2SYQSNDLRCKHSCJUNN2JVN">CommsDesign</A><BR>&nbsp;• 
+                              <A 
+                              href="http://www.mwee.com/">Microwave</A><BR>&nbsp; 
+                              &nbsp; <A 
+                              href="http://www.mwee.com/">Engineering</A><BR>&nbsp;• 
+                              <A 
+                              href="http://www.deepchip.com/">Deepchip.com</A><BR>&nbsp;• 
+                              <A href="http://www.us.design-reuse.com/">Design 
+                              &amp; Reuse</A><BR>&nbsp;• <A 
+                              href="http://www.digitaltvdesignline.com/">Digital 
+                              TV</A><BR>&nbsp; &nbsp; <A 
+                              href="http://www.digitaltvdesignline.com/">DesignLine</A><BR>&nbsp;• 
+                              <A href="http://www.dspdesignline.com/">DSP 
+                              DesignLine</A><BR>&nbsp;• <A 
+                              href="http://www.edadesignline.com/;jsessionid=LVHVK2HOFA2SYQSNDLRCKHSCJUNN2JVN">EDA 
+                              DesignLine</A><BR>&nbsp;• <A 
+                              href="http://www.embedded.com/">Embedded.com</A><BR>&nbsp;• 
+                              <A 
+                              href="http://www.edtnscandinavia.com/">Elektronik 
+                              i Norden</A><BR>&nbsp;• <A 
+                              href="http://www.greensupplyline.com/;jsessionid=LVHVK2HOFA2SYQSNDLRCKHSCJUNN2JVN">Green 
+                              SupplyLine</A><BR>&nbsp;• <A 
+                              href="http://www.industrialcontroldesignline.com/">Industrial 
+                              Control</A><BR>&nbsp; &nbsp; <A 
+                              href="http://www.industrialcontroldesignline.com/">DesignLine</A><BR>&nbsp;• 
+                              <A href="http://www.planetanalog.com/">Planet 
+                              Analog</A><BR>&nbsp;• <A 
+                              href="http://www.mobilehandsetdesignline.com/">Mobile 
+                              Handset</A><BR>&nbsp; &nbsp; <A 
+                              href="http://www.mobilehandsetdesignline.com/">DesignLine</A><BR>&nbsp;• 
+                              <A 
+                              href="http://www.networksystemsdesignline.com/">Network 
+                              Systems</A><BR>&nbsp; &nbsp; <A 
+                              href="http://www.networksystemsdesignline.com/">DesignLine</A><BR>&nbsp;• 
+                              <A 
+                              href="http://www.powermanagementdesignline.com/">Power 
+                              Management</A><BR>&nbsp; &nbsp; <A 
+                              href="http://www.powermanagementdesignline.com/">DesignLine</A><BR>&nbsp;• 
+                              <A 
+                              href="http://www.pldesignline.com/;jsessionid=LVHVK2HOFA2SYQSNDLRCKHSCJUNN2JVN">Programmable 
+                              Logic</A><BR>&nbsp; &nbsp; <A 
+                              href="http://www.pldesignline.com/;jsessionid=LVHVK2HOFA2SYQSNDLRCKHSCJUNN2JVN">DesignLine</A><BR>&nbsp;• 
+                              <A href="http://www.videsignline.com/">Video | 
+                              Imaging</A><BR>&nbsp; &nbsp; <A 
+                              href="http://www.videsignline.com/">DesignLine</A><BR>&nbsp;• 
+                              <A 
+                              href="http://www.wirelessnetdesignline.com/">Wireless 
+                              Net</A><BR>&nbsp; &nbsp; <A 
+                              href="http://www.wirelessnetdesignline.com/">DesignLine</A><BR><BR></SPAN></TD></TR><!-- ELECTRONICS GROUP SITES -->
+                          <TR>
+                            <TD class=tdHeader>ELECTRONICS GROUP SITES</TD></TR>
+                          <TR>
+                            <TD vAlign=top align=left><!-- ELECTRONICS GROUP SITES --><SPAN 
+                              class=nnLink>&nbsp;• <A 
+                              href="http://cmpmedia.globalspec.com/"><FONT 
+                              color=#cc0000>NEW!</FONT> 
+                              SpecSearch</A><BR>&nbsp;• <A 
+                              href="http://www.eeproductcenter.com/">eeProductCenter</A><BR>&nbsp;• 
+                              <A 
+                              href="http://www.my-esm.com/;jsessionid=LVHVK2HOFA2SYQSNDLRCKHSCJUNN2JVN">Electronics 
+                              Supply &amp;</A><BR>&nbsp; &nbsp; <A 
+                              href="http://www.my-esm.com/;jsessionid=LVHVK2HOFA2SYQSNDLRCKHSCJUNN2JVN">Manufacturing</A><BR>&nbsp;• 
+                              <A 
+                              href="http://www.eetimes.com/calendar;jsessionid=LVHVK2HOFA2SYQSNDLRCKHSCJUNN2JVN">Conferences</A><BR>&nbsp; 
+                              &nbsp; <A 
+                              href="http://www.eetimes.com/calendar;jsessionid=LVHVK2HOFA2SYQSNDLRCKHSCJUNN2JVN">and 
+                              Events</A><BR>&nbsp;• <A 
+                              href="http://www.esmchina.com/">Electronics Supply 
+                              &amp;</A><BR>&nbsp; &nbsp; <A 
+                              href="http://www.esmchina.com/">Manufacturing--China</A><BR>&nbsp;• 
+                              <A 
+                              href="http://www.electronics-express.com/">Electronics 
+                              Express</A><BR>&nbsp;• <A 
+                              href="http://www.techonline.com/learning/webinar/">Webinars</A><BR></SPAN></TD></TR></TBODY></TABLE><BR><!-- leftToc3.html -->
+                        <TABLE cellSpacing=0 cellPadding=0 width=184 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD vAlign=top align=left bgColor=#ffffcc><!-- DESIGN LIBRARY BUTTON -->
+                              <CENTER><A 
+                              href="http://www.eet.com/designlibrary"><IMG 
+                              height=101 
+                              src="Embedded_com - Approximating CANopen_files/deslib_button.gif" 
+                              width=134 border=0></CENTER><BR><BR><!--This has been discontinued
+CMP PRODUCT CATALOGS
+ <table border="0" cellpadding="0" cellspacing="0" width="184">
+ <TR>
+  <TD><a href="/directories"><IMG SRC="http://i.cmpnet.com/embedded/redesign/prod_cat.gif" ALT="Product Catalogs" WIDTH="184" HEIGHT="19" BORDER="0" VSPACE="1"></a></TD>
+ </TR>
+ <TR>
+  <TD BGCOLOR="#FFFFCC">
+<CENTER>
+
+<FONT FACE="verdana, arial, sans-serif" SIZE="1">
+<BR> <CENTER> <A HREF="/directories/embedded/motorola2003/index.html"><IMG SRC="http://i.cmpnet.com/embedded/db_area/motorola2003/gifs/mot_home.gif" ALT="Motorola Smart Networks Resource Guide 2003" BORDER="0"> <br clear="all">
+Motorola Smart Networks Resource Guide 2003</A></CENTER>
+<BR>
+
+</FONT>
+  </TD>
+ </TR>
+ </table>
+End CMP PRODUCT CATALOGS
+--><!-- Network Resources -->
+                              <TABLE cellSpacing=0 cellPadding=0 width=184 
+                              border=0>
+                                <TBODY>
+                                <TR>
+                                <TD vAlign=top align=middle bgColor=#ffffcc><IMG 
+                                height=19 
+                                src="Embedded_com - Approximating CANopen_files/nr_header.gif" 
+                                border=0 wdth="184"> </TD></TR>
+                                <TR>
+                                <TD vAlign=top align=middle bgColor=#ffffcc><!-- Job Search --><!-- <form action="http://jobs.theworkcircuit.com/wc/ors_jsearch.p_adv_search" method="post" name="search">
+<a href="http://jobs.theworkcircuit.com"><img src="http://i.cmpnet.com/embedded/redesign/nr_jobs.gif" width="184" height="13" border="0" alt="International Job Search"></a>
+&nbsp; &nbsp; <input type="text" name="p_keyword" value="" size="15" maxlength="50">
+<input type="image" name="button" src="http://i.cmpnet.com/embedded/redesign/go.gif" width="17" height="17" border="0"></form> --><!-- e-cyclopedia Search --><!-- removed 7/7/2003 --><!-- <form method="GET" action="/leftResources/encycSearch.jhtml">
+<a href="http://www.eetnetwork.com/encyclopedia"><img src="http://i.cmpnet.com/embedded/redesign/nr_ecyclo.gif" width="184" height="13" border="0" alt="eCyclopedia"></a>
+&nbsp; &nbsp; <input name="term" size="15" type="text">
+<input type="image" src="http://i.cmpnet.com/embedded/redesign/go.gif" width="17" height="17" border="0" ALT="Search"></form> --><!-- eLibrary Search -->
+                                <FORM action=/leftResources/eLibrarySearch.jhtml 
+                                method=get><A 
+                                href="http://edtn.bitpipe.com/"><IMG height=13 
+                                alt=eLibrary 
+                                src="Embedded_com - Approximating CANopen_files/nr_library.gif" 
+                                width=184 border=0></A><BR><INPUT type=hidden 
+                                value=eet name=site> <INPUT type=hidden 
+                                value=bpres name=cp> <INPUT type=hidden 
+                                value=site_abbrev:edtn name=qp> <INPUT 
+                                type=hidden value=1 name=st> <INPUT type=hidden 
+                                value=bpres name=cr> <INPUT type=hidden 
+                                value=trm name=ct> <INPUT type=hidden 
+                                value=bporg name=co> &nbsp; &nbsp; <INPUT 
+                                size=15 name=qt> <INPUT id=elibrGoButton 
+                                type=image height=17 alt=Search width=17 
+                                src="Embedded_com - Approximating CANopen_files/go.gif" 
+                                border=0> </FORM><!-- NetSeminar Search --><!-- removed 7/7/2003 --><!-- <form action="/leftResources/seminarSearch.jhtml" METHOD=POST>
+<a href="http://www.eet.com/netseminar.html"><img src="http://i.cmpnet.com/embedded/redesign/nr_netsem.gif" width="184" height="19" border="0" alt="Online Seminars"></a>
+&nbsp; &nbsp; <input type=text size=15 name=generalKeyword maxlength="35" value="">
+<input type="image" name="SEARCH" ALT="Search" src="http://i.cmpnet.com/embedded/redesign/go.gif" width="17" height="17" border="0"><p>
+</form> --></TD></TR></TBODY></TABLE><IMG 
+                              height=10 
+                              src="Embedded_com - Approximating CANopen_files/spacer.gif" 
+                              width=184 border=0> <!-- NEWSLETTER BUTTON -->
+                              <CENTER><A 
+                              href="http://www.eetimes.com/newsletter"><IMG 
+                              height=99 
+                              src="Embedded_com - Approximating CANopen_files/newsletter_left.gif" 
+                              border=0 
+                          wdth="134"></A></CENTER><BR><BR></TD></TR></TBODY></TABLE>
+                        <P></P></TD></TR>
+                    <TR>
+                      <TD bgColor=#666699>&nbsp;</TD>
+                      <TD colSpan=2>&nbsp;</TD></TR>
+                    <TR>
+                      <TD vAlign=top align=middle colSpan=3><FONT 
+                        face=verdana,arial size=1><A 
+                        href="http://www.cmpnet.com/delivery/copyright.html">Copyright 
+                        © 2006 CMP Media LLC</A><BR><A 
+                        href="http://www.cmpnet.com/delivery/privacy.html">Privacy 
+                        Statement</A><BR><A 
+                        href="http://www.cmp.com/delivery/privacy.html#california">Your 
+                        California Privacy Rights</A><BR><A 
+                        href="http://www.cmp.com/delivery/terms.html">Terms of 
+                        Service</A></FONT> 
+            </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD>
+          <TD vAlign=top><!-- BODY -->
+            <TABLE cellSpacing=0 cellPadding=0 width=575>
+              <TBODY>
+              <TR>
+                <TD vAlign=top align=left width=575 bgColor=#ffffff>
+                  <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD colSpan=2>&nbsp;</TD></TR>
+                    <TR>
+                      <TD vAlign=top align=left width=18 bgColor=#ffffff><IMG 
+                        height=1 
+                        src="Embedded_com - Approximating CANopen_files/spacer.gif" 
+                        width=18> </TD>
+                      <TD vAlign=top align=left width=557 
+                        bgColor=#ffffff><LINK 
+                        href="Embedded_com - Approximating CANopen_files/style.css" 
+                        type=text/css rel=stylesheet><!-- headline xxx-->
+                        <H2><FONT face=verdana,arial>Approximating 
+                        CANopen</FONT></H2><!-- /headline --><!-- sub head --><!-- /sub head -->
+                        <TABLE cellSpacing=0 cellPadding=0 width="100%" 
+border=0>
+                          <TBODY>
+                          <TR>
+                            <TD vAlign=top align=left colSpan=2><!-- author(s) --><FONT 
+                              face=verdana,arial size=2>By Olaf Pfeiffer</FONT> <!-- /author(s) --></TD></TR>
+                          <TR>
+                            <TD vAlign=top align=left><!-- site --><FONT 
+                              face=verdana,arial size=2><B><!-- SITE LINK --><!-- remove http:// substring (if present) from the url --><A 
+                              href="http://www.embedded.com/" 
+                              target=_blank>Embedded Systems Design </A><!-- /SITE LINK --></B></FONT><!-- /site --><BR><!-- date --><FONT 
+                              face=verdana,arial size=2>(08/06/03, 20:00:00 PM 
+                              EDT)</FONT><BR><!-- /date --></TD>
+                            <TD vAlign=bottom align=right><!-- email and print story -->
+                              <SCRIPT language=javascript>
+<!--
+function launcher(art_id) {
+  uri = "/article/emailBox.jhtml?articleID=" + art_id;
+  window.open(uri,"","toolbar=no,scrollbars=auto,location=no,status=no,width=750,height=600,resizable=1");
+}
+//-->
+</SCRIPT>
+                              <IMG 
+                              src="Embedded_com - Approximating CANopen_files/sendprintreprints.gif" 
+                              useMap=#sendprintdiscuss border=0> <MAP 
+                              name=sendprintdiscuss><AREA 
+                                title="Print This Story" shape=RECT 
+                                alt="Print This Story" coords=2,2,140,20 
+                                href="http://www.embedded.com/shared/printableArticle.jhtml?articleID=13000313"><AREA 
+                                title="Send As Email" shape=RECT 
+                                alt="Send As Email" coords=2,20,140,34 
+                                href="javascript:launcher(13000313)"><AREA 
+                                title="Discuss This Story" shape=RECT 
+                                alt=Reprints coords=2,34,140,52 
+                                href="http://www.cmpreprints.com/faxback.jhtml"><AREA 
+                                shape=RECT coords=0,0,0,0></MAP><!-- end email and print story --></TD></TR>
+                          <TR>
+                            <TD vAlign=top align=left 
+                          colSpan=2>&nbsp;</TD></TR></TBODY></TABLE>
+                        <TABLE style="MARGIN-TOP: -6px; POSITION: relative" 
+                        cellPadding=10 align=right>
+                          <TBODY>
+                          <TR>
+                            <TD id=main_cell vAlign=top>
+                              <FORM name=polling 
+                              action=http://www.embedded.com/showArticle.jhtml?articleID=13000313&amp;_DARGS=/article/rating/showPoll.jhtml 
+                              method=post>
+                              <TABLE cellSpacing=0 cellPadding=0 border=0>
+                                <TBODY>
+                                <TR>
+                                <TD id=html vAlign=top align=right width="100%">
+                                <TABLE cellSpacing=0 cellPadding=0 width="100%" 
+                                border=0>
+                                <TBODY>
+                                <TR vAlign=top>
+                                <TD id=top_cell colSpan=7></TD></TR>
+                                <TR vAlign=top>
+                                <TD id=first_cell rowSpan=5></TD>
+                                <TD class=gold_text align=middle 
+                                colSpan=5><STRONG>Rate this 
+article</STRONG></TD>
+                                <TD id=first_cell rowSpan=5></TD></TR>
+                                <TR vAlign=top>
+                                <TD id=middle_cell align=middle 
+                                colSpan=5></TD></TR>
+                                <TR vAlign=top>
+                                <TD align=middle colSpan=5><IMG height=8 
+                                src="Embedded_com - Approximating CANopen_files/left_arrow.gif" 
+                                width=8> <SPAN 
+                                class=better_worse><STRONG>WORSE</STRONG></SPAN> 
+                                <SPAN class=better_worse><STRONG>| BETTER <IMG 
+                                height=8 
+                                src="Embedded_com - Approximating CANopen_files/right_arrow.gif" 
+                                width=8></STRONG></SPAN></TD></TR>
+                                <TR vAlign=top>
+                                <TD align=middle><INPUT class=side_form_text1 
+                                id=radio1 type=radio value=1 name=answer></TD>
+                                <TD align=middle><INPUT class=side_form_text2 
+                                id=radio2 type=radio value=2 name=answer></TD>
+                                <TD align=middle><INPUT class=side_form_text3 
+                                id=radio3 type=radio value=3 name=answer></TD>
+                                <TD align=middle><INPUT class=side_form_text4 
+                                id=radio4 type=radio value=4 name=answer></TD>
+                                <TD align=middle><INPUT class=side_form_text5 
+                                id=radio5 type=radio value=5 
+                                name=answer></TD></TR>
+                                <TR vAlign=top>
+                                <TD class=side_form_text 
+                                align=middle><STRONG>1</STRONG></TD>
+                                <TD class=side_form_text 
+                                align=middle><STRONG>2</STRONG></TD>
+                                <TD class=side_form_text 
+                                align=middle><STRONG>3</STRONG></TD>
+                                <TD class=side_form_text 
+                                align=middle><STRONG>4</STRONG></TD>
+                                <TD class=side_form_text 
+                                align=middle><STRONG>5</STRONG></TD></TR>
+                                <TR vAlign=top>
+                                <TD id=first_cell></TD>
+                                <TD id=form_cell align=middle colSpan=5></TD>
+                                <TD id=first_cell></TD></TR>
+                                <TR vAlign=top>
+                                <TD id=first_cell></TD>
+                                <TD class=side_form_text align=middle 
+                                colSpan=5><INPUT type=image alt=Submit 
+                                src="Embedded_com - Approximating CANopen_files/submit_courses_button.jpg" 
+                                value=Submit name=Submit> </TD>
+                                <TD 
+                                id=first_cell></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM></TD></TR></TBODY></TABLE><FONT 
+                        face=verdana,arial size=2><STORY>
+                        <DIV 
+                        class=targetlink><!-- article body --><!-- BODY --><FONT 
+                        face=verdana size=2><FONT face=verdana color=#003366 
+                        size=2><B>The CAN standard, popular in automotive 
+                        applications, defines a simple broadcast serial network 
+                        that works well for real-time short range 
+                        communications. But there are few rules at the upper 
+                        layers. Here's an easy way to keep proprietary 
+                        application-layer CAN protocols compatible with an open 
+                        standard. </B></FONT>
+                        <P>With more and more microcontrollers including 
+                        controller area network (CAN) interfaces on chip, such 
+                        networks are softening the prejudice that CAN is 
+                        primarily an automotive network. CAN has a way to go 
+                        before it's "developer-friendly." In this article, 
+                        you'll learn some of the pitfalls and trade-offs of 
+                        using full versions of application layers on top of CAN 
+                        and the advantages of starting off "small" with 
+                        MicroCANopen. 
+                        <P><FONT face=Verdana color=#003366 size=3><B>No CAN 
+                        do?</B></FONT><BR>Although CAN provides a reliable 
+                        communication channel, the application developer still 
+                        must perform a substantial network design to make a CAN 
+                        application work. Many details are left to the 
+                        higher-layer (or sometimes application-layer) CAN 
+                        protocol of the application developer's choosing. 
+                        <P>For example, while CAN messages have an identifier 
+                        field (CAN-ID) and a data field of up to 8 bytes, it's 
+                        not specified when and how to use that identifier. The 
+                        endianness of the data field is also left unspecified, 
+                        an ambiguity that may lead one system when communicating 
+                        multibyte words to assume that the LSB comes first, 
+                        while another system assumes the MSB comes first. 
+                        <P>Several standardized higher-layer CAN protocols are 
+                        available, such as CANKingdom, CANopen, DeviceNet, 
+                        J1939, and Smart Distributed System. Most of these 
+                        protocols were designed for specific applications, 
+                        including use in trucks or industrial automation. 
+                        <P>When implementing a CAN-based application, developers 
+                        have to make a choice to either use an existing, 
+                        standardized higher-layer CAN protocol or invent a 
+                        proprietary protocol. Developers working on systems 
+                        consisting of only a few nodes and a few network 
+                        variables fear that a higher-layer CAN protocol is 
+                        overkill and has a large learning curve. On the other 
+                        hand, developing and maintaining an inhouse standard can 
+                        be expensive, especially considering the lack of 
+                        development tools. Many monitors, analyzers, 
+                        configurators, and other tools available support the 
+                        standardized higher-layer protocols. 
+                        <P>For embedded applications that don't require all the 
+                        functionality of a "full-grown" higher-layer CAN 
+                        protocol, CANopen is a popular choice. One of the 
+                        strongest features of CANopen is the "openness," which 
+                        enables you to implement only the functionality required 
+                        by your particular application. You can even customize 
+                        and optimize the communication to your needs. 
+                        <P><FONT face=Verdana color=#003366 
+                        size=3><B>MicroCANopen</B></FONT><BR>For those engineers 
+                        who aren't yet ready to use CANopen proper, the 
+                        alternative is MicroCANopen. MicroCANopen isn't an 
+                        existing standard—it's a concept. With MicroCANopen, you 
+                        don't shoot for full CANopen compliance; you just adopt 
+                        the basic ideas of CANopen to your own network layout to 
+                        get a quick start. If your design requires more complex 
+                        CANopen features (or full compliance) in the future, you 
+                        won't need to reinvent your system as the basics are 
+                        already in place and compatible. 
+                        <CENTER>
+                        <TABLE>
+                          <TBODY>
+                          <TR>
+                            <TD><!-- http://as.cmpnet.com/html.ng/affiliate=embedded&pagepos=sec&site=electronics&country=peru&server=atg&target=/showArticle.jhtml --><A 
+                              href="http://ad.doubleclick.net/jump/N3442.embedded/B1775758;sz=336x280;ord=baKpKsl,bcuxtwhrsRjh?"><IMG 
+                              height=280 alt=www.mentor.com/embedded 
+                              src="Embedded_com - Approximating CANopen_files/esd_ocid_1520-336x280-.gif" 
+                              width=336 border=0></A><IMG height=1 
+                              src="C:\Documents and Settings\Gino Isla\My Documents\Embedded Reference\CAN and CANOpen\Embedded_com - Approximating CANopen_files\dcfc(3).gif" 
+                              width=1 border=0> </TD></TR></TBODY></TABLE></CENTER>
+                        <P>MicroCANopen is an "entry-level" alternative to 
+                        CANopen that works well in systems with embedded 
+                        applications with limited resources. Code and data sizes 
+                        depend on your microcontroller and the functionality you 
+                        want. On an 8051 with on-chip CAN interface, 
+                        MicroCANopen requires as little as 4KB of code and some 
+                        200 bytes of RAM; compare this to the 50KB or more of 
+                        code and 1KB of RAM for "full-featured" CANopen 
+                        implementations. 
+                        <P><B>Table 1: Comparison of CANopen and MicroCANopen 
+                        features</B> 
+                        <P>
+                        <TABLE cellSpacing=0 cellPadding=5 width=400 border=0>
+                          <TBODY>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana 
+size=2></FONT></TD>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2><B>CANopen</B> </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2><B>MicroCANopen</B> </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>Data 
+                              rates (bps) </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>10k, 20k, 
+                              50k, 125k, 250k, 500k, 800k, 1M </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Same 
+                              </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>Max. 
+                              nodes per segment </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>127 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Same 
+                              </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>Network 
+                              management </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Typically 
+                              using a master/manager </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>No master 
+                              or manager required </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>Node 
+                              guarding/heartbeat </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Node 
+                              guarding done by master or heartbeat monitoring by 
+                              any node </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>All nodes 
+                              produce heartbeat, can be monitored by 
+                              communication partners </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2>Configuration of nodes </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Nodes can 
+                              typically be configured via the network </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Nodes are 
+                              preconfigured, configuration cannot change during 
+                              operation </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>Object 
+                              Dictionary:<BR>ID entries </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2>Available, optional with ASCII string 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2>Available, <BR>32-bit IDs only 
+</FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>Object 
+                              Dictionary:<BR>Process data variables </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2>Available, often with multiple access (8/16 
+                              bit) </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Not 
+                              available in OD, only in process data messages 
+                              </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>Object 
+                              Dictionary:<BR>Process data configuration 
+                            </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Available 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Not 
+                              available </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>Object 
+                              Dictionary:<BR>Support of long variables 
+</FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Supports 
+                              variables and data fields of any length </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>A single 
+                              OD entry may not be longer than 4 bytes 
+                          </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>Mapping 
+                              of multiple variables into one CAN message 
+                            </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Supports 
+                              dynamic remapping of variables into CAN messages 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>One 
+                              fixed, preconfigured mapping </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2>Triggering methods of CAN messages with 
+                              process data </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Any 
+                              combination of time-based, polled, 
+                              change-of-state, synchronized, or manufacturer 
+                              specific. Inhibit time supported. </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2>Time-based and/or change-of-state only. 
+                              Inhibit time supported. 
+</FONT></TD></TR></TBODY></TABLE>
+                        <P>Table 1 compares the features of MicroCANopen and 
+                        CANopen. Code examples for MicroCANopen are available at 
+                        <A 
+                        href="http://www.microcanopen.com/">http://www.microcanopen.com/</A>. 
+
+                        <P><FONT face=Verdana color=#003366 size=3><B>Basic 
+                        principles</B></FONT><BR>To implement a minimal 
+                        CANopen-like system, we need to address a few basic 
+                        parameters and limitations. Note that some items aren't 
+                        necessarily limitations of CANopen, but compromises we 
+                        made to achieve this "minimal" version of CANopen. 
+                        <P><B>Baud rate/bit timing:</B> All network nodes start 
+                        up with the same CAN bus baud rate. The baud rate used 
+                        in one system/application may be 10kbps, 20kbps, 50kbps, 
+                        125kkbps, 250kbps, 500kbps, 800kbps, or 1Mbps. 
+                        <P><B>Node-ID:</B> Each network node has a unique 
+                        Node-ID, and this ID is in the range of 1 to 127, 
+                        allowing for a total of 127 nodes in the system. This ID 
+                        must be assigned and known to each node before it gets 
+                        onto the live network. 
+                        <P><B>Byte ordering:</B> In multibyte variables, the 
+                        bytes are ordered by significance—lowest significant 
+                        byte comes first. 
+                        <P><B>Process data variables:</B> Each variable shared 
+                        via the network can contain 1 to 4 bytes. Note that 
+                        multiple variables can go into a single CAN message. 
+                        <P><B>Network management (NMT) master:</B> A regular 
+                        CANopen network would expect the presence of a CANopen 
+                        NMT master to actually start and monitor the nodes. In 
+                        deeply embedded applications where all nodes are 
+                        preconfigured and know what they need to do, a master 
+                        might not be required. In MicroCANopen we assume that no 
+                        master is present and that all nodes startup 
+                        automatically after power-up. 
+                        <P><B>PDO and SDO communication: </B>The major CANopen 
+                        communication types PDO (Process Data Object) and SDO 
+                        (Service Data Object) are both supported. An SDO channel 
+                        is used by a configuration tool or master for 
+                        point-to-point communication of configuration data. The 
+                        PDO channels contain process data and can be sent from 
+                        one node in the network to multple nodes in the network 
+                        (one-to-many, multicast). 
+                        <P><FONT face=Verdana color=#003366 size=3><B>Node 
+                        function</B></FONT><BR>Each MicroCANopen node implements 
+                        a minimal CANopen Object Dictionary. The Object 
+                        Dictionary (OD) of a regular CANopen implementation 
+                        holds all network variables that a node needs to receive 
+                        or transmit. Each entry implemented has a unique 16-bit 
+                        index and 8-bit sub-index value that identifies one 
+                        network variable in this CANopen node. Note: this 
+                        identifier is different from the CAN-ID, which 
+                        identifies a unique message on the bus. 
+                        <P><B>Table 2: CANopen Object Dictionary entries 
+                        implemented by MicroCANopen</B> 
+                        <P>
+                        <TABLE cellSpacing=0 cellPadding=5 width=400 border=0>
+                          <TBODY>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2><B>Index</B> </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2><B>Subindex</B> </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2><B>Description</B> </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>1000h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>00h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>32-bit 
+                              device type information, typically set to "generic 
+                              I/O" </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>1001h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>00h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>8-bit 
+                              error register </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>1018h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>00h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>8-bit 
+                              entry of "4"—number of subindexes in this record 
+                              </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>1018h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>01h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>32-bit 
+                              vendor ID </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>1018h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>02h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>32-bit 
+                              product code </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>1018h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>03h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>32-bit 
+                              revision number </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>1018h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>04h 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>32-bit 
+                              serial number (optional) 
+                        </FONT></TD></TR></TBODY></TABLE>
+                        <P>In MicroCANopen only the OD entries listed in Table 2 
+                        are implemented. The process data variables aren't 
+                        implemented in the OD; they're only available via the 
+                        process data messages listed further below. 
+                        <P>The main function of any CANopen implementation is to 
+                        receive and transmit messages. MicroCANopen nodes 
+                        produce and consume the following CAN messages: 
+                        <UL>
+                          <LI>Upon startup, each MicroCANopen node transmits a 
+                          boot-up message and continues to regularly transmit a 
+                          heartbeat message in the specified heartbeat time 
+                          interval. Other nodes can take this as an indication 
+                          of the current status of the transmitting node. 
+                          <LI>Read accesses to the OD are accepted and replied 
+                          to. This enables standardized CANopen configuration 
+                          tools or NMT to recognize a MicroCANopen node. 
+                          <LI>Up to four separate transmit messages with process 
+                          data can be triggered individually by a timer (every 
+                          <I>n</I> milliseconds) or automatically by a detected 
+                          change-of-state (COS) in the data to be transmitted. 
+                          <LI>Up to four separate receive messages with process 
+                          data can be received. </LI></UL><FONT face=verdana 
+                        color=#003366 size=3><B>Message 
+                        identifiers</B></FONT><BR>MicroCANopen and CANopen both 
+                        require the use of a CAN 2.0A-compliant physical 
+                        interface, which has an 11-bit identifier field. The 
+                        message identifiers used in the system are assigned in 
+                        accordance to the CANopen predefined connection set, 
+                        which embeds the node ID number into the identifier 
+                        field. To transmit, a MicroCANopen node uses the CAN-IDs 
+                        specified in Table 3. For example, the node with ID 3 
+                        would use CAN-ID 0x703 to transmit its boot-up message. 
+                        <P><B>Table 3: Message identifiers used to transmit</B> 
+                        <P>
+                        <TABLE cellSpacing=0 cellPadding=5 width=400 border=0>
+                          <TBODY>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2><B>CAN-ID</B> </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2><B>Used 
+                              for transmitting</B> </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>0x080 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Emergency 
+                              Message (optional) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>0x180 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Transmit 
+                              Process Data Message 1 (TPDO1) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>0x280 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Transmit 
+                              Process Data Message 2 (TPDO2) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>0x380 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Transmit 
+                              Process Data Message 3 (TPDO3) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>0x480 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Transmit 
+                              Process Data Message 4 (TPDO4) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>0x580 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Service 
+                              Data Response (SDO tx) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>0x700 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Boot-up 
+                              message and heartbeat </FONT></TD></TR></TBODY></TABLE>
+                        <P><B>Table 4: Message identifiers used to receive</B> 
+                        <P>
+                        <TABLE cellSpacing=0 cellPadding=5 width=400 border=0>
+                          <TBODY>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana 
+                              size=2><B>CAN-ID</B> </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2><B>Used 
+                              for receiving</B> </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>0x000 
+                              </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Network 
+                              Management Master Message (NMT) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>* 0x200 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Receive 
+                              Process Data Message 1 (RPDO1) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>* 0x300 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Receive 
+                              Process Data Message 2 (RPDO2) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>* 0x400 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Receive 
+                              Process Data Message 3 (RPDO3) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>* 0x500 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Receive 
+                              Process Data Message 4 (RPDO4) </FONT></TD></TR>
+                          <TR vAlign=top>
+                            <TD vAlign=top><FONT face=verdana size=2>0x600 + 
+                              Node-ID </FONT></TD>
+                            <TD vAlign=top><FONT face=verdana size=2>Service 
+                              Data Request (SDO rx) </FONT></TD></TR></TBODY></TABLE>
+                        <P>Table 4 shows the CAN-IDs a MicroCANopen node listens 
+                        for. The entries marked with "*" can be customized to 
+                        ensure that a node directly listens to the process data 
+                        message it needs to receive. So if we want the RPDO2 of 
+                        node 5 to directly consume TPDO1 of node 8, the CAN-ID 
+                        listened to would need to be changed from 0x305 (default 
+                        receive ID for RPDO2 of node 5) to 0x188 (transmit ID 
+                        for TPDO1 of node 8) 
+                        <P>A CANopen Network Management Master or generic 
+                        configuration tool would access a single node by using 
+                        the appropriate SDO <I>channel.</I> A channel consists 
+                        of two messages, one used for the SDO request from the 
+                        configuration tool to the node and one used for the SDO 
+                        response from the node back to the requester. To access 
+                        node 3, a configuration tool would use CAN-ID 0x603 and 
+                        would expect a response coming back using CAN-ID 0x583. 
+                        <P><IMG hspace=0 
+                        src="Embedded_com - Approximating CANopen_files/0309feat1fig1.gif" 
+                        border=0><BR clear=all><B>Figure 1: Vector CANalyzer 
+                        trace recording of power-up cycle </B>
+                        <P>Figure 1 shows a screenshot of a trace window with 
+                        CANopen messages. The trace recoding was made with 
+                        Vector's CANalyzer and shows the power-up cycle of 
+                        MicroCANopen node 3. After transmitting the boot-up 
+                        message, node 3 starts transmitting its heartbeat about 
+                        every 2.5 seconds. 
+                        <P>After receipt of the NMT master message "Start Node," 
+                        the MicroCANopen node starts transmitting the process 
+                        data messages with the IDs 0x183 and 0x283. 
+                        <P><IMG hspace=0 
+                        src="Embedded_com - Approximating CANopen_files/0309feat1fig2.gif" 
+                        border=0><BR clear=all><B>Figure 2: A possible mapping 
+                        of variables into the 8 data bytes of a CAN message </B>
+                        <P><FONT face=Verdana color=#003366 size=3><B>Message 
+                        contents</B></FONT><BR>Now that the CAN identifiers are 
+                        assigned, let's look at the required message contents. 
+                        The PDO messages are the easiest, as you may simply fill 
+                        them with one or multiple variables. Figure 2 shows how 
+                        the 8 bytes of a CAN message could be used in a PDO: 
+                        Bytes 1 and 2 contain the 8-bit variables A and B. Bytes 
+                        3 and 4 are used for the 16-bit variable C and bytes 5 
+                        and 6 are used for variable D. Bytes 7 and 8 remain 
+                        unused and aren't transmitted. 
+                        <P>In CANopen, many message types and conditions can 
+                        trigger the transmittal of a message. To achieve our 
+                        minimal MicroCANopen implementation, though, we limited 
+                        ourselves to the messages related to boot-up/heartbeat, 
+                        service data, and process data: 
+                        <P><B>Boot-up and heartbeat message:</B> As soon as the 
+                        internal initialization is completed, our MicroCANopen 
+                        nodes transmit their boot-up message followed by a 
+                        continuous heartbeat. The heartbeat frequency is 
+                        configurable and is typically in the area of hundreds of 
+                        milliseconds to seconds, depending on application 
+                        requirements. The timer resolution is 1ms. 
+                        <P><B>Service data:</B> A master or configuration tool 
+                        initiates any SDO communication. The MicroCANopen nodes 
+                        may not trigger SDO communication by themselves, only in 
+                        response to a request. Any SDO request directed at a 
+                        node requires a response: either the correct SDO 
+                        response or an appropriate abort message. 
+                        <P><B>Process data:</B> CANopen supports a multitude of 
+                        triggering mechanisms for the transmittal of PDO 
+                        messages containing the process data. Out of the 
+                        available mechanisms MicroCANopen nodes support 
+                        event-timer transmission and event-change (or change of 
+                        state [COS]) transmission. In event timer mode a PDO is 
+                        transmitted every <I>n</I> milliseconds. In event change 
+                        mode, the PDO is transmitted whenever a change of state 
+                        in any of the data to be transmitted is detected. 
+                        <P>To prevent a high-frequency change of state from 
+                        continually triggering data messages, the MicroCANopen 
+                        nodes support the <I>inhibit time</I> feature of 
+                        CANopen. An interval timer prohibits a change of state 
+                        PDO from being transmitted again until at least a 
+                        minimum period of time has elapsed. 
+                        <P><FONT face=Verdana color=#003366 
+                        size=3><B>Implementation details</B></FONT><BR>In 
+                        MicroCANopen, we have to deal with two software 
+                        communication interfaces: a CAN driver that provides us 
+                        with some minimal functionality to receive and transmit 
+                        CAN messages and a user interface for the application. 
+                        <P><B>Hardware driver interface</B><BR>Due to the major 
+                        differences in the implementations of CAN controllers, 
+                        portability to different microcontrollers isn't easy. 
+                        For this implementation, we simply assume that the 
+                        drivers are taking care of all real-time issues 
+                        including the CAN interrupt service routine and provide 
+                        both a receive and a transmit queue. In order to avoid 
+                        making the CANopen communication a high priority within 
+                        the embedded system, MicroCANopen is implemented as a 
+                        background task that can be called from main. 
+                        <P><A 
+                        href="ftp://ftp.embedded.com/pub/2003/0309feat1list1.txt">Listing 
+                        1</A> shows the driver functions required by 
+                        MicroCANopen. You need the first two functions for 
+                        initialization of the hardware. In addition, the driver 
+                        must implement some sort of receive and transmit queue 
+                        for messages. These queues are accessed by the 
+                        <B>PullMessage</B> and <B>PushMessage</B> functions. 
+                        <P><B>Application interface</B><BR><A 
+                        href="ftp://ftp.embedded.com/pub/2003/0309feat1list2.txt">Listing 
+                        2</A> shows the functions provided for the application 
+                        interface. The <B>ProcessStack</B> must be called 
+                        frequently as background task (for instance calling it 
+                        from the while(1) loop in main). The only messages made 
+                        transparent to the application are those with process 
+                        data. All service messages are handled within 
+                        <B>ProcessStack</B> without additional interfacing to 
+                        the application. The <B>ReceivedPDO</B> function is a 
+                        call-back function. This means it must be implemented by 
+                        the user/application. The <B>ReceivedPDO</B> gets called 
+                        from within the stack whenever new process data arrives. 
+                        The default states that this function is called from 
+                        within <B>ProcessStac</B>k—meaning that an unpredictable 
+                        delay occurs from the time a message arrives until this 
+                        function actually gets called. 
+                        <P>Experienced users facing tougher real-time 
+                        requirements can modify the code and call this function 
+                        from within the interrupt service routine (ISR) 
+                        receiving the CAN messages. However, in this case you 
+                        should ensure that the code executed within the 
+                        call-back function is absolutely minimal as it will add 
+                        to the execution time of the ISR. 
+                        <P><FONT face=Verdana color=#003366 size=3><B>Debugging 
+                        and testing</B></FONT><BR>Several tools are available 
+                        for debugging and testing CANopen nodes. Besides monitor 
+                        and analysis tools, CANopen-specific tools to maintain 
+                        and access the Object Dictionary are very helpful. 
+                        CANeds, from Vector, is a helpful editor for CANopen 
+                        electronic data sheets and device configuration files 
+                        (EDS, DCF). These files specify which OD entries are 
+                        implemented by a particular node. Configuration tools, 
+                        analysis tools or NMT master implementations can use 
+                        this information to directly access the OD entries of 
+                        that particular node. 
+                        <P><FONT face=Verdana color=#003366 size=3><B>Upside 
+                        potential</B></FONT><BR>The communication implemented 
+                        within MicroCANopen allows the sharing of process data 
+                        among several CAN nodes in a CANopen manner. Data can be 
+                        transmitted on a preset frequency (say every <I>n</I> 
+                        milliseconds) or on change of state. MicroCANopen is 
+                        compatible enough with the standard CANopen protocols 
+                        that you can use off-the-shelf CANopen configuration 
+                        tools, monitors/analyzers, and master implementations 
+                        with it. 
+                        <P><B>Olaf Pfeiffer</B> holds a degree in computer 
+                        science from the Co-Operative University Karlsruhe, 
+                        Germany. His publications include multiple articles and 
+                        the book <I>Embedded Networking with CAN and 
+                        CANopen.</I> Olaf regularly conducts training classes 
+                        through the Embedded Systems Academy. Contact him at <A 
+                        href="mailto:opfeiffer@esacademy.com">opfeiffer@esacademy.com</A>. 
+
+                        <P><FONT face=Verdana color=#003366 
+                        size=3><B>Resources</B></FONT><BR>Home of MicroCANopen 
+                        and PCANopenMagic: <A 
+                        href="http://www.microcanopen.com/">http://www.microcanopen.com/</A> 
+                        <BR>The CAN in Automation web pages on CANopen: <A 
+                        href="http://www.canopen.org/canopen">http://www.canopen.org/canopen</A><BR>CANopen 
+                        introductory pages: <A 
+                        href="http://www.canopen.us/">http://www.canopen.us/</A><BR>Commercial 
+                        CANopen solutions: <A 
+                        href="http://www.vector-cantech.com/">http://www.vector-cantech.com/</A> 
+
+                        <P><!-- /BODY --><!-- PAGINATION  -->
+                        <P><!-- /PAGINATION --><!-- /article body --></P></DIV></STORY></FONT>
+                        <P><!-- author homepage link --><!-- <droplet src="/article/author_link.jhtml"></droplet> --><!-- /author homepage link --><!-- related products box --><BR>
+                        <TABLE cellSpacing=0 cellPadding=0 width=500 
+                        align=center border=0>
+                          <TBODY>
+                          <TR>
+                            <TD><!-- NO RELATED PRODUCTS --></TD></TR></TBODY></TABLE><!-- /related products box --><!-- related links --><!-- /related links --><!-- free subscription form -->
+                        <STYLE>.subform {
+	FONT: 10px verdana,helvetica,sans-serif; WIDTH: 110px; COLOR: #000000
+}
+.smaller {
+	FONT: 10px arial,helvetica,sans-serif; COLOR: #000000
+}
+.smaller2 {
+	FONT: bold 11px verdana,helvetica,sans-serif; COLOR: #ffffff
+}
+</STYLE>
+
+                        <FORM 
+                        action=https://www.embeddedsystemsdesignsubscribe.com/New 
+                        method=get target=_new><INPUT type=hidden value=PREPOP 
+                        name=formname> <INPUT type=hidden value=EMBED 
+                        name=keycode> 
+                        <TABLE borderColor=#000000 cellSpacing=0 cellPadding=1 
+                        width=400 bgColor=#000033 border=0>
+                          <TBODY>
+                          <TR>
+                            <TD class=smaller2 vAlign=top align=left 
+                            bgColor=#666699 colSpan=5>Free Subscription to 
+                              Embedded Systems Design</TD></TR>
+                          <TR bgColor=#aaaadd>
+                            <TD class=smaller vAlign=bottom align=left>First 
+                              Name</TD>
+                            <TD><INPUT class=subform name=FNAME></TD>
+                            <TD class=smaller vAlign=bottom align=left>Last 
+                              Name</TD>
+                            <TD><INPUT class=subform size=10 name=LNAME></TD></TR>
+                          <TR bgColor=#aaaadd>
+                            <TD class=smaller vAlign=bottom align=left>Company 
+                              Name</TD>
+                            <TD><INPUT class=subform size=10 name=COMPANY></TD>
+                            <TD class=smaller vAlign=bottom 
+align=left>Title</TD>
+                            <TD><INPUT class=subform size=10 name=TITLE></TD></TR>
+                          <TR bgColor=#aaaadd>
+                            <TD class=smaller vAlign=bottom align=left>Email 
+                              address</TD>
+                            <TD><INPUT class=subform size=10 name=EMAIL></TD>
+                            <TD class=smaller vAlign=bottom align=middle 
+                            colSpan=2><INPUT type=image 
+                              src="Embedded_com - Approximating CANopen_files/blue_button_continue.gif"> 
+                            </TD></TR></TBODY></TABLE></FORM><!-- /free subscription form -->
+                        <P><!-- feedback form --><!-- feedback form box not checked --><!-- /feedback form --><!-- resource center (commented out when the free subscription form was added - PF 07.14.2003)
+<droplet src="/article/resource_center.jhtml"></droplet>
+ /resource center --></P></FONT></TD></TR></TBODY></TABLE></TD><!-- RIGHT NAV --></TR><!-- SPONSORED LINKS & BOTTOM AD -->
+              <TR>
+                <TD vAlign=top align=middle colSpan=2><BR clear=all>
+                  <CENTER>
+                  <TABLE cellSpacing=0 cellPadding=0 width=469 border=0>
+                    <TBODY>
+                    <TR>
+                      <TD colSpan=5><IMG 
+                        src="Embedded_com - Approximating CANopen_files/em_top.gif" 
+                        border=0></TD></TR><!-- left border -->
+                    <TR>
+                      <TD width=1 bgColor=#000000 rowSpan=2><IMG 
+                        src="Embedded_com - Approximating CANopen_files/trans_spacer.gif" 
+                        width=1 border=0></TD><!-- spacer -->
+                      <TD width=5><IMG 
+                        src="Embedded_com - Approximating CANopen_files/trans_spacer.gif" 
+                        width=5 border=0></TD>
+                      <TD vAlign=top align=left width=457><FONT 
+                        face=verdana,arial size=1><A 
+                        href="http://links.industrybrains.com/click?sid=25&amp;rqctid=51&amp;pos=1&amp;lid=298091&amp;cid=7133&amp;pr=2&amp;tstamp=20061103182039&amp;url=http://www.digikey.com/scripts/dksearch/dksus.dll%3fKeyWordSearch%26site%3dus"><B>Search 
+                        Our Huge Selection of Electronic 
+                        Components</B></A><BR>Committed to product availability 
+                        and service, Digi-Key Corporation is an industry leader 
+                        in the distribution of quality, electronic components. 
+                        Search our wide database of over 750,000 parts from more 
+                        than 330 manufacturers! 
+                        <P><A 
+                        href="http://links.industrybrains.com/click?sid=25&amp;rqctid=51&amp;pos=2&amp;lid=410412&amp;cid=95084&amp;pr=2&amp;tstamp=20061103182039&amp;url=http://www.tektronix.com/design06fall/reg"><B>Tektronix 
+                        DesignInsight seminars: time running out</B></A><BR>Only 
+                        a few seats remain for these free seminars. Nov 8 in San 
+                        Diego, Nov 9 in Phoenix, Nov 14 in Dallas &amp;amp; 
+                        Sunnyvale, Nov 16 in Austin. Covers latest testing 
+                        techniques for Digital RF and serial data. Register 
+                        today &amp;amp; enter to win an oscilloscope. 
+                        <P><A 
+                        href="http://links.industrybrains.com/click?sid=25&amp;rqctid=51&amp;pos=3&amp;lid=339957&amp;cid=6858&amp;pr=2&amp;tstamp=20061103182039&amp;url=http://www.sgvsarc.com"><B>Flowcharts 
+                        from C/C++ code -- Free trial 
+                        download</B></A><BR>Understand C/C++ code in less time. 
+                        A new team member 'Inherited legacy code'. Get up to 
+                        speed faster with Crystal Flow for C/C++. 
+                        Code-formatting improves readability. Flowcharts are 
+                        integrated with code browser. Export flowcharts to Visio 
+
+                        <P><A 
+                        href="http://links.industrybrains.com/click?sid=25&amp;rqctid=51&amp;pos=4&amp;lid=381898&amp;cid=63420&amp;pr=2&amp;tstamp=20061103182039&amp;url=http://e-teknet.com/Promospec.htm"><B>Higher 
+                        Quality and Lower Cost PCB and PCB 
+                        Assembly</B></A><BR>Your one stop supplier for PCB, PCB 
+                        Assembly and thick film hybrids. 100% low price 
+                        guarantee, 100% quality warrantee and 100% ontime 
+                        Shipping Guarantee. 
+                        <P><A 
+                        href="http://links.industrybrains.com/click?sid=25&amp;rqctid=51&amp;pos=5&amp;lid=401665&amp;cid=78575&amp;pr=2&amp;tstamp=20061103182039&amp;url=http://www.myrfiq.com/"><B>RF 
+                        Genius? Find out with the RFIQ 
+                        Challenge.</B></A><BR>Tektronix and IEEE Communications 
+                        Magazine are hosting a series of online tests to uncover 
+                        the geniuses of the RF world. It's competition, with 
+                        prizes; including a trip to IMS '07 in Hawaii and 
+                        monthly Radio Shack gift card giveaways. Sign up now. 
+                        <P><!-- spacer --><A 
+                        href="http://www.industrybrains.com/cmpelectronics" 
+                        target=new>Click here to get your listing up.</A> 
+                        </FONT><BR><IMG height=1 
+                        src="Embedded_com - Approximating CANopen_files/trans_spacer.gif" 
+                        width=457 border=0></P></TD>
+                      <TD width=5><IMG 
+                        src="Embedded_com - Approximating CANopen_files/trans_spacer.gif" 
+                        width=5 border=0></TD><!-- right border -->
+                      <TD width=1 bgColor=#000000 rowSpan=2><IMG 
+                        src="Embedded_com - Approximating CANopen_files/trans_spacer.gif" 
+                        width=1 border=0></TD></TR><!-- bottom border -->
+                    <TR>
+                      <TD width=457 bgColor=#000000 colSpan=3><IMG height=1 
+                        src="Embedded_com - Approximating CANopen_files/trans_spacer.gif" 
+                        width=457 border=0></TD></TR></TBODY></TABLE></CENTER>
+                  <P>
+                  <CENTER><!-- http://as.cmpnet.com/html.ng/affiliate=embedded&pagepos=bottom&site=electronics&country=peru&server=atg&target=/showArticle.jhtml -->
+                  <SCRIPT type=text/javascript><!--
+google_ad_client = "pub-3090493805493308";
+google_ad_width = 468;
+google_ad_height = 60;
+google_ad_format = "468x60_as";
+google_ad_type = "text_image";
+google_ad_channel ="Embed_LeaderBoard_Bot";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "003399";
+google_color_text = "000000";
+google_color_url = "003399";
+//-->
+</SCRIPT>
+
+                  <SCRIPT 
+                  src="Embedded_com - Approximating CANopen_files/show_ads.js" 
+                  type=text/javascript>
+</SCRIPT>
+                  <IMG height=1 
+                  src="C:\Documents and Settings\Gino Isla\My Documents\Embedded Reference\CAN and CANOpen\Embedded_com - Approximating CANopen_files\dcfc(4).gif" 
+                  width=1 border=0> 
+      </CENTER></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+      <CENTER></CENTER><!-- for cookie tracking reports --><IMG height=1 alt="" 
+      src="Embedded_com - Approximating CANopen_files/user.gif" width=5 
+      border=0> <!-- custom ad position for intellitext -->
+      <CENTER><!-- Ad --><!-- http://as.cmpnet.com/html.ng/affiliate=embedded&pagepos=intellitxt&site=electronics&country=peru&server=atg&target=/showArticle.jhtml --><!-- start Vibrant Media IntelliTXT Tooltip style sheet -->
+      <STYLE type=text/css>.iTt {
+	BORDER-RIGHT: black 1px solid; PADDING-RIGHT: 2px; BORDER-TOP: black 1px solid; PADDING-LEFT: 2px; FONT-WEIGHT: normal; FONT-SIZE: 11px; PADDING-BOTTOM: 2px; BORDER-LEFT: black 1px solid; COLOR: black; PADDING-TOP: 2px; BORDER-BOTTOM: black 1px solid; FONT-STYLE: normal; FONT-FAMILY: Verdana, Arial, Helvetica; BACKGROUND-COLOR: lightyellow
+}
+</STYLE>
+<!-- end Vibrant Media IntelliTXT style sheet --><!-- start Vibrant Media IntelliTXT script section -->
+      <SCRIPT language=javascript 
+      src="Embedded_com - Approximating CANopen_files/front.asp"></SCRIPT>
+<!-- end Vibrant Media IntelliTXT script section --><IMG height=1 
+      src="C:\Documents and Settings\Gino Isla\My Documents\Embedded Reference\CAN and CANOpen\Embedded_com - Approximating CANopen_files\dcfc(5).gif" 
+      width=1 border=0> <!-- /Ad --></CENTER><!-- end custom ad position for intellitext --><!-- peel away coding --><!-- http://as.cmpnet.com/html.ng/affiliate=embedded&pagepos=toptile&site=electronics&country=peru&server=atg&target=/showArticle.jhtml --><A 
+      href="http://as.cmpnet.com/event.ng/Type=click&amp;FlightID=17681&amp;AdID=27494&amp;TargetID=2878&amp;Segments=1411,3108,3448,6025&amp;Targets=2625,2878,4798&amp;Values=34,46,51,63,77,85,91,100,140,265,304,309,442,451,646,659,1184,1255,1311,1716,1767,1785,1925,1970,2142,2299,2310,2329,2352,2678,2727,2767,2862,2942,3890,3904,4080&amp;RawValues=IP,66.77.24.210,&amp;Redirect=http://www.cmp.com" 
+      target=_parent><IMG alt="" 
+      src="Embedded_com - Approximating CANopen_files/iopsblank.gif" 
+      border=0></A><IMG height=1 
+      src="C:\Documents and Settings\Gino Isla\My Documents\Embedded Reference\CAN and CANOpen\Embedded_com - Approximating CANopen_files\dcfc(6).gif" 
+      width=1 border=0> </TR></TBODY></TABLE></CENTER></FONT></BODY></HTML>

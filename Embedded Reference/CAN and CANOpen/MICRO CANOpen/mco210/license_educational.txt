@@ -1,0 +1,65 @@
+MICROCANOPEN EDUCATIONAL LICENSE
+EMBEDDED SYSTEMS ACADEMY, INC.
+MicroCANopen, V2.10, ESA 12-JAN-05
+
+You should carefully read the following terms and conditions before using this
+software. Unless you have a different license agreement signed by Embedded
+Systems Academy, Inc. ("ESA") your use of this copy of MicroCANopen (the
+"SOFTWARE") indicates your acceptance of this license.
+
+If you do not agree to any of the terms of this License, then do not use this
+copy of the SOFTWARE.
+
+If the SOFTWARE is used for a project that is rented, leased, sold or otherwise
+traded (a "COMMERCIAL PROJECT") then the commercial license is required to use
+the SOFTWARE. If the SOFTWARE is used to develop knowledge of CANopen for a
+COMMERCIAL PROJECT then the commercial license is required.
+
+This is a free license, with the most important aspect being: YOU MAY NOT RENT,
+LEASE OR SELL THE SOFTWARE OR USE OR INCLUDE THE SOFTWARE IN COMMERCIAL
+PROJECTs.
+
+Installation and Use. You may install and use an unlimited number of copies of
+the SOFTWARE.
+Reproduction and Distribution. You may not reproduce and distribute copies of
+the SOFTWARE without written permission of ESA.
+
+All title and copyrights in and to the SOFTWARE (including but not limited to
+any images, photographs, animations, video, audio, music, text, and "applets"
+incorporated into the SOFTWARE), any accompanying printed materials, and any
+copies of the SOFTWARE are owned by ESA. The SOFTWARE is protected by copyright
+laws and international treaty provisions. Therefore, you must treat the SOFTWARE
+like any other copyrighted material. All copyright notices, this license, header
+comments and similar statments include with this distribution of the SOFTWARE
+must remain in the source code at all times. No claim must be made as to the
+ownership of the SOFTWARE.
+
+THIS SOFTWARE, AND ALL ACCOMPANYING FILES, DATA AND MATERIALS, ARE DISTRIBUTED
+"AS IS" AND WITH NO WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED. Good
+data processing procedure dictates that any program be thoroughly tested with
+non-critical data before relying on it. The user must assume the entire risk of
+using the program. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN ESSENTIAL PART OF
+THE AGREEMENT.
+
+IN NO EVENT SHALL ESA, OR ITS PRINCIPALS, SHAREHOLDERS, OFFICERS, EMPLOYEES,
+AFFILIATES, CONTRACTORS, SUBSIDIARIES, OR PARENT ORGANIZATIONS, BE LIABLE FOR
+ANY INCIDENTAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES WHATSOEVER RELATING TO THE
+USE OF THE SOFTWARE, OR YOUR RELATIONSHIP WITH ESA.
+
+IN ADDITION, IN NO EVENT DOES ESA AUTHORIZE YOU TO USE THE SOFTWARE IN
+APPLICATIONS OR SYSTEMS WHERE THE SOFTWARE'S FAILURE TO PERFORM CAN REASONABLY
+BE EXPECTED TO RESULT IN A SIGNIFICANT PHYSICAL INJURY, OR IN LOSS OF LIFE. ANY
+SUCH USE BY YOU IS ENTIRELY AT YOUR OWN RISK, AND YOU AGREE TO HOLD ESA HARMLESS
+FROM ANY CLAIMS OR LOSSES RELATING TO SUCH UNAUTHORIZED USE.
+
+This Agreement is the complete statement of the Agreement between the parties
+on the subject matter, and merges and supersedes all other or prior
+understandings, purchase orders, agreements and arrangements. This Agreement
+shall be governed by the laws of the State of California.  Exclusive
+jurisdiction and venue for all matters relating to this Agreement shall be in
+courts and fora located in the State of California, and you consent to such
+jurisdiction and venue.
+
+All rights of any kind in the SOFTWARE which are not expressly granted in this
+License are entirely and exclusively reserved to and by ESA.
+

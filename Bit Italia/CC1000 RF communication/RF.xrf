@@ -1,0 +1,682 @@
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  1
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+ACCEPT_DATA                       A   RF.ASM                             524.  794*
+ACKDT                             C   P16F876.INC                        259*
+ACKEN                             C   P16F876.INC                        260*
+ACKSTAT                           C   P16F876.INC                        258*
+ADCON0                            C   RF.ASM                             131.
+                                      P16F876.INC                         81*
+ADCON1                            C   RF.ASM                             140.
+                                      P16F876.INC                         97*
+ADCS0                             C   P16F876.INC                        213*
+ADCS1                             C   P16F876.INC                        212*
+ADDEN                             C   P16F876.INC                        195*
+ADDRESS                           M   RF.ASM                             746.
+                                      HW_INTERF.H                         58*
+ADDR_CMPLT                        M   RF.ASM                             512.  758.
+                                      HW_INTERF.H                         49*
+ADD_SIZE                          M   RF.ASM                             754.
+                                      HW_INTERF.H                         69*   74.   75.
+ADFM                              C   P16F876.INC                        304*
+ADIE                              C   P16F876.INC                        235*
+ADIF                              C   P16F876.INC                        131*
+ADON                              C   P16F876.INC                        220*
+ADRESH                            C   P16F876.INC                         80*
+ADRESL                            C   P16F876.INC                         96*
+BCLIE                             C   P16F876.INC                        246*
+BCLIF                             C   P16F876.INC                        142*
+BF                                C   P16F876.INC                        287*
+BOF_FOUND                         M   RF.ASM                             270.  388.  396.  399.  704.
+                                      HW_INTERF.H                         46*
+BRGH                              C   P16F876.INC                        297*
+BUTTON_PRESSED                    M   HW_INTERF.H                         28*
+BYTE_FULL                         M   RF.ASM                             256.  285.  288.  292.  300.  406.  441.
+                                      HW_INTERF.H                         32*
+C                                 C   RF.ASM                             316.  340.  432.  548.  698.
+                                      P16F876.INC                        116*
+CALIBRATION_OK                    M   RF.ASM                             177.  192.  196.  204.  209.
+                                      HW_INTERF.H                         34*
+CC1000_CAL                        M   CC1000.H                            19*
+CC1000_CURRENT                    M   CC1000.H                            14*
+CC1000_FREQ_0A                    M   CC1000.H                             8*
+CC1000_FREQ_0B                    M   CC1000.H                            11*
+CC1000_FREQ_1A                    M   CC1000.H                             7*
+CC1000_FREQ_1B                    M   CC1000.H                            10*
+CC1000_FREQ_2A                    M   CC1000.H                             6*
+CC1000_FREQ_2B                    M   CC1000.H                             9*
+CC1000_FRONT_END                  M   CC1000.H                            15*
+CC1000_FSCTRL                     M   CC1000.H                            24*
+CC1000_FSDELAY                    M   CC1000.H                            32*
+CC1000_FSEP0                      M   CC1000.H                            13*
+CC1000_FSEP1                      M   CC1000.H                            12*
+CC1000_FSHAPE1                    M   CC1000.H                            31*
+CC1000_FSHAPE2                    M   CC1000.H                            30*
+CC1000_FSHAPE3                    M   CC1000.H                            29*
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  2
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+CC1000_FSHAPE4                    M   CC1000.H                            28*
+CC1000_FSHAPE5                    M   CC1000.H                            27*
+CC1000_FSHAPE6                    M   CC1000.H                            26*
+CC1000_FSHAPE7                    M   CC1000.H                            25*
+CC1000_LOCK                       M   CC1000.H                            18*
+CC1000_MAIN                       M   CC1000.H                             5*
+CC1000_MATCH                      M   CC1000.H                            23*
+CC1000_MODEM0                     M   CC1000.H                            22*
+CC1000_MODEM1                     M   CC1000.H                            21*
+CC1000_MODEM2                     M   CC1000.H                            20*
+CC1000_PA_POW                     M   CC1000.H                            16*
+CC1000_PLL                        M   CC1000.H                            17*
+CC1000_PRESCALER                  M   CC1000.H                            33*
+CC1000_TEST0                      M   CC1000.H                            40*
+CC1000_TEST1                      M   CC1000.H                            39*
+CC1000_TEST2                      M   CC1000.H                            38*
+CC1000_TEST3                      M   CC1000.H                            37*
+CC1000_TEST4                      M   CC1000.H                            36*
+CC1000_TEST5                      M   CC1000.H                            35*
+CC1000_TEST6                      M   CC1000.H                            34*
+CC1Kregs                          A   RF.ASM                              99*  103*  184.
+CCP1CON                           C   P16F876.INC                         73*
+CCP1IE                            C   P16F876.INC                        239*
+CCP1IF                            C   P16F876.INC                        135*
+CCP1M0                            C   P16F876.INC                        184*
+CCP1M1                            C   P16F876.INC                        183*
+CCP1M2                            C   P16F876.INC                        182*
+CCP1M3                            C   P16F876.INC                        181*
+CCP1X                             C   P16F876.INC                        179*
+CCP1Y                             C   P16F876.INC                        180*
+CCP2CON                           C   P16F876.INC                         79*
+CCP2IE                            C   P16F876.INC                        247*
+CCP2IF                            C   P16F876.INC                        143*
+CCP2M0                            C   P16F876.INC                        208*
+CCP2M1                            C   P16F876.INC                        207*
+CCP2M2                            C   P16F876.INC                        206*
+CCP2M3                            C   P16F876.INC                        205*
+CCP2X                             C   P16F876.INC                        203*
+CCP2Y                             C   P16F876.INC                        204*
+CCPR1H                            C   P16F876.INC                         72*
+CCPR1L                            C   P16F876.INC                         71*
+CCPR2H                            C   P16F876.INC                         78*
+CCPR2L                            C   P16F876.INC                         77*
+CHECK_ADDR                        A   RF.ASM                             514.  744*
+CHECK_MST_EOTX                    A   RF.ASM                             297.  592*
+CHECK_PREAMBLE                    A   RF.ASM                             504.  687*
+CHECK_SLV_EOTX                    A   RF.ASM                             299.  663*
+CHECK_SUM                         A   RF.ASM                             529.  814*
+CHECK_UI                          A   RF.ASM                             509.  712*
+CHP_OUT                           M   HW_INTERF.H                         10*
+CHS0                              C   P16F876.INC                        216*
+CHS1                              C   P16F876.INC                        215*
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  3
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+CHS2                              C   P16F876.INC                        214*
+CKE                               C   P16F876.INC                        269*
+CKP                               C   P16F876.INC                        171*
+CMMND_COMPLETE                    M   HW_INTERF.H                         53*
+CREN                              C   P16F876.INC                        194*
+CSRC                              C   P16F876.INC                        291*
+CS_SIZE                           M   HW_INTERF.H                         72*   74.
+CalibrateCC1000                   E   RF.ASM                              64*  195.  207.
+Comm_buffer                       A   RF.ASM                             112*  114*
+D                                 C   P16F876.INC                        270*
+DATA_ADDRESS                      C   P16F876.INC                        275*
+DATA_OFFS                         M   RF.ASM                             634.  796.  858.
+                                      HW_INTERF.H                         60*
+DATA_RECEIVED                     M   RF.ASM                             522.  806.
+                                      HW_INTERF.H                         51*
+DATA_SIZE                         M   HW_INTERF.H                         71*   74.
+DC                                C   P16F876.INC                        115*
+DCLK                              M   RF.ASM                             363.  423.
+                                      HW_INTERF.H                          9*
+DEBUG_BITS                        A   RF.ASM                              49*
+DIO                               M   RF.ASM                             434.  436.
+                                      HW_INTERF.H                          8*
+DIO_DIR                           M   HW_INTERF.H                         21*
+D_A                               C   P16F876.INC                        274*
+D_BUG1                            A   RF.ASM                              50*
+D_BUG2                            A   RF.ASM                              51*  119.  601.  602.  672.  673.
+D_BUGGGER                         A   RF.ASM                              45*  544.  545.  553.
+D_ERROR_CNT                       A   RF.ASM                              43*  556.
+D_ERROR_FLG                       A   RF.ASM                              44*  542.
+Delay100uS                        E   RF.ASM                              66*
+DelaymS                           E   RF.ASM                              66*  472.  651.
+DelayuS                           E   RF.ASM                              66*
+EEADR                             C   P16F876.INC                        100*
+EEADRH                            C   P16F876.INC                        102*
+EECON1                            C   P16F876.INC                        104*
+EECON2                            C   P16F876.INC                        105*
+EEDATA                            C   P16F876.INC                         99*
+EEDATH                            C   P16F876.INC                        101*
+EEIE                              C   P16F876.INC                        245*
+EEIF                              C   P16F876.INC                        141*
+EEPGD                             C   P16F876.INC                        312*
+EE_ADDR_H                         C   RF.ASM                              70*
+EE_ADDR_L                         C   RF.ASM                              71*
+EE_counter_addr                   A   RF.ASM                              81*
+F                                 C   P16F876.INC                         47*
+FAST_OFF                          M   HW_INTERF.H                        110*
+FAST_ON                           M   HW_INTERF.H                        109*
+FERR                              C   P16F876.INC                        196*
+FILL_TX_BUFFER                    A   RF.ASM                             580.  628.  874*
+FIXED_PART                        C   HW_INTERF.H                         75*
+FSR                               C   RF.ASM                             122.  124.  413.  430.  635.  641.  690.  716.  748.  776.
+                                                                         801.  816.  821.  828.  859.  880.  891.
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  4
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+                                      P16F876.INC                         55*
+GCEN                              C   P16F876.INC                        257*
+GET_NEXT_REGISTER                 A   RF.ASM                              95*   96*
+GIE                               C   RF.ASM                             851.  868.
+                                      P16F876.INC                        120*
+GO                                C   P16F876.INC                        217*
+GO_DONE                           C   P16F876.INC                        219*
+GREEN_FLAG                        M   RF.ASM                             307.
+                                      HW_INTERF.H                         99*
+GREEN_LED                         M   RF.ASM                             318.  321.  579.  617.  627.  678.
+                                      HW_INTERF.H                         14*
+G_CC_Data                         E   RF.ASM                              61*  551.
+G_CC_Reg                          E   RF.ASM                              61*  546.
+G_Events                          A   RF.ASM                              31*   60*  177.  192.  196.  204.  209.  246.  256.  257.
+                                                                         285.  288.  292.  300.  406.  441.  557.  566.  568.  587.
+                                                                         618.  653.  656.  679.  703.
+G_Pr_status                       A   RF.ASM                              32*   60*  258.  270.  388.  396.  399.  502.  507.  512.
+                                                                         517.  522.  527.  700.  704.  734.  758.  782.  806.  833.
+G_State                           A   RF.ASM                              33*  232.  233.  238.  239.  253.  266.  268.  278.  281.
+                                                                         294.  476.  479.  584.  585.  586.  615.  616.  654.  655.
+                                                                         676.  677.  852.  866.
+HANDLE_LED_BLINK                  A   RF.ASM                             264.  306*
+I2C_DATA                          C   P16F876.INC                        271*
+I2C_READ                          C   P16F876.INC                        281*
+I2C_START                         C   P16F876.INC                        279*
+I2C_STOP                          C   P16F876.INC                        277*
+IDLE_MODE                         M   HW_INTERF.H                         37*
+INDF                              C   RF.ASM                             123.  415.  431.  637.  642.  644.  692.  725.  750.  778.
+                                                                         802.  820.  829.  860.  888.  897.
+                                      P16F876.INC                         51*
+INTCON                            C   RF.ASM                             133.  223.  276.  416.  447.  464.  489.  851.  868.
+                                      P16F876.INC                         61*
+INTE                              C   P16F876.INC                        123*
+INTEDG                            C   P16F876.INC                        225*
+INTF                              C   RF.ASM                             276.  416.  447.
+                                      P16F876.INC                        126*
+IRP                               C   P16F876.INC                        109*
+LOCK1                             M   HW_INTERF.H                         93*
+LOCK2                             M   HW_INTERF.H                         94*
+L_BITS                            A   RF.ASM                              20*  251.  401.  403.  410.  438.  445.
+L_BYTES                           A   RF.ASM                              21*  249.  407.  442.  696.  701.  705.  715.  718.  729.
+                                                                         735.  747.  753.  759.  775.  783.  797.  803.  807.
+L_DATA_RX                         A   RF.ASM                              26*  382.  386.  391.  414.  534.
+L_EE_COUNT_H                      A   RF.ASM                              55*
+L_EE_COUNT_L                      A   RF.ASM                              54*  128.  569.  570.  630.
+L_EE_COUNT_MORE                   A   RF.ASM                              56*
+L_GREEN_COU                       A   RF.ASM                              36*  213.  323.  863.
+L_GREEN_CTL                       A   RF.ASM                              35*  215.  307.  315.  319.  322.  325.  327.  865.
+L_GR_SPEED                        A   RF.ASM                              37*  309.  312.  329.
+L_INDEX                           A   RF.ASM                              24*  255.  408.  411.  428.  443.  593.  664.  688.  827.
+                                                                         875.
+L_NEXT_FR_BYT                     A   RF.ASM                              23*  877.  879.  886.  892.
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  5
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+L_PERSIST                         A   RF.ASM                              29*  362.  365.  372.  378.  422.  425.
+L_PORTC                           A   RF.ASM                              25*  370.  375.  384.
+L_RED_COU                         A   RF.ASM                              40*  218.  347.  847.
+L_RED_CTL                         A   RF.ASM                              39*  220.  331.  339.  343.  346.  349.  351.  849.
+L_RED_SPEED                       A   RF.ASM                              41*  333.  336.  353.
+L_RX_BUFF                         A   RF.ASM                              27*  412.  689.  713.  745.  773.  795.  799.  815.  826.
+                                                                         857.
+L_TX_BUFF                         A   RF.ASM                              28*  429.  603.  633.  639.  674.  878.
+L_TX_COUNT                        A   RF.ASM                              22*  882.  893.
+L_Temp1                           A   RF.ASM                              18*  120.  125.  631.  636.  643.  818.  822.
+L_Temp_CS                         A   RF.ASM                              19*  119.  121.  824.  830.  876.  889.  896.
+MANLSW                            M   HW_INTERF.H                         12*
+MASTER                            M   RF.ASM                             238.  266.  294.  476.  852.
+                                      HW_INTERF.H                         38*
+MSTRAP                            M   RF.ASM                             228.
+                                      HW_INTERF.H                         11*
+NBR_BYTES_DATA                    A   RF.ASM                             519.  772*
+NBR_BYTES_RCVD                    M   RF.ASM                             517.  782.
+                                      HW_INTERF.H                         50*
+NBR_SIZE                          M   HW_INTERF.H                         70*   74.   75.
+NEW_COUNT                         M   RF.ASM                             566.  568.  653.
+                                      HW_INTERF.H                         30*
+NOT_A                             C   P16F876.INC                        272*
+NOT_ADDRESS                       C   P16F876.INC                        273*
+NOT_BO                            C   P16F876.INC                        252*
+NOT_BOR                           C   P16F876.INC                        253*
+NOT_DONE                          C   P16F876.INC                        218*
+NOT_PD                            C   P16F876.INC                        113*
+NOT_POR                           C   P16F876.INC                        251*
+NOT_RBPU                          C   P16F876.INC                        224*
+NOT_RC8                           C   P16F876.INC                        191*
+NOT_T1SYNC                        C   P16F876.INC                        150*
+NOT_TO                            C   P16F876.INC                        112*
+NOT_TX8                           C   P16F876.INC                        293*
+NOT_W                             C   P16F876.INC                        282*
+NOT_WRITE                         C   P16F876.INC                        283*
+NO_BYTES                          M   RF.ASM                             774.  800.
+                                      HW_INTERF.H                         59*
+OERR                              C   P16F876.INC                        197*
+OPTION_REG                        C   RF.ASM                             162.
+                                      P16F876.INC                         83*
+P                                 C   P16F876.INC                        276*
+PALE                              M   RF.ASM                             176.
+                                      HW_INTERF.H                          7*
+PA_VALUE                          M   HW_INTERF.H                         81*
+PCFG0                             C   P16F876.INC                        308*
+PCFG1                             C   P16F876.INC                        307*
+PCFG2                             C   P16F876.INC                        306*
+PCFG3                             C   P16F876.INC                        305*
+PCL                               C   RF.ASM                              97.  110.
+                                      P16F876.INC                         53*
+PCLATH                            C   RF.ASM                              87.  885.
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  6
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+                                      P16F876.INC                         60*
+PCLK                              M   RF.ASM                             174.
+                                      HW_INTERF.H                          6*
+PCON                              C   RF.ASM                             143.
+                                      P16F876.INC                         89*
+PDATA                             M   RF.ASM                             175.
+                                      HW_INTERF.H                          5*
+PDATA_DIR                         M   HW_INTERF.H                         17*
+PEIE                              C   P16F876.INC                        121*
+PEN                               C   P16F876.INC                        262*
+PIE1                              C   RF.ASM                             159.
+                                      P16F876.INC                         87*
+PIE2                              C   P16F876.INC                         88*
+PIR1                              C   RF.ASM                             224.  261.  263.  606.
+                                      P16F876.INC                         62*
+PIR2                              C   P16F876.INC                         63*
+PORTA                             C   RF.ASM                             134.  228.
+                                      P16F876.INC                         56*
+PORTB                             C   RF.ASM                             135.  179.  211.  318.  321.  342.  345.  363.  423.  467.
+                                                                         468.  473.  579.  617.  627.  678.
+                                      P16F876.INC                         57*
+PORTC                             C   RF.ASM                             136.  174.  175.  176.  368.  373.  434.  436.
+                                      P16F876.INC                         58*
+PR2                               C   P16F876.INC                         91*
+PREAMBLE                          M   HW_INTERF.H                         56*
+PREAM_FINISHED                    M   RF.ASM                             502.  700.
+                                      HW_INTERF.H                         47*
+PREA_SIZE                         M   HW_INTERF.H                         67*   74.   75.
+PROCESS_DATA                      A   RF.ASM                             532.  845*
+PS0                               C   P16F876.INC                        231*
+PS1                               C   P16F876.INC                        230*
+PS2                               C   P16F876.INC                        229*
+PSA                               C   P16F876.INC                        228*
+QUIET                             M   RF.ASM                             239.  278.  479.  584.  866.
+                                      HW_INTERF.H                         42*
+R                                 C   P16F876.INC                        280*
+RAW_BUFFER                        A   RF.ASM                             108*  109*  884.  887.
+RBIE                              C   P16F876.INC                        124*
+RBIF                              C   RF.ASM                             464.  489.
+                                      P16F876.INC                        127*
+RC8_9                             C   P16F876.INC                        192*
+RC9                               C   P16F876.INC                        190*
+RCD8                              C   P16F876.INC                        199*
+RCEN                              C   P16F876.INC                        261*
+RCIE                              C   P16F876.INC                        236*
+RCIF                              C   P16F876.INC                        132*
+RCREG                             C   P16F876.INC                         76*
+RCSTA                             C   RF.ASM                             132.
+                                      P16F876.INC                         74*
+RD                                C   P16F876.INC                        316*
+READ_WRITE                        C   P16F876.INC                        285*
+RECEIVE_BIT                       A   RF.ASM                             284.  360*
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  7
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+RECEIVE_BYTE                      A   RF.ASM                             287.  501*
+RED_FLAG                          M   RF.ASM                             331.
+                                      HW_INTERF.H                        103*
+RED_LED                           M   RF.ASM                             179.  211.  342.  345.
+                                      HW_INTERF.H                         13*
+REPLY_SENT                        M   HW_INTERF.H                         29*
+RESET_CNTRS                       M   RF.ASM                             246.  257.  557.  587.  618.  656.  679.  703.
+                                      HW_INTERF.H                         33*
+RP0                               C   RF.ASM                             138.  164.
+                                      P16F876.INC                        111*
+RP1                               C   P16F876.INC                        110*
+RSEN                              C   P16F876.INC                        263*
+RX9                               C   P16F876.INC                        189*
+RX9D                              C   P16F876.INC                        198*
+RXCVER                            M   RF.ASM                             233.  268.  281.  585.  616.  654.  677.
+                                      HW_INTERF.H                         40*
+RXMIT_TIM1H                       M   RF.ASM                             170.  610.
+                                      HW_INTERF.H                         88*
+RXMIT_TIM1L                       M   RF.ASM                             167.  607.
+                                      HW_INTERF.H                         87*
+RXPLL                             M   HW_INTERF.H                         78*
+RX_CURRENT                        M   RF.ASM                             187.  190.  230.  598.  669.
+                                      HW_INTERF.H                         77*
+R_W                               C   P16F876.INC                        284*
+ReadFromCC1000register            E   RF.ASM                              67*  550.
+Reset_CC1000                      E   RF.ASM                              64*  182.
+S                                 C   P16F876.INC                        278*
+SEN                               C   P16F876.INC                        264*
+SEND_BIT                          A   RF.ASM                             291.  420*
+SLAVE                             M   RF.ASM                             232.
+                                      HW_INTERF.H                         39*
+SLAVE_BUTTON                      A   RF.ASM                             488.  564*
+SLOW_OFF                          M   HW_INTERF.H                        107*
+SLOW_ON                           M   RF.ASM                             214.  219.  848.  864.
+                                      HW_INTERF.H                        106*
+SMP                               C   P16F876.INC                        268*
+SPBRG                             C   RF.ASM                             153.
+                                      P16F876.INC                         95*
+SPEED_G                           M   HW_INTERF.H                        100*
+SPEED_R                           M   HW_INTERF.H                        104*
+SPEN                              C   P16F876.INC                        188*
+SREN                              C   P16F876.INC                        193*
+SSPADD                            C   P16F876.INC                         92*
+SSPBUF                            C   P16F876.INC                         69*
+SSPCON                            C   RF.ASM                             130.
+                                      P16F876.INC                         70*
+SSPCON2                           C   P16F876.INC                         90*
+SSPEN                             C   P16F876.INC                        170*
+SSPIE                             C   P16F876.INC                        238*
+SSPIF                             C   P16F876.INC                        134*
+SSPM0                             C   P16F876.INC                        175*
+SSPM1                             C   P16F876.INC                        174*
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  8
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+SSPM2                             C   P16F876.INC                        173*
+SSPM3                             C   P16F876.INC                        172*
+SSPOV                             C   P16F876.INC                        169*
+SSPSTAT                           C   P16F876.INC                         93*
+START_MST_XMIT                    A   RF.ASM                             272.  485.  578*
+START_OF_THE_PROGRAM              A   RF.ASM                              84*
+START_SLV_XMIT                    A   RF.ASM                             626*  854.
+STATUS                            C   RF.ASM                             129.  138.  164.  310.  316.  334.  340.  376.  393.  432.
+                                                                         459.  461.  492.  548.  595.  666.  693.  698.  719.  726.
+                                                                         731.  751.  755.  779.  804.  831.  861.
+                                      P16F876.INC                         54*
+STATUS_TEMP                       A   RF.ASM                              47*  460.  462.  491.
+SUMCHECK_DONE                     M   RF.ASM                             527.  833.
+                                      HW_INTERF.H                         52*
+SUM_CHECK                         M   RF.ASM                             640.
+                                      HW_INTERF.H                         61*
+SYNC                              C   P16F876.INC                        296*
+Service_Interrupt                 A   RF.ASM                              91.  457*
+SetupCC1000Rx                     E   RF.ASM                              65*  191.  231.  599.  670.
+SetupCC1000Tx                     E   RF.ASM                              65*  203.  583.  649.
+Setup_CC1000All                   E   RF.ASM                              64*  185.
+Setup_CC1000PD                    E   RF.ASM                              64*  180.  237.  867.
+Start                             A   RF.ASM                              88.  118*
+T0CS                              C   P16F876.INC                        226*
+T0IE                              C   P16F876.INC                        122*
+T0IF                              C   P16F876.INC                        125*
+T0SE                              C   P16F876.INC                        227*
+T1CKPS0                           C   P16F876.INC                        148*
+T1CKPS1                           C   P16F876.INC                        147*
+T1CON                             C   RF.ASM                             166.  226.  605.  613.
+                                      P16F876.INC                         66*
+T1INSYNC                          C   P16F876.INC                        151*
+T1OSCEN                           C   P16F876.INC                        149*
+T1SYNC                            C   P16F876.INC                        152*
+T2CKPS0                           C   P16F876.INC                        164*
+T2CKPS1                           C   P16F876.INC                        163*
+T2CON                             C   P16F876.INC                         68*
+TIME_0_OUT                        M   HW_INTERF.H                         31*
+TMR0                              C   P16F876.INC                         52*
+TMR1CS                            C   P16F876.INC                        153*
+TMR1H                             C   RF.ASM                             171.  172.  611.  612.
+                                      P16F876.INC                         65*
+TMR1IE                            C   P16F876.INC                        241*
+TMR1IF                            C   RF.ASM                             224.  261.  263.  606.
+                                      P16F876.INC                        137*
+TMR1L                             C   RF.ASM                             168.  169.  608.  609.
+                                      P16F876.INC                         64*
+TMR1ON                            C   RF.ASM                             226.  605.  613.
+                                      P16F876.INC                        154*
+TMR2                              C   P16F876.INC                         67*
+TMR2IE                            C   P16F876.INC                        240*
+TMR2IF                            C   P16F876.INC                        136*
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE  9
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+TMR2ON                            C   P16F876.INC                        162*
+TOGGLE_G                          M   RF.ASM                             319.  322.
+                                      HW_INTERF.H                         98*
+TOGGLE_R                          M   RF.ASM                             343.  346.
+                                      HW_INTERF.H                        102*
+TOT_FRAME_SIZ                     C   RF.ASM                             594.  665.  817.  881.
+                                      HW_INTERF.H                         74*
+TOUTPS0                           C   P16F876.INC                        161*
+TOUTPS1                           C   P16F876.INC                        160*
+TOUTPS2                           C   P16F876.INC                        159*
+TOUTPS3                           C   P16F876.INC                        158*
+TREAT_ERROR                       A   RF.ASM                             465.  539*  540*  738.  762.  786.  832.
+TRISA                             C   RF.ASM                             146.
+                                      P16F876.INC                         84*
+TRISB                             C   RF.ASM                             148.
+                                      P16F876.INC                         85*
+TRISC                             C   RF.ASM                             150.
+                                      P16F876.INC                         86*
+TRISC0                            M   HW_INTERF.H                         18*
+TRISC1                            M   HW_INTERF.H                         19*
+TRISC2                            M   HW_INTERF.H                         20*
+TRISC4                            M   HW_INTERF.H                         22*
+TRISC5                            M   HW_INTERF.H                         23*
+TRISC6                            M   HW_INTERF.H                         24*
+TRISC7                            M   HW_INTERF.H                         25*
+TRMT                              C   P16F876.INC                        298*
+TX8_9                             C   P16F876.INC                        294*
+TX9                               C   P16F876.INC                        292*
+TX9D                              C   P16F876.INC                        299*
+TXD8                              C   P16F876.INC                        300*
+TXEN                              C   P16F876.INC                        295*
+TXIE                              C   P16F876.INC                        237*
+TXIF                              C   P16F876.INC                        133*
+TXMTER                            M   RF.ASM                             253.  586.  615.  655.  676.
+                                      HW_INTERF.H                         41*
+TXPLL                             M   HW_INTERF.H                         80*
+TXREG                             C   P16F876.INC                         75*
+TXSTA                             C   RF.ASM                             156.
+                                      P16F876.INC                         94*
+TX_CURRENT                        M   RF.ASM                             199.  202.  482.  582.  648.
+                                      HW_INTERF.H                         79*
+UA                                C   P16F876.INC                        286*
+UI                                M   RF.ASM                             714.
+                                      HW_INTERF.H                         57*
+UI_CODE1                          M   RF.ASM                             721.
+                                      HW_INTERF.H                         63*
+UI_CODE2                          M   RF.ASM                             723.
+                                      HW_INTERF.H                         64*
+UI_FINISHED                       M   RF.ASM                             507.  734.
+                                      HW_INTERF.H                         48*
+UI_SIZE                           M   RF.ASM                             730.
+                                      HW_INTERF.H                         68*   74.   75.
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 10
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+VERYSLOW                          M   HW_INTERF.H                        112*
+W                                 C   P16F876.INC                         46*
+WCOL                              C   P16F876.INC                        168*
+WR                                C   P16F876.INC                        315*
+WREN                              C   P16F876.INC                        314*
+WRERR                             C   P16F876.INC                        313*
+W_TEMP                            A   RF.ASM                              57*  458.  493.  494.
+WakeUpCC1000toRx                  E   RF.ASM                              65*  188.
+WakeUpCC1000toTx                  E   RF.ASM                              65*  200.  483.
+Z                                 C   RF.ASM                             310.  334.  376.  393.  595.  666.  693.  719.  726.  731.
+                                                                         751.  755.  779.  804.  831.  861.
+                                      P16F876.INC                        114*
+_                                 A   RF.ASM                             939*
+_ACCEPT_COMMAND                   A   RF.ASM                             528.  531*
+_ACCEPT_END                       A   RF.ASM                             805.  808*
+_ADDRESS                          A   RF.ASM                             508.  512*
+_ADDR_BACK                        A   RF.ASM                             756.  760.  764*
+_ADDR_FAIL                        A   RF.ASM                             752.  762*
+_BLINK_END                        A   RF.ASM                             332.  337.  350.  355*
+_BODEN_OFF                        C   RF.ASM                              76.
+                                      P16F876.INC                        349*
+_BODEN_ON                         C   P16F876.INC                        348*
+_BOF_CONT2                        A   RF.ASM                             389.  403*
+_BOF_FOUND                        A   RF.ASM                             394.  399*
+_BUTTN_SLV                        A   RF.ASM                             477.  488*
+_BYTES_DONE                       A   RF.ASM                             784.  787*
+_BYTES_FAIL                       A   RF.ASM                             780.  786*
+_CAL_ENDED                        A   RF.ASM                             193.  197.  205.  209*
+_CAL_NOK                          A   RF.ASM                             210.  217*
+_CLR_DIO                          A   RF.ASM                             433.  436*
+_CLR_MEM                          A   RF.ASM                             123*  126.
+_CODE2                            A   RF.ASM                             720.  723*
+_COMMS_END                        A   RF.ASM                             273.  277.  279.  286.  289.  293.  302*
+_COUNT_UP                         A   RF.ASM                             567.  570*
+_CPD_OFF                          C   RF.ASM                              76.
+                                      P16F876.INC                        345*
+_CPD_ON                           C   P16F876.INC                        344*
+_CP_ALL                           C   P16F876.INC                        336*
+_CP_HALF                          C   P16F876.INC                        337*
+_CP_OFF                           C   RF.ASM                              76.
+                                      P16F876.INC                        339*
+_CP_UPPER_256                     C   P16F876.INC                        338*
+_CS_LOOP                          A   RF.ASM                             820*  823.
+_DATA_IN                          A   RF.ASM                             361*
+_DCLK_IN                          A   RF.ASM                             363*  366.
+_DCLK_OUT                         A   RF.ASM                             423*  426.
+_DEBUG_OFF                        C   P16F876.INC                        341*
+_DEBUG_ON                         C   RF.ASM                              76.
+                                      P16F876.INC                        340*
+_DIO_IN_P                         A   RF.ASM                             373*  379.
+_GREEN_LED                        A   RF.ASM                             307*
+_GREEN_OFF                        A   RF.ASM                             317.  321*
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 11
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+_HS_OSC                           C   P16F876.INC                        356*
+_IDLE_LOOP                        A   RF.ASM                             246*  302.
+_INIT_CONT                        A   RF.ASM                             216.  222*
+_ISR_END                          A   RF.ASM                             491*
+_LP_OSC                           C   P16F876.INC                        354*
+_LVP_OFF                          C   RF.ASM                              76.
+                                      P16F876.INC                        347*
+_LVP_ON                           C   P16F876.INC                        346*
+_MASTER_RESET                     A   RF.ASM                             229.  236*
+_MASTR_NOT_DONE                   A   RF.ASM                             596.  619*
+_MAST_END                         A   RF.ASM                             862.  866*
+_MAST_PROC                        A   RF.ASM                             853.  857*
+_NBR_BYTES                        A   RF.ASM                             513.  517*
+_NO_BIT_IN                        A   RF.ASM                             364.  377.  417*
+_NO_BIT_OUT                       A   RF.ASM                             424.  448*
+_NO_BOF                           A   RF.ASM                             396*
+_OUT_END                          A   RF.ASM                             439.  447*
+_POLL_DCLCK                       A   RF.ASM                             262.  267.  269.  271.  275*
+_PREA_CONT                        A   RF.ASM                             696*
+_PREA_FAIL                        A   RF.ASM                             694.  703*
+_PREA_FIN                         A   RF.ASM                             699.  702.  707*
+_PROC_END                         A   RF.ASM                             855.  868*
+_PWRTE_OFF                        C   P16F876.INC                        350*
+_PWRTE_ON                         C   RF.ASM                              76.
+                                      P16F876.INC                        351*
+_RCVE                             A   RF.ASM                             284*
+_RCV_FINISH                       A   RF.ASM                             505.  510.  515.  520.  525.  533*
+_RC_OSC                           C   P16F876.INC                        357*
+_RECV_DATA                        A   RF.ASM                             518.  522*
+_RED_LED                          A   RF.ASM                             308.  313.  326.  331*
+_RED_OFF                          A   RF.ASM                             341.  345*
+_RESET                            A   RF.ASM                             234.  240.  249*
+_RES_G_SPD                        A   RF.ASM                             320.  324.  327*
+_RES_RBIF                         A   RF.ASM                             469.  480.  486.  489*
+_RES_R_SPD                        A   RF.ASM                             344.  348.  351*
+_RX_CONT                          A   RF.ASM                             368*
+_RX_END                           A   RF.ASM                             397.  404.  416*
+_SC_FIN                           A   RF.ASM                             834*
+_SC_OK                            A   RF.ASM                             833*
+_SKIP_REGS                        A   RF.ASM                             543.  549.  556*
+_SLAVE_DONE                       A   RF.ASM                             667.  680*
+_SUMCHECK                         A   RF.ASM                             523.  527*
+_TIMR1_ACTIONS                    A   RF.ASM                             247.  260*
+_TOGGLE_GR                        A   RF.ASM                             311.  315*
+_TOGGLE_RD                        A   RF.ASM                             335.  339*
+_TX_CONT                          A   RF.ASM                             428*
+_TX_COPY                          A   RF.ASM                             884*  894.
+_UI_BACK                          A   RF.ASM                             732.  736.  739*
+_UI_CONT                          A   RF.ASM                             722.  725*
+_UI_FAIL                          A   RF.ASM                             727.  738*
+_UNIQUE_ID                        A   RF.ASM                             503.  507*
+_WAI_RELS                         A   RF.ASM                             471*  474.
+MPASM 03.60 Released                                   RF.ASM   6-3-2004  15:06:28         PAGE 12
+
+                          MPASM Cross Reference File
+
+LABEL                            TYPE FILE NAME                  SOURCE FILE REFERENCES
+-----                            ---- ---------                  ----------------------
+
+_WDT_OFF                          C   RF.ASM                              76.
+                                      P16F876.INC                        353*
+_WDT_ON                           C   P16F876.INC                        352*
+_WRT_ENABLE_OFF                   C   P16F876.INC                        343*
+_WRT_ENABLE_ON                    C   P16F876.INC                        342*
+_XMIT                             A   RF.ASM                             282.  291*
+_XMIT_END                         A   RF.ASM                             298.  300*
+_XMIT_SLV                         A   RF.ASM                             295.  299*
+_XM_CONT                          A   RF.ASM                             435.  438*
+_XT_OSC                           C   RF.ASM                              76.
+                                      P16F876.INC                        355*
+__16F876                          V   RF.ASM                               0*
+                                      P16F876.INC                         36.
+_read_all                         A   RF.ASM                             545*  554.
+
+
+LABEL TYPES
+-----------
+A  Address 
+C  Constant
+E  External
+M  Macro   
+S  Segment 
+U  Unknown 
+V  Variable
+X  Other   

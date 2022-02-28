@@ -1,0 +1,401 @@
+;************************************************************
+;	TITLE:	Rover Master - Transmitter side
+;	It continually reads the analogue inputs,the input switches and sends them to the slave.
+;	Programmer: GINO ISLA
+;	Created:	June-02-2004
+;	REVISION HISTORY:
+;	HARDWARE: BIT SRL. Low Power transciever
+;	FREQUENCY: 7.372MHz
+;	Function: Remote control of a moving vehicle
+;************************************************************
+			list	p=16f876
+
+;
+;REMEMBER TO CHANGE THE TX_MASTER/RX_SLAVE DEFINITION IN Rover.h 
+;BEFORE ASSEMBLY OF THE CC1000 LIBRARY!!!
+;
+
+;#define		DEBUG_MODE
+
+#include	<p16f876.inc>
+#include 	<CC1000.h>
+#include 	<rover.h>
+
+;LOCAL DATA
+	UDATA
+L_Temp1			res 1 		;
+TEMP_BYT0		res	1		;temporary storage
+L_Temp_CS		res	1		;temporary sum-check
+L_BITS			res 1		;number of bits sent or received
+L_BYTES			res 1		;number of bytes sent or received
+L_TX_COUNT		res	1		;TX_BUFFER counter
+L_NEXT_FR_BYT	res	1		;counts the byte in the TX buffer
+L_INDEX			res 1		;index for addressing buffers below
+L_PORTC			res 1		;temporary PORTC
+L_DATA_RX		res 1		;1 byte of received data
+L_RX_BUFF		res d'16'	;Received data buffer
+L_TX_BUFF		res d'16'	;Transmit data buffer
+L_PERSIST		res	1		;counter for persistancy checks
+;
+G_Events 		res 1		;This has to be seen by other modules
+G_Pr_status		res 1 		;
+G_State			res 1		;will determine the reaction in ISR
+;
+D_ERROR_CNT		res	1		;Counts number of times in TREAT_ERROR
+D_ERROR_FLG		res	1		;Manual flag to read all CC1000 regs in TREAT_ERROR
+D_BUGGGER		res	1		;
+;
+STATUS_TEMP		res 1		;for saving STATUS reg during ISR
+;=========================================================================================
+DEBUG_BITS		res	1
+D_BUG1			res	1		;
+D_BUG2			res	1		;
+;==========================================================================================
+	UDATA_SHR				;Common bank
+L_EE_COUNT_L	res	1		;This has to be @ addr xxxxxx00 BUT the linker puts it in x71!!!
+L_EE_COUNT_H	res	1		;These reserve 8 bytes for data transfer with EEPROM
+L_EE_COUNT_MORE	res	6		;
+W_TEMP			res	1		;for saving W reg during ISR
+;
+;EXTERNAL AND GLOBAL SYMBOLS
+			Global	G_Events,G_Pr_status
+			extern	G_CC_Reg,G_CC_Data
+
+;LIBRARY SUPPORT ROUTINES
+	extern	Setup_CC1000PD,Reset_CC1000,Setup_CC1000All,CalibrateCC1000
+	extern	SetupCC1000Tx,SetupCC1000Rx,WakeUpCC1000toRx,WakeUpCC1000toTx
+	extern	DelaymS,Delay100uS,DelayuS
+	extern	ReadFromCC1000register
+	
+	__CONFIG	 _CP_OFF & _WDT_ON & _BODEN_OFF & _PWRTE_ON & _HS_OSC  & _LVP_OFF  & _CPD_OFF
+
+	CODE
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+START_OF_THE_PROGRAM
+			org		0X000				; Reset Vector
+
+			nop							;
+			clrf	PCLATH				;
+			goto	Start				;
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			org		0x004				;Iterrupt Vector
+			goto	TREAT_ERROR			;We do not expect interrupts!
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;Table lookups for CC1000 register
+;Lookout for page boundaries!!!!!
+GET_NEXT_REGISTER
+			Global	GET_NEXT_REGISTER	;
+			ADDWF	PCL,F				;
+										;	
+CC1Kregs	DATA 0x3400,0x3458,0x3420,0x3400,0x3442,0x3414,0x349c,0x3402	;Rf XTAL: 14.745600
+			DATA 0x3480,0x3444,0x3412,0x34FF,0x3460,0x3410,0x3426,0x348E	;PA_POW<0BH>=FF 
+			DATA 0x346F,0x3447,0x3470,0x3401,0x3400,0x3400,0x3400,0x3400	;MODEM0<11H>
+			DATA 0x3400,0x3400,0x3400,0x3400,0x3400
+			Global	CC1Kregs			;
+			RETURN 	
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;Table lookup, build a frame of data
+RAW_BUFFER
+			Global	RAW_BUFFER			;
+			ADDWF	PCL,F				;
+										;	
+Comm_buffer	DATA 0x34AA,0x34AA,0x34AA,0x34CD,0x344D,0x3400,0x3400,0x3407	;whole frame
+			DATA 0x3400,0x3400,0x3400,0x3400,0x3400,0x3400,0x3400,0x3400
+			Global	Comm_buffer			;
+			RETURN 	
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;Program execution starts here
+Start									;Setup MCU
+			CLRF	STATUS				;BANK 0
+			MOVLW	(D_BUG2-L_Temp_CS)+1;Clears all varialble data including
+			MOVWF	L_Temp1				; RX and TX buffers, L_Temp1 is used 
+			MOVLW	L_Temp_CS			;
+			MOVWF	FSR					;
+_CLR_MEM	CLRF	INDF				;
+			INCF	FSR,F				;
+			DECFSZ	L_Temp1,F			;
+			GOTO	_CLR_MEM			;
+										;
+			BANKSEL TRISA				;BANK 1 REGISTERS
+			MOVLW	b'11001110'			;PortB pullups disabled,
+			MOVWF	OPTION_REG			;xxxx111xb prescaler to WDT,1:128
+			MOVLW	b'00000011'			;
+			MOVWF	PCON				;power-on, brown-out resets
+										;
+;IO ports ports for the interface with CC1000 are different between master and slave - swee PALE and PCLK
+			MOVLW	0xFF				;RA0=AN0,RA1,AN1,RA3=Vref
+			MOVWF	TRISA				;
+			MOVLW	0xFF				;RB0=DCLK,RB1=SW1,RB2=SW2,RB3=SW3
+			MOVWF	TRISB				;(read INTF INTCON<1> for external INT on RB0)
+			MOVLW	0xF0				;RC<0,1,2,3>=PDATA,PCLK,PALE,DIO = out
+			MOVWF	TRISC				;
+										;
+			MOVLW	25					;4Mhz,9.6Kb
+			MOVWF	SPBRG				;not necessary when running synchronous slave
+										;
+			MOVLW	b'00000000'			;MCU is slave,8bit,TxEN,Async,high speed,  
+			MOVWF	TXSTA				;
+										;
+			MOVLW	b'00000000'			;
+			MOVWF	PIE1				;TMR1 int disabled (xxxxxxx1)
+										;
+										;
+			BANKSEL L_Temp1				;BANK 0 REGISTERS
+										;
+			MOVFW	PORTB				;
+			CLRF	L_EE_COUNT_L		;
+			CLRF	SSPCON				;disable serial port
+			CLRF	RCSTA				;Serial port disabled(bit banging)
+			CLRF	INTCON				;
+			CLRF	PORTA				;
+			CLRF	PORTB				;
+			CLRF	PORTC				;
+										;
+;A/D CONVERTER							;
+;=============							;
+			MOVLW	b'10000001'			;(see ADCON1 for bits adcon0<7,6> ; bits 5-3=channel selection;
+			MOVWF	ADCON0				;  A/D powered on
+			BSF		STATUS,RP0			;
+			MOVLW	b'01000100'			;left justtified,fosc/64,3andl/0 vref...
+			MOVWF	ADCON1				;
+			BCF		STATUS,RP0			;
+										;
+			BSF		CALIBRATION_OK		;
+										;start of CC1000 initialization
+			CALL	Setup_CC1000PD		;Setup after Power down CC1000
+										;
+			CALL	Reset_CC1000		;Reset it  [(A) and (B) fig 16]
+										;
+			MOVLW	CC1Kregs 			;
+			CALL	Setup_CC1000All		;Setup all other 28 registers [(C) fig 16]
+			CALL	TREAT_ERROR			;
+										;
+			MOVLW	RX_CURRENT			;
+			CALL	WakeUpCC1000toRx	;Start calibration (A....G) fig 17)
+										;
+			MOVLW	RX_CURRENT			;
+			CALL	SetupCC1000Rx		;
+			BTFSS	CALIBRATION_OK		;
+			GOTO	_CAL_ENDED			;
+										;
+			CALL	CalibrateCC1000		;Single calibration as TX
+			BTFSS	CALIBRATION_OK		;
+			GOTO	_CAL_ENDED			;
+										;
+			MOVLW	TX_CURRENT			;
+			CALL	WakeUpCC1000toTx	;
+										;
+			MOVLW	TX_CURRENT			;
+			CALL	SetupCC1000Tx		;Switch to Tx
+			BTFSS	CALIBRATION_OK		;
+			GOTO	_CAL_ENDED			;
+										;
+			CALL	CalibrateCC1000		;Single calibration  [(D) and (E) FIG 16]
+										;
+_CAL_ENDED	BTFSS	CALIBRATION_OK		;
+			CALL	TREAT_ERROR			;
+										;
+			MOVLW	0x80				;enable GIE<7>
+			MOVWF	INTCON				;clear TMR0IF<2>,INTF<1>,RBIF<0>,PEIE<6>,
+			BSF		RESET_CNTRS			;
+										;
+;Master continually reads the analogue inputs,the switches and sends them to the slave.
+										;
+_IDLE_LOOP	BTFSS	RESET_CNTRS			;
+			GOTO	_MASTER_SEND		;
+										;
+_RESET		CLRF	L_BYTES				;Start all over
+			MOVLW	8					;
+			MOVWF	L_BITS				;Initialize bit counter
+			CLRF	L_INDEX				;
+			BCF		BYTE_FULL			;
+			BCF		RESET_CNTRS			;
+			CALL	GET_DATA			;get new frame of data to send
+			NOP
+_MASTER_SEND							;
+			CLRWDT						;Clear watch dog
+			BTFSC	DCLK				;IF DCLCLK PULSE (CC1000 rdy to receive?)
+			GOTO	_COMMS_END			;
+			CALL	SEND_BIT			;
+			BTFSS	BYTE_FULL			;
+			GOTO	_COMMS_END			;
+			CALL	CHECK_MST_EOTX		;
+			BCF		BYTE_FULL			;
+_COMMS_END	GOTO	_IDLE_LOOP			;
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;Send the next bit in L_TX_BUFF(L_INDEX,L_BITS)
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+SEND_BIT								;
+			MOVLW	d'12'				;persistancy check 50us
+			MOVWF	L_PERSIST			;
+_DCLK_OUT	BTFSC	DCLK				;
+			GOTO	_NO_BIT_OUT			;ignore spikes
+			DECFSZ	L_PERSIST,F			;
+			GOTO	_DCLK_OUT			;
+										;
+_TX_CONT	MOVF	L_INDEX,W			;
+			ADDLW	L_TX_BUFF			;
+			MOVWF	FSR					;Data to send: L_TX_BUFFER(L_INDEX<L_BITS>)
+			RLF		INDF,F				;
+			BTFSS	STATUS,C			;CARRY?
+			GOTO	_CLR_DIO			;
+			BSF		DIO					;
+			GOTO	$+2					;
+_CLR_DIO	BCF		DIO					;
+										;
+			DECFSZ	L_BITS,F			;8 bits sent?
+			GOTO	_OUT_END			;
+										;
+			BSF		BYTE_FULL			;
+			INCF	L_BYTES,F			;Prepare to send the next byte
+			INCF	L_INDEX,F			;
+			MOVLW	8					;
+			MOVWF	L_BITS				;reset bit count 
+										;
+_OUT_END	BCF		INTCON,INTF			;
+_NO_BIT_OUT	RETURN						;
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;This is a good place to set a breaks in case of error
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+TREAT_ERROR
+			Global	TREAT_ERROR
+			nop							;
+#IFDEF	DEBUG_MODE
+			bsf		D_ERROR_FLG,0		;Set this flag to 1 while in debugging mode
+			btfss	D_ERROR_FLG,0		;Set this flag to 1 while in debugging mode
+			GOTO	_SKIP_REGS			;
+			clrf	D_BUGGGER			;
+_read_all	movf	D_BUGGGER,w			;
+			movwf	G_CC_Reg			;read all regs 1 by 1
+			sublw	d'28'				;
+			btfss	STATUS,C			;
+			goto	_SKIP_REGS			;
+			call	ReadFromCC1000register
+			movf	G_CC_Data,w			;
+BREAKPOINT_ON_ERROR:
+			nop							;READ THE REGISTER on w
+			incf	D_BUGGGER,f			;
+			goto	_read_all			;
+										;
+#ENDIF
+_SKIP_REGS	incf	D_ERROR_CNT,F		;count transmission errors										;
+			bsf		RESET_CNTRS			;
+			RETURN
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;See oif we're finished sending a frame of data
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+CHECK_MST_EOTX							;
+			MOVF	L_INDEX,W			;
+			XORLW	TOT_FRAME_SIZ		;	
+			BTFSS	STATUS,Z			;
+			GOTO	$+2					;still sending bits...
+			BSF		RESET_CNTRS			;
+			RETURN						;
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;Get a frame of data and put it int the TX_BUFFER, calculate and fill the check sum
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+GET_DATA								;
+			CLRF	L_INDEX				;
+			CLRF	L_Temp_CS			;
+			CLRF	L_NEXT_FR_BYT		;number of frame bytes
+			MOVLW	L_TX_BUFF			;
+			ADDWF	L_NEXT_FR_BYT,W		;
+			MOVWF	FSR					;INDF -> L_TX_BUFF (Dest)
+			MOVLW	(TOT_FRAME_SIZ-1)	;
+			MOVWF	L_TX_COUNT			;
+										;
+_TX_COPY	MOVLW	HIGH RAW_BUFFER		;Copy the empty buffer
+			MOVWF	PCLATH				;
+			MOVF	L_NEXT_FR_BYT,W		;
+			CALL	RAW_BUFFER			;
+			MOVWF	INDF				;
+			ADDWF	L_Temp_CS,F			;compute provisional check sum
+			INCF	FSR,F				;
+			INCF	L_NEXT_FR_BYT,F		;
+			DECFSZ	L_TX_COUNT,F		;
+			GOTO	_TX_COPY			;
+										;
+			MOVLW	b'10000000'			;GET AN0
+			CALL	GET_A_D				;
+			MOVLW	L_TX_BUFF+0xE		;offset to payload data: AN0
+			MOVWF	FSR					;
+			MOVF	ADRESH,W			;
+			MOVWF	INDF				;
+			ADDWF	L_Temp_CS,F			;
+										;
+			MOVLW	b'10001000'			;GET AN1
+			CALL	GET_A_D				;
+			MOVLW	L_TX_BUFF+0xD		;offset to payload data: AN1
+			MOVWF	FSR					;
+			MOVF	ADRESH,W			;
+			MOVWF	INDF				;
+			ADDWF	L_Temp_CS,F			;
+										;
+			CLRF	TEMP_BYT0			;
+			MOVFW	PORTB				;read the port to clear it!!!!
+			BTFSC	SW1					;
+			BSF		TEMP_BYT0,0			;
+			BTFSC	SW2					;
+			BSF		TEMP_BYT0,1			;
+			BTFSC	SW3					;
+			BSF		TEMP_BYT0,2			;
+			MOVLW	L_TX_BUFF+0xC		;offset to payload data: SWITCHES
+			MOVWF	FSR					;
+			MOVF	TEMP_BYT0,W			;
+			MOVWF	INDF				;
+			ADDWF	L_Temp_CS,F			;
+										;
+			MOVLW	L_TX_BUFF+SUM_CHECK	;
+			MOVWF	FSR					;
+			MOVF	L_Temp_CS,W			;
+			MOVWF	INDF				;
+			RETURN						;
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;Read the analogue ports.
+;INPUT:		NONE
+;OUTPUT:	INDF = analogue reading
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+GET_A_D									;
+			MOVWF	ADCON0				;
+			MOVLW	b'00000001'			;turn ON, A/D module
+			IORWF	ADCON0,F			;
+			MOVLW	12					;
+			MOVWF	TEMP_BYT0			;wait cycle
+			DECFSZ	TEMP_BYT0,F			;2 CYC+2CYC=4*12=48us+ delay
+			GOTO	$-1					;
+_ADCON_GO	BSF		ADCON0,GO			;start conversion
+			BTFSC	ADCON0,GO			;
+			GOTO	$-1					;
+_ADCON_RDY	MOVF	ADRESH,W			;8 MSB (ignore 2 LSBs in ADRESL)
+			RETURN						;
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			nop			;WARNING: THIS NOPS ARE HERE TO COMPENSATE FOR ERRORS
+			nop			; IN THE LINKER.  THE PROGRAM MUST > 100H BYTES LONG
+			nop			; FOR THE LINKER TO WORK PROPERLY
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			END		; of code
